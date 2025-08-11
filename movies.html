@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browse Movies | CinemaBoxOffice</title>
+    <link rel="stylesheet" href="./font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/movies.css" />
+</head>
+<body>
+    <header>
+      <a href="index.html" class="logo">CinemaBoxOffice</a>
+      <ul class="nav">
+        <li><a href="index.html"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+        <li><a href="#">Adults</a></li>
+        <li><a href="movies.html">Movie</a></li>
+        <li><a href="#">Series</a></li>
+        <li><a href="#">My List</a></li>
+      </ul>
+      <div class="search">
+        <input type="text" placeholder="Search Movies..." id="search-input" />
+        <i class="fa fa-search" aria-hidden="true" id="search-icon"></i>
+      </div>
+    </header>
+
+    <main class="browse-container">
+        <section id="search-results" class="movie-row" style="display: none;">
+            <h2>Search Results</h2>
+            <div class="movie-list"></div>
+        </section>
+        <section id="popular-movies" class="movie-row">
+            <h2>Popular</h2>
+            <div class="movie-list"></div>
+        </section>
+        <section id="indonesian-horror-movies" class="movie-row">
+            <h2>Indonesian Horror</h2>
+            <div class="movie-list"></div>
+        </section>
+        <section id="world-destruction-movies" class="movie-row">
+            <h2>World Destruction</h2>
+            <div class="movie-list"></div>
+        </section>
+        <section id="monster-movies" class="movie-row">
+            <h2>Monsters</h2>
+            <div class="movie-list"></div>
+        </section>
+    </main>
+
+    <footer>
+        <ul class="sci">
+            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+            <li><a href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        </ul>
+    </footer>
+    <script src="./js/movies.js"></script>
+</body>
+</html>
