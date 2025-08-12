@@ -1,4 +1,4 @@
-// === File: js/script.js (Revisi Final) ===
+// === File: js/script.js (Revisi Final Anti-Rusak) ===
 
 // --- Fungsi Asli Lo ---
 function toggleVideo() {
@@ -12,13 +12,10 @@ function toggleVideo() {
   }
 }
 
-// --- Fungsi Asli Lo yang Dimodifikasi ---
-// Sekarang bisa menerima path gambar lengkap atau hanya nama file
 function changeBg(bg, title) {
   const banner = document.querySelector('.banner');
   const contents = document.querySelectorAll('.content');
   
-  // Cek apakah 'bg' adalah URL lengkap atau nama file lokal
   if (bg.startsWith('http')) {
     banner.style.background = `url("${bg}")`;
   } else {
@@ -36,6 +33,7 @@ function changeBg(bg, title) {
   });
 }
 
+
 // === LOGIKA BARU UNTUK PENCARIAN DI HALAMAN UTAMA ===
 document.addEventListener('DOMContentLoaded', () => {
     const API_KEY = 'MASUKKAN_API_KEY_TMDB_KAMU_DI_SINI';
@@ -47,12 +45,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchIcon = document.getElementById('home-search-icon');
     const mainBanner = document.getElementById('main-banner');
     const mainCarousel = document.getElementById('main-carousel');
+    const carouselBox = document.getElementById('main-carousel-box');
 
-    if (!searchInput) return; // Hanya jalankan jika di halaman utama
+    if (!searchInput) return;
 
-    // Fungsi untuk melakukan pencarian
+    // Simpan konten statis asli
+    const originalStaticContent = mainBanner.innerHTML;
+
     async function performHomeSearch(query) {
-        if (!query) return;
+        if (!query) {
+            // Jika input kosong, kembalikan ke konten asli
+            mainBanner.innerHTML = originalStaticContent;
+            // Inisialisasi ulang carousel untuk konten asli
+            $('#main-carousel').carousel();
+            return;
+        }
 
         try {
             const res = await fetch(`${API_BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`);
@@ -69,46 +76,60 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Fungsi untuk update UI dengan hasil pencarian
-    function updateHomepageWithSearchResults(movies) {
-        // 1. Hapus semua konten info film yang ada (statis & dinamis)
-        mainBanner.querySelectorAll('.content').forEach(el => el.remove());
-
-        // 2. Hapus semua item carousel yang ada
+    // Fungsi untuk update UI dengan hasil pencarian (VERSI BARU YANG LEBIH BAIK)
+    async function updateHomepageWithSearchResults(movies) {
+        // 1. Hapus hanya konten dinamis sebelumnya (jika ada) dan item carousel
+        mainBanner.querySelectorAll('.content.dynamic').forEach(el => el.remove());
         mainCarousel.innerHTML = '';
+
+        // 2. Sembunyikan semua konten statis
+        mainBanner.querySelectorAll('.content').forEach(el => el.style.display = 'none');
         
         // 3. Buat ulang elemen untuk setiap hasil pencarian
-        movies.forEach((movie, index) => {
+        for (const [index, movie] of movies.entries()) {
             const { id, title, overview, release_date, backdrop_path, poster_path, vote_average } = movie;
+            
+            // Ambil detail tambahan (runtime, genre, logo) dengan panggilan API kedua
+            let detailedMovie = {};
+            try {
+                const detailRes = await fetch(`${API_BASE_URL}/movie/${id}?api_key=${API_KEY}&append_to_response=images`);
+                detailedMovie = await detailRes.json();
+            } catch (e) { /* Abaikan jika gagal */ }
 
-            // Buat konten info baru (disembunyikan secara default)
+            const runtime = detailedMovie.runtime ? `${Math.floor(detailedMovie.runtime / 60)}h ${detailedMovie.runtime % 60}min` : 'N/A';
+            const genres = detailedMovie.genres ? detailedMovie.genres.map(g => g.name).join('/') : 'Movie';
+            const englishLogo = detailedMovie.images?.logos.find(logo => logo.iso_639_1 === 'en');
+            const logoToUse = englishLogo || (detailedMovie.images?.logos.length > 0 ? detailedMovie.images.logos[0] : null);
+
+            // Buat konten info baru
             const contentDiv = document.createElement('div');
-            contentDiv.classList.add('content', `movie-${id}`);
-            // Kita pakai teks, bukan logo, agar lebih cepat dan konsisten
+            contentDiv.classList.add('content', 'dynamic', `movie-${id}`); // Tambah class 'dynamic'
+            
+            const titleElement = logoToUse 
+                ? `<img class="movie-title" src="${IMG_PATH + logoToUse.file_path}" alt="${title} Logo">`
+                : `<h2 class="movie-title-text">${title}</h2>`;
+
             contentDiv.innerHTML = `
-                <h2 class="movie-title-text">${title}</h2>
+                ${titleElement}
                 <h4>
                   <span>${release_date ? release_date.substring(0, 4) : 'N/A'}</span>
                   <span><i>⭐ ${vote_average.toFixed(1)}</i></span>
-                  <span>Movie</span>
+                  <span>${runtime}</span>
+                  <span>${genres}</span>
                 </h4>
                 <p>${overview}</p>
                 <div class="button">
                   <a href="/movies/${id}"><i class="fa fa-play" aria-hidden="true"></i> View Details</a>
                 </div>
             `;
-            // Sisipkan konten sebelum carousel box
-            mainBanner.insertBefore(contentDiv, document.getElementById('main-carousel-box'));
+            mainBanner.insertBefore(contentDiv, carouselBox);
 
             // Buat item carousel baru
             if (poster_path) {
                 const carouselItem = document.createElement('a');
                 carouselItem.classList.add('carousel-item');
                 carouselItem.href = `/movies/${id}`;
-                
-                // Modifikasi onClick untuk menangani data API
                 carouselItem.setAttribute('onClick', `changeBg('${BACKDROP_PATH + backdrop_path}', 'movie-${id}');`);
-                
                 carouselItem.innerHTML = `<img src="${IMG_PATH + poster_path}" alt="${title}">`;
                 mainCarousel.appendChild(carouselItem);
             }
@@ -117,13 +138,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (index === 0) {
                 changeBg(BACKDROP_PATH + backdrop_path, `movie-${id}`);
             }
-        });
+        }
         
         // 4. Inisialisasi ulang carousel Materialize
         $(mainCarousel).carousel();
     }
     
-    // Tambahkan event listener untuk pencarian
     searchIcon.addEventListener('click', () => performHomeSearch(searchInput.value));
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
