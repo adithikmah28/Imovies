@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             data.results.forEach(movie => {
                 if (!movie.poster_path) return;
                 const movieLink = document.createElement('a');
+                // Path link diubah ke format clean URL
                 movieLink.href = `/movies/${movie.id}`;
                 movieLink.classList.add('movie-card-link');
                 const movieCard = document.createElement('div');
