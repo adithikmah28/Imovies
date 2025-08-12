@@ -1,4 +1,4 @@
-// === File: js/script.js (Revisi Final Terakhir) ===
+// === File: js/script.js (Versi Final Paling Stabil) ===
 
 // --- Fungsi Asli Lo ---
 function toggleVideo() {
@@ -19,7 +19,6 @@ function changeBg(bg, title) {
   if (bg.startsWith('http')) {
     banner.style.background = `url("${bg}")`;
   } else {
-    // Pastikan path ini benar relatif dari index.html
     banner.style.background = `url("./images/movies/${bg}")`;
   }
 
@@ -34,8 +33,7 @@ function changeBg(bg, title) {
   });
 }
 
-
-// === LOGIKA BARU UNTUK PENCARIAN DI HALAMAN UTAMA ===
+// === LOGIKA PENCARIAN BARU DAN LEBIH BAIK ===
 document.addEventListener('DOMContentLoaded', () => {
     const API_KEY = 'MASUKKAN_API_KEY_TMDB_KAMU_DI_SINI';
     const API_BASE_URL = 'https://api.themoviedb.org/3';
@@ -44,20 +42,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const searchInput = document.getElementById('home-search-input');
     const searchIcon = document.getElementById('home-search-icon');
-    const mainBanner = document.getElementById('main-banner');
     
-    // Periksa apakah kita di halaman utama
-    if (!searchInput || !mainBanner) return;
+    // Periksa apakah elemen ada di halaman ini
+    if (!searchInput) return;
 
-    // Simpan elemen UI penting sebelum diubah
-    const originalPlayButton = mainBanner.querySelector('.play');
-    const originalSciIcons = mainBanner.querySelector('.sci');
-    const originalCarouselBox = document.getElementById('main-carousel-box');
+    const mainCarousel = document.getElementById('main-carousel');
+    const dynamicContentContainer = document.getElementById('dynamic-content-container');
+    const staticContents = document.querySelectorAll('.banner .content');
 
     async function performHomeSearch(query) {
         if (!query) {
-            // Jika input kosong, bisa refresh halaman untuk kembali ke awal
-            window.location.reload();
+            window.location.reload(); // Kembali ke awal jika pencarian kosong
             return;
         }
 
@@ -66,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
             
             if (data.results && data.results.length > 0) {
-                updateHomepageWithSearchResults(data.results);
+                updateCarouselWithSearchResults(data.results);
             } else {
                 alert('No movies found for "' + query + '"');
             }
@@ -76,18 +71,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Fungsi untuk update UI dengan hasil pencarian (VERSI BARU YANG LEBIH BAIK)
-    function updateHomepageWithSearchResults(movies) {
-        // 1. Hapus semua konten info film dan carousel yang ada
-        mainBanner.querySelectorAll('.content').forEach(el => el.remove());
-        const mainCarousel = document.getElementById('main-carousel');
+    // Fungsi untuk update UI (HANYA MENGUBAH CAROUSEL & WADAH TERSEMBUNYI)
+    function updateCarouselWithSearchResults(movies) {
+        // 1. Bersihkan isi carousel dan wadah dinamis
         mainCarousel.innerHTML = '';
+        dynamicContentContainer.innerHTML = '';
         
-        // 2. Buat ulang elemen untuk setiap hasil pencarian
+        // 2. Sembunyikan semua konten statis
+        staticContents.forEach(el => el.classList.remove('active'));
+
+        // 3. Buat ulang elemen untuk setiap hasil pencarian
         movies.forEach((movie, index) => {
             const { id, title, overview, release_date, backdrop_path, poster_path, vote_average } = movie;
 
-            // Buat konten info baru
+            // Buat konten info dan simpan di wadah tersembunyi
             const contentDiv = document.createElement('div');
             contentDiv.classList.add('content', `movie-${id}`);
             contentDiv.innerHTML = `
@@ -102,8 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   <a href="/movies/${id}"><i class="fa fa-play" aria-hidden="true"></i> View Details</a>
                 </div>
             `;
-            // Sisipkan konten sebelum carousel box
-            mainBanner.insertBefore(contentDiv, originalCarouselBox);
+            dynamicContentContainer.appendChild(contentDiv);
 
             // Buat item carousel baru
             if (poster_path) {
@@ -120,15 +116,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 changeBg(BACKDROP_PATH + backdrop_path, `movie-${id}`);
             }
         });
-
-        // 3. Pastikan elemen UI penting tetap ada
-        if (originalPlayButton) mainBanner.appendChild(originalPlayButton);
-        if (originalSciIcons) mainBanner.appendChild(originalSciIcons);
         
         // 4. Inisialisasi ulang carousel Materialize
         $(mainCarousel).carousel();
     }
     
+    // Tambahkan event listener untuk pencarian
     searchIcon.addEventListener('click', () => performHomeSearch(searchInput.value));
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
