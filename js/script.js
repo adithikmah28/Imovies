@@ -1,6 +1,6 @@
-// === File: js/script.js (Final dengan Modal Pencarian) ===
+// === File: js/script.js (Versi Paling Simpel & Stabil) ===
 
-// --- FUNGSI ASLI LO (TIDAK DIOPREK) ---
+// --- FUNGSI ASLI LO ---
 function toggleVideo() {
   const trailer = document.querySelector('.trailer');
   const video = document.querySelector('video');
@@ -19,7 +19,6 @@ function changeBg(bg, contentClass) {
   if (bg.startsWith('http')) {
     banner.style.background = `url("${bg}")`;
   } else {
-    // Gunakan path absolut untuk konsistensi
     banner.style.background = `url("/images/movies/${bg}")`;
   }
 
@@ -34,66 +33,80 @@ function changeBg(bg, contentClass) {
   });
 }
 
-// === LOGIKA BARU UNTUK MODAL PENCARIAN (TIDAK MERUSAK FUNGSI ASLI) ===
+// === LOGIKA PENCARIAN YANG SUDAH DIPERBAIKI TOTAL ===
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Konfigurasi API ---
     const API_KEY = 'bda883e3019106157c9a9c5cfe3921bb';
     const API_BASE_URL = 'https://api.themoviedb.org/3';
     const IMG_PATH = 'https://image.tmdb.org/t/p/w500';
 
-    // --- Elemen DOM ---
     const searchInput = document.getElementById('home-search-input');
     const searchIcon = document.getElementById('home-search-icon');
-    if (!searchInput) return; // Hanya berjalan di halaman yang memiliki elemen ini
+    if (!searchInput) return;
 
-    // Elemen Modal
-    const searchModal = document.getElementById('search-modal');
-    const closeModalBtn = document.getElementById('close-search-modal');
-    const searchResultsTitle = document.getElementById('search-results-title');
-    const searchResultsGrid = document.getElementById('search-results-grid');
+    const mainCarousel = document.getElementById('main-carousel');
+    const staticContents = document.querySelectorAll('.banner .content');
+
+    // Simpan HTML asli dari carousel
+    const originalCarouselHTML = mainCarousel.innerHTML;
 
     async function performSearch(query) {
-        if (!query) return;
+        if (!query) {
+            // Hancurkan instance carousel yang mungkin ada
+            const carouselInstance = M.Carousel.getInstance(mainCarousel);
+            if (carouselInstance) carouselInstance.destroy();
 
-        // Tampilkan modal dengan status "Mencari..."
-        searchResultsTitle.innerText = `Searching for "${query}"...`;
-        searchResultsGrid.innerHTML = ''; // Kosongkan hasil sebelumnya
-        searchModal.style.display = 'flex';
+            // Kembalikan carousel ke keadaan semula
+            mainCarousel.innerHTML = originalCarouselHTML;
+
+            // Kembalikan info di kiri ke keadaan semula
+            staticContents.forEach(el => el.classList.remove('active'));
+            staticContents[0].classList.add('active');
+            changeBg('bg-little-mermaid.jpg', 'the-little-mermaid');
+
+            // Inisialisasi ulang carousel
+            $(mainCarousel).carousel();
+            return;
+        }
 
         try {
             const res = await fetch(`${API_BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`);
             const data = await res.json();
             
             if (data.results && data.results.length > 0) {
-                displaySearchResults(data.results, query);
+                updateCarousel(data.results);
             } else {
-                searchResultsTitle.innerText = `No movies found for "${query}"`;
+                alert('No movies found for "' + query + '"');
             }
         } catch (error) {
             console.error('Search error:', error);
-            searchResultsTitle.innerText = `An error occurred during the search.`;
+            alert('An error occurred during the search.');
         }
     }
 
-    function displaySearchResults(movies, query) {
-        searchResultsTitle.innerText = `Search Results for "${query}"`;
-        
-        movies.forEach(movie => {
-            if (!movie.poster_path) return; // Lewati film tanpa poster
+    function updateCarousel(movies) {
+        const carouselInstance = M.Carousel.getInstance(mainCarousel);
+        if (carouselInstance) carouselInstance.destroy();
 
-            const movieCard = document.createElement('a');
-            movieCard.classList.add('search-result-card');
-            movieCard.href = `/movies/${movie.id}`; // Link ke halaman detail
-            
-            movieCard.innerHTML = `
-                <img src="${IMG_PATH + movie.poster_path}" alt="${movie.title}">
-                <p>${movie.title}</p>
-            `;
-            searchResultsGrid.appendChild(movieCard);
+        mainCarousel.innerHTML = '';
+        
+        // Sembunyikan semua info statis di kiri
+        staticContents.forEach(el => el.classList.remove('active'));
+
+        movies.forEach(movie => {
+            if (movie.poster_path) {
+                const carouselItem = document.createElement('a');
+                carouselItem.classList.add('carousel-item');
+                carouselItem.href = `/movies/${movie.id}`;
+                // KITA TIDAK MEMAKAI changeBg DI SINI AGAR TETAP STABIL
+                carouselItem.innerHTML = `<img src="${IMG_PATH + movie.poster_path}" alt="${movie.title}">`;
+                mainCarousel.appendChild(carouselItem);
+            }
         });
+        
+        // Inisialisasi ulang carousel dengan hasil baru
+        $(mainCarousel).carousel();
     }
     
-    // Event Listeners untuk Pencarian
     searchIcon.addEventListener('click', () => performSearch(searchInput.value));
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
@@ -101,14 +114,4 @@ document.addEventListener('DOMContentLoaded', () => {
             performSearch(searchInput.value);
         }
     });
-
-    // Event Listeners untuk Menutup Modal
-    closeModalBtn.onclick = () => {
-        searchModal.style.display = 'none';
-    };
-    window.onclick = (event) => {
-        if (event.target == searchModal) {
-            searchModal.style.display = 'none';
-        }
-    };
 });
