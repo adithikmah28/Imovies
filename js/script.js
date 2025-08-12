@@ -1,6 +1,6 @@
-// === File: js/script.js (Versi Kembali ke Semula & Stabil) ===
+// === File: js/script.js (Final dengan Modal Pencarian) ===
 
-// --- Fungsi Asli Lo ---
+// --- FUNGSI ASLI LO (TIDAK DIOPREK) ---
 function toggleVideo() {
   const trailer = document.querySelector('.trailer');
   const video = document.querySelector('video');
@@ -19,7 +19,7 @@ function changeBg(bg, contentClass) {
   if (bg.startsWith('http')) {
     banner.style.background = `url("${bg}")`;
   } else {
-    // Path absolut untuk Vercel
+    // Gunakan path absolut untuk konsistensi
     banner.style.background = `url("/images/movies/${bg}")`;
   }
 
@@ -34,102 +34,66 @@ function changeBg(bg, contentClass) {
   });
 }
 
-// --- LOGIKA PENCARIAN YANG SIMPEL DAN STABIL ---
+// === LOGIKA BARU UNTUK MODAL PENCARIAN (TIDAK MERUSAK FUNGSI ASLI) ===
 document.addEventListener('DOMContentLoaded', () => {
     // --- Konfigurasi API ---
     const API_KEY = 'bda883e3019106157c9a9c5cfe3921bb';
     const API_BASE_URL = 'https://api.themoviedb.org/3';
     const IMG_PATH = 'https://image.tmdb.org/t/p/w500';
-    const BACKDROP_PATH = 'https://image.tmdb.org/t/p/original';
 
     // --- Elemen DOM ---
     const searchInput = document.getElementById('home-search-input');
     const searchIcon = document.getElementById('home-search-icon');
-    if (!searchInput) return;
+    if (!searchInput) return; // Hanya berjalan di halaman yang memiliki elemen ini
 
-    const mainCarousel = document.getElementById('main-carousel');
-    const dynamicContentContainer = document.getElementById('dynamic-content-container');
-    const staticContents = document.querySelectorAll('.banner .content');
-
-    // --- Simpan keadaan awal ---
-    const originalCarouselHTML = mainCarousel.innerHTML;
+    // Elemen Modal
+    const searchModal = document.getElementById('search-modal');
+    const closeModalBtn = document.getElementById('close-search-modal');
+    const searchResultsTitle = document.getElementById('search-results-title');
+    const searchResultsGrid = document.getElementById('search-results-grid');
 
     async function performSearch(query) {
-        if (!query) {
-            const carouselInstance = M.Carousel.getInstance(mainCarousel);
-            if (carouselInstance) carouselInstance.destroy();
-            
-            mainCarousel.innerHTML = originalCarouselHTML;
-            dynamicContentContainer.innerHTML = '';
-            
-            staticContents.forEach(el => el.classList.remove('active'));
-            staticContents[0].classList.add('active');
-            
-            changeBg('bg-little-mermaid.jpg', 'the-little-mermaid');
-            $(mainCarousel).carousel();
-            return;
-        }
+        if (!query) return;
+
+        // Tampilkan modal dengan status "Mencari..."
+        searchResultsTitle.innerText = `Searching for "${query}"...`;
+        searchResultsGrid.innerHTML = ''; // Kosongkan hasil sebelumnya
+        searchModal.style.display = 'flex';
 
         try {
             const res = await fetch(`${API_BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`);
             const data = await res.json();
             
             if (data.results && data.results.length > 0) {
-                updateCarouselWithSearchResults(data.results);
+                displaySearchResults(data.results, query);
             } else {
-                alert('No movies found for "' + query + '"');
+                searchResultsTitle.innerText = `No movies found for "${query}"`;
             }
         } catch (error) {
             console.error('Search error:', error);
-            alert('An error occurred during the search.');
+            searchResultsTitle.innerText = `An error occurred during the search.`;
         }
     }
 
-    function updateCarouselWithSearchResults(movies) {
-        const carouselInstance = M.Carousel.getInstance(mainCarousel);
-        if (carouselInstance) carouselInstance.destroy();
-
-        mainCarousel.innerHTML = '';
-        dynamicContentContainer.innerHTML = '';
-        staticContents.forEach(el => el.classList.remove('active'));
-
-        movies.forEach((movie, index) => {
-            const { id, title, overview, release_date, backdrop_path, poster_path, vote_average } = movie;
-
-            const contentDiv = document.createElement('div');
-            contentDiv.classList.add('content', `movie-${id}`);
-            contentDiv.innerHTML = `
-                <h2 class="movie-title-text">${title}</h2>
-                <h4>
-                  <span>${release_date ? release_date.substring(0, 4) : 'N/A'}</span>
-                  <span><i>⭐ ${vote_average.toFixed(1)}</i></span>
-                  <span>Movie</span>
-                </h4>
-                <p>${overview || 'No overview available.'}</p>
-                <div class="button">
-                  <a href="/movies/${id}"><i class="fa fa-play" aria-hidden="true"></i> View Details</a>
-                </div>
-            `;
-            dynamicContentContainer.appendChild(contentDiv);
-
-            if (poster_path) {
-                const carouselItem = document.createElement('a');
-                carouselItem.classList.add('carousel-item');
-                carouselItem.href = `/movies/${id}`;
-                carouselItem.setAttribute('onClick', `event.preventDefault(); changeBg('${BACKDROP_PATH + backdrop_path}', 'movie-${id}');`);
-                // Kembali ke versi simpel tanpa judul di dalam poster
-                carouselItem.innerHTML = `<img src="${IMG_PATH + poster_path}" alt="${title}">`;
-                mainCarousel.appendChild(carouselItem);
-            }
-
-            if (index === 0 && backdrop_path) {
-                changeBg(BACKDROP_PATH + backdrop_path, `movie-${id}`);
-            }
-        });
+    function displaySearchResults(movies, query) {
+        searchResultsTitle.innerText = `Search Results for "${query}"`;
         
-        $(mainCarousel).carousel();
+        movies.forEach(movie => {
+            if (!movie.poster_path) return; // Lewati film tanpa poster
+
+            const movieCard = document.createElement('a');
+            movieCard.classList.add('search-result-card');
+            movieCard.href = `/movies/${movie.id}`; // Link ke halaman detail
+            
+            movieCard.innerHTML = `
+                <img src="${IMG_PATH + movie.poster_path}" alt="${movie.title}">
+                <p>${movie.title}</p>
+            `;
+            searchResultsGrid.appendChild(movieCard);
+        });
     }
     
+    // Event Listeners untuk Pencarian
     searchIcon.addEventListener('click', () => performSearch(searchInput.value));
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
@@ -137,4 +101,14 @@ document.addEventListener('DOMContentLoaded', () => {
             performSearch(searchInput.value);
         }
     });
+
+    // Event Listeners untuk Menutup Modal
+    closeModalBtn.onclick = () => {
+        searchModal.style.display = 'none';
+    };
+    window.onclick = (event) => {
+        if (event.target == searchModal) {
+            searchModal.style.display = 'none';
+        }
+    };
 });
