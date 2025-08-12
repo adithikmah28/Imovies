@@ -1,4 +1,4 @@
-// === File: js/script.js (Versi Final Paling Stabil) ===
+// === File: js/script.js (Versi Final dengan Carousel Destroy) ===
 
 // --- Fungsi Asli Lo ---
 function toggleVideo() {
@@ -33,7 +33,7 @@ function changeBg(bg, title) {
   });
 }
 
-// === LOGIKA PENCARIAN BARU DAN LEBIH BAIK ===
+// === LOGIKA PENCARIAN YANG SUDAH DIPERBAIKI ===
 document.addEventListener('DOMContentLoaded', () => {
     const API_KEY = 'MASUKKAN_API_KEY_TMDB_KAMU_DI_SINI';
     const API_BASE_URL = 'https://api.themoviedb.org/3';
@@ -43,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('home-search-input');
     const searchIcon = document.getElementById('home-search-icon');
     
-    // Periksa apakah elemen ada di halaman ini
     if (!searchInput) return;
 
     const mainCarousel = document.getElementById('main-carousel');
@@ -52,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function performHomeSearch(query) {
         if (!query) {
-            window.location.reload(); // Kembali ke awal jika pencarian kosong
+            window.location.reload();
             return;
         }
 
@@ -71,20 +70,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Fungsi untuk update UI (HANYA MENGUBAH CAROUSEL & WADAH TERSEMBUNYI)
     function updateCarouselWithSearchResults(movies) {
-        // 1. Bersihkan isi carousel dan wadah dinamis
+        // === PERBAIKAN UTAMA DI SINI ===
+        // 1. Hancurkan instance carousel yang ada
+        const carouselInstance = M.Carousel.getInstance(mainCarousel);
+        if (carouselInstance) {
+            carouselInstance.destroy();
+        }
+
+        // 2. Bersihkan isi carousel dan wadah dinamis
         mainCarousel.innerHTML = '';
         dynamicContentContainer.innerHTML = '';
         
-        // 2. Sembunyikan semua konten statis
+        // 3. Sembunyikan semua konten statis
         staticContents.forEach(el => el.classList.remove('active'));
 
-        // 3. Buat ulang elemen untuk setiap hasil pencarian
+        // 4. Buat ulang elemen untuk setiap hasil pencarian
         movies.forEach((movie, index) => {
             const { id, title, overview, release_date, backdrop_path, poster_path, vote_average } = movie;
 
-            // Buat konten info dan simpan di wadah tersembunyi
             const contentDiv = document.createElement('div');
             contentDiv.classList.add('content', `movie-${id}`);
             contentDiv.innerHTML = `
@@ -101,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             dynamicContentContainer.appendChild(contentDiv);
 
-            // Buat item carousel baru
             if (poster_path) {
                 const carouselItem = document.createElement('a');
                 carouselItem.classList.add('carousel-item');
@@ -111,13 +114,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 mainCarousel.appendChild(carouselItem);
             }
 
-            // Aktifkan film pertama sebagai default
             if (index === 0 && backdrop_path) {
                 changeBg(BACKDROP_PATH + backdrop_path, `movie-${id}`);
             }
         });
         
-        // 4. Inisialisasi ulang carousel Materialize
+        // 5. Inisialisasi ulang carousel dari nol
         $(mainCarousel).carousel();
     }
     
