@@ -7,38 +7,37 @@
     <meta name="keywords" content="HTML, CSS, JavaScript" />
     <meta name="author" content="DStudio Technology (David)" />
     <!-- https://fontawesome.com/v4/get-started/ -->
-    <link rel="stylesheet" href="./font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
     />
-    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="/css/main.css" />
     <title>CinemaBoxOffice | Streaming Movie, Series & Adult</title>
   </head>
   <body>
     
     <header>
-      <a href="#" class="logo">CinemaBoxOffice</a>
+      <a href="/" class="logo">CinemaBoxOffice</a>
       <ul class="nav">
         <li>
           <a href="/"><i class="fa fa-home" aria-hidden="true"></i> </a>
         </li>
-        <li><a href="#" id="nav-adults">Adults</a></li>
-        <!-- INI YANG BERUBAH: href sekarang mengarah ke halaman baru -->
+        <li><a href="#">Adults</a></li>
         <li><a href="/movies/">Movie</a></li>
-        <li><a href="#" id="nav-series">Series</a></li>
-        <li><a href="#" id="nav-my-list">My List</a></li>
+        <li><a href="#">Series</a></li>
+        <li><a href="#">My List</a></li>
       </ul>
       <div class="search">
-        <input type="text" placeholder="Search" id="search-input" />
-        <i class="fa fa-search" aria-hidden="true" id="search-icon"></i>
+        <input type="text" placeholder="Search" />
+        <i class="fa fa-search" aria-hidden="true"></i>
       </div>
     </header>
     <div class="banner">
       <div class="content the-little-mermaid active">
         <img
           class="movie-title"
-          src="./images/the-little-mermaid.png"
+          src="/images/the-little-mermaid.png"
           alt="Movie Name"
           />
         <h4>
@@ -61,7 +60,7 @@
       <div class="content bg-65">
         <img
           class="movie-title"
-          src="./images/the-65-title.png"
+          src="/images/the-65-title.png"
           alt="Movie Name"
         />
         <h4>
@@ -84,7 +83,7 @@
       <div class="content the-covenant">
         <img
           class="movie-title"
-          src="./images/the-covenant-title.png"
+          src="/images/the-covenant-title.png"
           alt="Movie Name"
         />
         <h4>
@@ -107,7 +106,7 @@
       <div class="content the-black-demon">
         <img
           class="movie-title"
-          src="./images/the-black-demon-title.png"
+          src="/images/the-black-demon-title.png"
           alt="Movie Name"
         />
         <h4>
@@ -130,7 +129,7 @@
       <div class="content the-tank">
         <img
           class="movie-title"
-          src="./images/the-tank-title.png"
+          src="/images/the-tank-title.png"
           alt="Movie Name"
         />
         <h4>
@@ -156,28 +155,28 @@
             class="carousel-item"
             onClick="changeBg('bg-little-mermaid.jpg', 'the-little-mermaid');"
           >
-            <img src="./images/movies/the-little-mermaid.jpeg" />
+            <img src="/images/movies/the-little-mermaid.jpeg" />
           </div>
           <div class="carousel-item" onClick="changeBg('bg-65.jpeg', 'bg-65');">
-            <img src="./images/movies/65.jpg" />
+            <img src="/images/movies/65.jpg" />
           </div>
           <div
             class="carousel-item"
             onClick="changeBg('bg-the-covenant.jpeg', 'the-covenant');"
           >
-            <img src="./images/movies/the-covenant.jpg" />
+            <img src="/images/movies/the-covenant.jpg" />
           </div>
           <div
             class="carousel-item"
             onClick="changeBg('bg-the-black-demon.jpeg', 'the-black-demon');"
           >
-            <img src="./images/movies/the-black-demon.jpg" />
+            <img src="/images/movies/the-black-demon.jpg" />
           </div>
           <div
             class="carousel-item"
             onClick="changeBg('bg-the-tank.jpeg', 'the-tank');"
           >
-            <img src="./images/movies/the-tank.jpeg" />
+            <img src="/images/movies/the-tank.jpeg" />
           </div>
         </div>
       </div>
@@ -198,14 +197,14 @@
     </div>
     <div class="trailer">
       <video
-        src="./assets/star.mp4"
+        src="/assets/star.mp4"
         muted
         controls="true"
         autoplay="true"
       ></video>
       <img
         class="close"
-        src="./images/close.png"
+        src="/images/close.png"
         alt="close"
         onClick="toggleVideo()"
       />
@@ -213,48 +212,11 @@
 
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="./js/script.js"></script>
+    <script src="/js/script.js"></script>
     <script type="text/javascript">
       $(document).ready(function () {
         $('.carousel').carousel();
       });
     </script>
-    
-    <!-- Script untuk notifikasi link yang belum ada halamannya -->
-    <script type="text/javascript">
-      document.addEventListener('DOMContentLoaded', function() {
-        const navLinks = {
-          'nav-adults': 'Adults',
-          'nav-series': 'Series',
-          'nav-my-list': 'My List'
-        };
-
-        for (const id in navLinks) {
-          document.getElementById(id)?.addEventListener('click', function(event) {
-            event.preventDefault();
-            alert(`Fitur atau halaman '${navLinks[id]}' akan segera hadir!`);
-          });
-        }
-        
-        const searchInput = document.getElementById('search-input');
-        const searchIcon = document.getElementById('search-icon');
-        const performSearch = () => {
-          const query = searchInput.value.trim();
-          if (query) {
-            alert(`Mencari untuk: "${query}"\n\n(Fitur pencarian penuh sedang dalam pengembangan)`);
-          } else {
-            alert('Silakan masukkan judul film atau series untuk dicari.');
-          }
-        };
-        searchIcon?.addEventListener('click', performSearch);
-        searchInput?.addEventListener('keypress', (event) => {
-          if (event.key === 'Enter') {
-            event.preventDefault();
-            performSearch();
-          }
-        });
-      });
-    </script>
-    
   </body>
 </html>
