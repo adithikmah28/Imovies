@@ -14,8 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeModalBtn = document.querySelector('.close-btn');
 
     // === Ambil ID Film dari URL ===
-    const urlParams = new URLSearchParams(window.location.search);
-    const movieId = urlParams.get('id');
+    const pathParts = window.location.pathname.split('/');
+    const movieId = pathParts[pathParts.length - 1] || pathParts[pathParts.length - 2];
 
     if (!movieId) { container.innerHTML = '<h1>Movie not found.</h1>'; return; }
 
