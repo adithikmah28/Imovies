@@ -5,19 +5,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const IMG_PATH = 'https://image.tmdb.org/t/p/w500';
     const BACKDROP_PATH = 'https://image.tmdb.org/t/p/original';
 
-    // === (DIHAPUS) DATABASE MANUAL SUDAH PINDAH KE manual_movies.js ===
-
     // === Elemen DOM ===
     const container = document.getElementById('movie-details-container');
     const modal = document.getElementById('media-modal');
     const modalBody = document.getElementById('modal-body');
     const closeModalBtn = document.querySelector('.close-btn');
 
-    // === Ambil ID Film dari URL ===
+    // === Ambil ID Film dari URL (Metode baru) ===
     const pathParts = window.location.pathname.split('/');
     const movieId = pathParts[pathParts.length - 1] || pathParts[pathParts.length - 2];
 
-    if (!movieId) { container.innerHTML = '<h1>Movie not found.</h1>'; return; }
+    if (!movieId) {
+        container.innerHTML = '<h1>Movie not found.</h1>';
+        return;
+    }
 
     async function fetchMovieDetails() {
         try {
@@ -25,26 +26,30 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!res.ok) throw new Error('Failed to fetch movie details.');
             const movie = await res.json();
             displayMovieDetails(movie);
-        } catch (error) { console.error(error); container.innerHTML = '<h1>Error loading movie details.</h1>'; }
+        } catch (error) {
+            console.error(error);
+            container.innerHTML = '<h1>Error loading movie details.</h1>';
+        }
     }
 
     function displayMovieDetails(movie) {
-        // ... (Bagian atas displayMovieDetails tidak ada perubahan) ...
         const backdropDiv = document.createElement('div');
         backdropDiv.classList.add('movie-details-backdrop');
         backdropDiv.style.backgroundImage = `url(${BACKDROP_PATH + movie.backdrop_path})`;
         document.body.prepend(backdropDiv);
+        
         const englishLogo = movie.images.logos.find(logo => logo.iso_639_1 === 'en');
         const logoToUse = englishLogo || (movie.images.logos.length > 0 ? movie.images.logos[0] : null);
-        const titleElement = logoToUse ? `<img src="${IMG_PATH + logoToUse.file_path}" alt="${movie.title} Logo" class="movie-title-logo-detail">` : `<h1>${movie.title}</h1>`;
+        const titleElement = logoToUse 
+            ? `<img src="${IMG_PATH + logoToUse.file_path}" alt="${movie.title} Logo" class="movie-title-logo-detail">` 
+            : `<h1>${movie.title}</h1>`;
         
         const officialTrailer = movie.videos.results.find(video => video.type === 'Trailer' && video.site === 'YouTube');
         const trailerButtonHTML = officialTrailer ? `<button class="action-btn trailer-btn" data-type="trailer" data-key="${officialTrailer.key}">Trailer</button>` : '';
-
-        // === PERUBAHAN LOGIKA TOMBOL MOVIE ===
-        // Script akan otomatis mencari variabel 'manualMovieDatabase' dari file manual_movies.js
-        const isWatchable = manualMovieDatabase[movie.id] || movie.imdb_id;
-        const movieButtonHTML = isWatchable ? `<button class="action-btn movie-btn" data-type="movie" data-movie-id="${movie.id}" data-imdb-id="${movie.imdb_id || ''}">Movie</button>` : '';
+        
+        const movieButtonHTML = movie.imdb_id 
+            ? `<button class="action-btn movie-btn" data-type="movie" data-key="${movie.imdb_id}">Movie</button>` 
+            : '';
 
         container.innerHTML = `
             <div class="poster-container"><img src="${IMG_PATH + movie.poster_path}" alt="${movie.title}"></div>
@@ -59,7 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         
         const actionButtonsContainer = container.querySelector('.action-buttons');
-        if (actionButtonsContainer) { actionButtonsContainer.addEventListener('click', handleActionClick); }
+        if (actionButtonsContainer) {
+            actionButtonsContainer.addEventListener('click', handleActionClick);
+        }
     }
     
     function handleActionClick(event) {
@@ -67,17 +74,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!button) return;
 
         const type = button.dataset.type;
+        const key = button.dataset.key;
         let iframeSrc = '';
 
         if (type === 'trailer') {
-            const key = button.dataset.key;
             iframeSrc = `https://www.youtube.com/embed/${key}?autoplay=1`;
         } else if (type === 'movie') {
-            const tmdbId = button.dataset.movieId;
-            const imdbId = button.dataset.imdbId;
-
-            // === LOGIKA BARU: Cek override dulu! ===
-            // Variabel 'manualMovieDatabase' sudah tersedia dari file manual_movies.js
+            const tmdbId = movieId; // movieId sudah tersedia secara global di script ini
+            const imdbId = key;
+            
             if (manualMovieDatabase && manualMovieDatabase[tmdbId]) {
                 iframeSrc = manualMovieDatabase[tmdbId];
             } else if (imdbId) {
@@ -93,8 +98,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    closeModalBtn.onclick = () => { modal.style.display = 'none'; modalBody.innerHTML = ''; }
-    window.onclick = (event) => { if (event.target == modal) { modal.style.display = 'none'; modalBody.innerHTML = ''; } }
+    closeModalBtn.onclick = () => {
+        modal.style.display = 'none';
+        modalBody.innerHTML = '';
+    }
+    window.onclick = (event) => {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+            modalBody.innerHTML = '';
+        }
+    }
     
     fetchMovieDetails();
 });
