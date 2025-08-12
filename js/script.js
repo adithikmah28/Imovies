@@ -1,4 +1,4 @@
-// === File: js/script.js (Revisi Final Anti-Rusak) ===
+// === File: js/script.js (Revisi Final Terakhir) ===
 
 // --- Fungsi Asli Lo ---
 function toggleVideo() {
@@ -19,7 +19,8 @@ function changeBg(bg, title) {
   if (bg.startsWith('http')) {
     banner.style.background = `url("${bg}")`;
   } else {
-    banner.style.background = `url("../images/movies/${bg}")`;
+    // Pastikan path ini benar relatif dari index.html
+    banner.style.background = `url("./images/movies/${bg}")`;
   }
 
   banner.style.backgroundSize = 'cover';
@@ -44,20 +45,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('home-search-input');
     const searchIcon = document.getElementById('home-search-icon');
     const mainBanner = document.getElementById('main-banner');
-    const mainCarousel = document.getElementById('main-carousel');
-    const carouselBox = document.getElementById('main-carousel-box');
+    
+    // Periksa apakah kita di halaman utama
+    if (!searchInput || !mainBanner) return;
 
-    if (!searchInput) return;
-
-    // Simpan konten statis asli
-    const originalStaticContent = mainBanner.innerHTML;
+    // Simpan elemen UI penting sebelum diubah
+    const originalPlayButton = mainBanner.querySelector('.play');
+    const originalSciIcons = mainBanner.querySelector('.sci');
+    const originalCarouselBox = document.getElementById('main-carousel-box');
 
     async function performHomeSearch(query) {
         if (!query) {
-            // Jika input kosong, kembalikan ke konten asli
-            mainBanner.innerHTML = originalStaticContent;
-            // Inisialisasi ulang carousel untuk konten asli
-            $('#main-carousel').carousel();
+            // Jika input kosong, bisa refresh halaman untuk kembali ke awal
+            window.location.reload();
             return;
         }
 
@@ -77,52 +77,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Fungsi untuk update UI dengan hasil pencarian (VERSI BARU YANG LEBIH BAIK)
-    async function updateHomepageWithSearchResults(movies) {
-        // 1. Hapus hanya konten dinamis sebelumnya (jika ada) dan item carousel
-        mainBanner.querySelectorAll('.content.dynamic').forEach(el => el.remove());
+    function updateHomepageWithSearchResults(movies) {
+        // 1. Hapus semua konten info film dan carousel yang ada
+        mainBanner.querySelectorAll('.content').forEach(el => el.remove());
+        const mainCarousel = document.getElementById('main-carousel');
         mainCarousel.innerHTML = '';
-
-        // 2. Sembunyikan semua konten statis
-        mainBanner.querySelectorAll('.content').forEach(el => el.style.display = 'none');
         
-        // 3. Buat ulang elemen untuk setiap hasil pencarian
-        for (const [index, movie] of movies.entries()) {
+        // 2. Buat ulang elemen untuk setiap hasil pencarian
+        movies.forEach((movie, index) => {
             const { id, title, overview, release_date, backdrop_path, poster_path, vote_average } = movie;
-            
-            // Ambil detail tambahan (runtime, genre, logo) dengan panggilan API kedua
-            let detailedMovie = {};
-            try {
-                const detailRes = await fetch(`${API_BASE_URL}/movie/${id}?api_key=${API_KEY}&append_to_response=images`);
-                detailedMovie = await detailRes.json();
-            } catch (e) { /* Abaikan jika gagal */ }
-
-            const runtime = detailedMovie.runtime ? `${Math.floor(detailedMovie.runtime / 60)}h ${detailedMovie.runtime % 60}min` : 'N/A';
-            const genres = detailedMovie.genres ? detailedMovie.genres.map(g => g.name).join('/') : 'Movie';
-            const englishLogo = detailedMovie.images?.logos.find(logo => logo.iso_639_1 === 'en');
-            const logoToUse = englishLogo || (detailedMovie.images?.logos.length > 0 ? detailedMovie.images.logos[0] : null);
 
             // Buat konten info baru
             const contentDiv = document.createElement('div');
-            contentDiv.classList.add('content', 'dynamic', `movie-${id}`); // Tambah class 'dynamic'
-            
-            const titleElement = logoToUse 
-                ? `<img class="movie-title" src="${IMG_PATH + logoToUse.file_path}" alt="${title} Logo">`
-                : `<h2 class="movie-title-text">${title}</h2>`;
-
+            contentDiv.classList.add('content', `movie-${id}`);
             contentDiv.innerHTML = `
-                ${titleElement}
+                <h2 class="movie-title-text">${title}</h2>
                 <h4>
                   <span>${release_date ? release_date.substring(0, 4) : 'N/A'}</span>
                   <span><i>⭐ ${vote_average.toFixed(1)}</i></span>
-                  <span>${runtime}</span>
-                  <span>${genres}</span>
+                  <span>Movie</span>
                 </h4>
-                <p>${overview}</p>
+                <p>${overview || 'No overview available.'}</p>
                 <div class="button">
                   <a href="/movies/${id}"><i class="fa fa-play" aria-hidden="true"></i> View Details</a>
                 </div>
             `;
-            mainBanner.insertBefore(contentDiv, carouselBox);
+            // Sisipkan konten sebelum carousel box
+            mainBanner.insertBefore(contentDiv, originalCarouselBox);
 
             // Buat item carousel baru
             if (poster_path) {
@@ -135,10 +116,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Aktifkan film pertama sebagai default
-            if (index === 0) {
+            if (index === 0 && backdrop_path) {
                 changeBg(BACKDROP_PATH + backdrop_path, `movie-${id}`);
             }
-        }
+        });
+
+        // 3. Pastikan elemen UI penting tetap ada
+        if (originalPlayButton) mainBanner.appendChild(originalPlayButton);
+        if (originalSciIcons) mainBanner.appendChild(originalSciIcons);
         
         // 4. Inisialisasi ulang carousel Materialize
         $(mainCarousel).carousel();
