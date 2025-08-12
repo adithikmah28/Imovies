@@ -37,7 +37,7 @@ function changeBg(bg, title) {
 // --- LOGIKA PENCARIAN BARU YANG DITAMBAHKAN ---
 document.addEventListener('DOMContentLoaded', () => {
     // --- Konfigurasi API ---
-    const API_KEY = 'MASUKKAN_API_KEY_TMDB_KAMU_DI_SINI';
+    const API_KEY = 'bda883e3019106157c9a9c5cfe3921bb';
     const API_BASE_URL = 'https://api.themoviedb.org/3';
     const IMG_PATH = 'https://image.tmdb.org/t/p/w500';
     const BACKDROP_PATH = 'https://image.tmdb.org/t/p/original';
