@@ -1,6 +1,6 @@
-// === File: js/script.js (Final Sesuai Permintaan Asli) ===
+// === File: js/script.js (Final dengan Path Absolut yang Benar) ===
 
-// --- FUNGSI ASLI LO (TIDAK DIOPREK) ---
+// --- Fungsi Asli Lo ---
 function toggleVideo() {
   const trailer = document.querySelector('.trailer');
   const video = document.querySelector('video');
@@ -12,15 +12,15 @@ function toggleVideo() {
   }
 }
 
-// Fungsi ini sedikit diubah agar bisa menerima URL lengkap
-function changeBg(bg, contentClass) {
+function changeBg(bg, title) {
   const banner = document.querySelector('.banner');
   const contents = document.querySelectorAll('.content');
   
   if (bg.startsWith('http')) {
     banner.style.background = `url("${bg}")`;
   } else {
-    banner.style.background = `url("./images/movies/${bg}")`;
+    // === PERBAIKAN UTAMA DI SINI: Path diubah menjadi absolut ===
+    banner.style.background = `url("/images/movies/${bg}")`;
   }
 
   banner.style.backgroundSize = 'cover';
@@ -28,53 +28,40 @@ function changeBg(bg, contentClass) {
 
   contents.forEach(content => {
     content.classList.remove('active');
-    if (content.classList.contains(contentClass)) {
+    if (content.classList.contains(title)) {
       content.classList.add('active');
     }
   });
 }
 
-// --- LOGIKA PENCARIAN BARU YANG SUDAH DIPERBAIKI ---
+// === LOGIKA PENCARIAN ===
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Konfigurasi API ---
     const API_KEY = 'bda883e3019106157c9a9c5cfe3921bb';
     const API_BASE_URL = 'https://api.themoviedb.org/3';
     const IMG_PATH = 'https://image.tmdb.org/t/p/w500';
     const BACKDROP_PATH = 'https://image.tmdb.org/t/p/original';
 
-    // --- Elemen DOM ---
     const searchInput = document.getElementById('home-search-input');
     const searchIcon = document.getElementById('home-search-icon');
     if (!searchInput) return;
 
-    const mainBanner = document.getElementById('main-banner');
     const mainCarousel = document.getElementById('main-carousel');
-    const carouselBox = document.getElementById('main-carousel-box');
-
-    // --- Simpan keadaan awal ---
-    const originalContentNodes = Array.from(mainBanner.querySelectorAll('.content'));
+    const dynamicContentContainer = document.getElementById('dynamic-content-container');
+    const staticContents = document.querySelectorAll('.banner .content');
     const originalCarouselHTML = mainCarousel.innerHTML;
 
     async function performSearch(query) {
         if (!query) {
-            // Hancurkan instance carousel dinamis jika ada
             const carouselInstance = M.Carousel.getInstance(mainCarousel);
             if (carouselInstance) carouselInstance.destroy();
-            
-            // Hapus semua konten dinamis
-            mainBanner.querySelectorAll('.content.dynamic').forEach(el => el.remove());
-            
-            // Kembalikan carousel asli
             mainCarousel.innerHTML = originalCarouselHTML;
-            
-            // Tampilkan kembali semua konten statis
-            originalContentNodes.forEach(node => mainBanner.insertBefore(node, carouselBox));
-            originalContentNodes.forEach(node => node.classList.remove('active'));
-            originalContentNodes[0].classList.add('active');
-            
+            dynamicContentContainer.innerHTML = '';
+            staticContents.forEach(el => {
+                el.classList.remove('active');
+                el.style.display = 'block';
+            });
+            staticContents[0].classList.add('active');
             changeBg('bg-little-mermaid.jpg', 'the-little-mermaid');
-
-            // Inisialisasi ulang carousel untuk konten asli
             $(mainCarousel).carousel();
             return;
         }
@@ -88,19 +75,17 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 alert('No movies found for "' + query + '"');
             }
-        } catch (error) {
-            console.error('Search error:', error);
-            alert('An error occurred during the search.');
-        }
+        } catch (error) { console.error('Search error:', error); alert('An error occurred during the search.'); }
     }
 
     async function updateCarouselWithRichResults(movies) {
         const carouselInstance = M.Carousel.getInstance(mainCarousel);
         if (carouselInstance) carouselInstance.destroy();
 
-        // Hapus semua konten (baik statis maupun dinamis)
-        mainBanner.querySelectorAll('.content').forEach(el => el.remove());
-        mainCarousel.innerHTML = '<p style="color:white; text-align:center; width:100%;">Loading results...</p>';
+        mainCarousel.innerHTML = '';
+        dynamicContentContainer.innerHTML = '';
+        staticContents.forEach(el => el.style.display = 'none');
+        mainCarousel.innerHTML = '<p style="color:white; text-align:center; width:100%;">Loading search results...</p>';
 
         for (const [index, movie] of movies.entries()) {
             let detailedMovie = {};
@@ -110,14 +95,13 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (e) { continue; }
 
             const { id, title, overview, release_date, backdrop_path, poster_path } = movie;
-            
             const runtime = detailedMovie.runtime ? `${Math.floor(detailedMovie.runtime / 60)}h ${detailedMovie.runtime % 60}min` : 'N/A';
             const genres = detailedMovie.genres && detailedMovie.genres.length > 0 ? detailedMovie.genres[0].name : 'Movie';
             const englishLogo = detailedMovie.images?.logos.find(logo => logo.iso_639_1 === 'en');
             const logoToUse = englishLogo || (detailedMovie.images?.logos.length > 0 ? detailedMovie.images.logos[0] : null);
 
             const contentDiv = document.createElement('div');
-            contentDiv.classList.add('content', 'dynamic', `movie-${id}`);
+            contentDiv.classList.add('content', `movie-${id}`);
             const titleElement = logoToUse ? `<img class="movie-title" src="${IMG_PATH + logoToUse.file_path}" alt="${title} Logo">` : `<h2 class="movie-title-text">${title}</h2>`;
             contentDiv.innerHTML = `
                 ${titleElement}
@@ -130,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>${overview || 'No overview available.'}</p>
                 <div class="button"><a href="/movies/${id}"><i class="fa fa-play" aria-hidden="true"></i> View Details</a></div>
             `;
-            mainBanner.insertBefore(contentDiv, carouselBox);
+            dynamicContentContainer.appendChild(contentDiv);
 
             if (poster_path) {
                 const carouselItem = document.createElement('a');
@@ -141,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <img src="${IMG_PATH + poster_path}" alt="${title}">
                     <div class="carousel-item-title">${title}</div>
                 `;
+                
                 if (index === 0) mainCarousel.innerHTML = '';
                 mainCarousel.appendChild(carouselItem);
             }
@@ -149,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 changeBg(BACKDROP_PATH + backdrop_path, `movie-${id}`);
             }
         }
-        
         $(mainCarousel).carousel();
     }
     
