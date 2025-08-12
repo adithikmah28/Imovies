@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             data.results.forEach(movie => {
                 if (!movie.poster_path) return;
                 const movieLink = document.createElement('a');
-                movieLink.href = `details.html?id=${movie.id}`;
+                movieLink.href = `/movies/${movie.id}`;
                 movieLink.classList.add('movie-card-link');
                 const movieCard = document.createElement('div');
                 movieCard.classList.add('movie-card');
