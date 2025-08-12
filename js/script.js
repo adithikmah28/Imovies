@@ -1,6 +1,6 @@
-// === File: js/script.js (Versi Final dengan Carousel Destroy) ===
+// === File: js/script.js (Final Sesuai Permintaan Asli) ===
 
-// --- Fungsi Asli Lo ---
+// --- FUNGSI ASLI LO (TIDAK DIOPREK) ---
 function toggleVideo() {
   const trailer = document.querySelector('.trailer');
   const video = document.querySelector('video');
@@ -12,6 +12,7 @@ function toggleVideo() {
   }
 }
 
+// Fungsi ini sedikit diubah agar bisa menerima URL lengkap
 function changeBg(bg, title) {
   const banner = document.querySelector('.banner');
   const contents = document.querySelectorAll('.content');
@@ -33,25 +34,46 @@ function changeBg(bg, title) {
   });
 }
 
-// === LOGIKA PENCARIAN YANG SUDAH DIPERBAIKI ===
+// --- LOGIKA PENCARIAN BARU YANG DITAMBAHKAN ---
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Konfigurasi API ---
     const API_KEY = 'MASUKKAN_API_KEY_TMDB_KAMU_DI_SINI';
     const API_BASE_URL = 'https://api.themoviedb.org/3';
     const IMG_PATH = 'https://image.tmdb.org/t/p/w500';
     const BACKDROP_PATH = 'https://image.tmdb.org/t/p/original';
 
+    // --- Elemen DOM ---
     const searchInput = document.getElementById('home-search-input');
     const searchIcon = document.getElementById('home-search-icon');
-    
-    if (!searchInput) return;
+    if (!searchInput) return; // Keluar jika bukan di halaman utama
 
     const mainCarousel = document.getElementById('main-carousel');
     const dynamicContentContainer = document.getElementById('dynamic-content-container');
     const staticContents = document.querySelectorAll('.banner .content');
 
-    async function performHomeSearch(query) {
+    // --- Simpan isi carousel asli ---
+    const originalCarouselHTML = mainCarousel.innerHTML;
+
+    async function performSearch(query) {
+        // Jika input pencarian kosong, kembalikan ke semula
         if (!query) {
-            window.location.reload();
+            // Hancurkan instance carousel dinamis jika ada
+            const carouselInstance = M.Carousel.getInstance(mainCarousel);
+            if (carouselInstance) carouselInstance.destroy();
+            
+            // Kembalikan isi carousel dan konten statis
+            mainCarousel.innerHTML = originalCarouselHTML;
+            dynamicContentContainer.innerHTML = ''; // Kosongkan wadah dinamis
+            
+            // Tampilkan kembali konten statis pertama
+            staticContents.forEach(el => el.classList.remove('active'));
+            staticContents[0].classList.add('active');
+            
+            // Ganti background ke gambar statis pertama
+            changeBg('bg-little-mermaid.jpg', 'the-little-mermaid');
+
+            // Inisialisasi ulang carousel untuk konten asli
+            $(mainCarousel).carousel();
             return;
         }
 
@@ -71,21 +93,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateCarouselWithSearchResults(movies) {
-        // === PERBAIKAN UTAMA DI SINI ===
-        // 1. Hancurkan instance carousel yang ada
         const carouselInstance = M.Carousel.getInstance(mainCarousel);
-        if (carouselInstance) {
-            carouselInstance.destroy();
-        }
+        if (carouselInstance) carouselInstance.destroy();
 
-        // 2. Bersihkan isi carousel dan wadah dinamis
         mainCarousel.innerHTML = '';
         dynamicContentContainer.innerHTML = '';
-        
-        // 3. Sembunyikan semua konten statis
         staticContents.forEach(el => el.classList.remove('active'));
 
-        // 4. Buat ulang elemen untuk setiap hasil pencarian
         movies.forEach((movie, index) => {
             const { id, title, overview, release_date, backdrop_path, poster_path, vote_average } = movie;
 
@@ -109,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const carouselItem = document.createElement('a');
                 carouselItem.classList.add('carousel-item');
                 carouselItem.href = `/movies/${id}`;
-                carouselItem.setAttribute('onClick', `changeBg('${BACKDROP_PATH + backdrop_path}', 'movie-${id}');`);
+                carouselItem.setAttribute('onClick', `event.preventDefault(); changeBg('${BACKDROP_PATH + backdrop_path}', 'movie-${id}');`);
                 carouselItem.innerHTML = `<img src="${IMG_PATH + poster_path}" alt="${title}">`;
                 mainCarousel.appendChild(carouselItem);
             }
@@ -119,16 +133,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
-        // 5. Inisialisasi ulang carousel dari nol
         $(mainCarousel).carousel();
     }
     
-    // Tambahkan event listener untuk pencarian
-    searchIcon.addEventListener('click', () => performHomeSearch(searchInput.value));
+    searchIcon.addEventListener('click', () => performSearch(searchInput.value));
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            performHomeSearch(searchInput.value);
+            performSearch(searchInput.value);
         }
     });
 });
