@@ -423,3 +423,24 @@ header {
     gap: 15px;
   }
 }
+/* Style tambahan untuk judul film dinamis di halaman utama */
+.movie-title-text {
+  font-size: 4em;
+  color: #fff;
+  font-weight: 700;
+  line-height: 1.2em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  max-width: 550px;
+}
+
+@media (max-width: 991px) {
+  .movie-title-text {
+    font-size: 3em;
+  }
+}
+@media (max-width: 600px) {
+  .movie-title-text {
+    font-size: 2em;
+  }
+}
