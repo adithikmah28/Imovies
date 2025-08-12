@@ -1,4 +1,4 @@
-// === File: js/script.js (Final dengan Logika Paling Stabil) ===
+// === File: js/script.js (Versi Kembali ke Semula & Stabil) ===
 
 // --- Fungsi Asli Lo ---
 function toggleVideo() {
@@ -34,7 +34,7 @@ function changeBg(bg, contentClass) {
   });
 }
 
-// === LOGIKA PENCARIAN YANG SUDAH DIPERBAIKI TOTAL ===
+// --- LOGIKA PENCARIAN YANG SIMPEL DAN STABIL ---
 document.addEventListener('DOMContentLoaded', () => {
     // --- Konfigurasi API ---
     const API_KEY = 'bda883e3019106157c9a9c5cfe3921bb';
@@ -47,14 +47,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchIcon = document.getElementById('home-search-icon');
     if (!searchInput) return;
 
-    const mainBanner = document.getElementById('main-banner');
     const mainCarousel = document.getElementById('main-carousel');
-    const carouselBox = document.getElementById('main-carousel-box');
+    const dynamicContentContainer = document.getElementById('dynamic-content-container');
+    const staticContents = document.querySelectorAll('.banner .content');
+
+    // --- Simpan keadaan awal ---
+    const originalCarouselHTML = mainCarousel.innerHTML;
 
     async function performSearch(query) {
-        // Jika input pencarian kosong, reload halaman untuk kembali ke awal
         if (!query) {
-            window.location.href = "/";
+            const carouselInstance = M.Carousel.getInstance(mainCarousel);
+            if (carouselInstance) carouselInstance.destroy();
+            
+            mainCarousel.innerHTML = originalCarouselHTML;
+            dynamicContentContainer.innerHTML = '';
+            
+            staticContents.forEach(el => el.classList.remove('active'));
+            staticContents[0].classList.add('active');
+            
+            changeBg('bg-little-mermaid.jpg', 'the-little-mermaid');
+            $(mainCarousel).carousel();
             return;
         }
 
@@ -63,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
             
             if (data.results && data.results.length > 0) {
-                updateUIWithSearchResults(data.results);
+                updateCarouselWithSearchResults(data.results);
             } else {
                 alert('No movies found for "' + query + '"');
             }
@@ -73,75 +85,56 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function updateUIWithSearchResults(movies) {
-        // 1. Hancurkan instance carousel yang lama (SANGAT PENTING)
+    function updateCarouselWithSearchResults(movies) {
         const carouselInstance = M.Carousel.getInstance(mainCarousel);
-        if (carouselInstance) {
-            carouselInstance.destroy();
-        }
+        if (carouselInstance) carouselInstance.destroy();
 
-        // 2. Hapus TOTAL semua konten info dan item carousel sebelumnya
-        mainBanner.querySelectorAll('.content').forEach(el => el.remove());
-        mainCarousel.innerHTML = '<p style="color:white; text-align:center; width:100%;">Loading results...</p>';
+        mainCarousel.innerHTML = '';
+        dynamicContentContainer.innerHTML = '';
+        staticContents.forEach(el => el.classList.remove('active'));
 
-        for (const [index, movie] of movies.entries()) {
-            // Lakukan panggilan API tambahan untuk setiap film untuk mendapatkan detail lengkap
-            let detailedMovie = {};
-            try {
-                const detailRes = await fetch(`${API_BASE_URL}/movie/${movie.id}?api_key=${API_KEY}&append_to_response=images`);
-                detailedMovie = await detailRes.json();
-            } catch (e) { continue; }
+        movies.forEach((movie, index) => {
+            const { id, title, overview, release_date, backdrop_path, poster_path, vote_average } = movie;
 
-            const { id, title, overview, release_date, backdrop_path, poster_path } = movie;
-            
-            const runtime = detailedMovie.runtime ? `${Math.floor(detailedMovie.runtime / 60)}h ${detailedMovie.runtime % 60}min` : 'N/A';
-            const genres = detailedMovie.genres && detailedMovie.genres.length > 0 ? detailedMovie.genres[0].name : 'Movie';
-            const englishLogo = detailedMovie.images?.logos.find(logo => logo.iso_639_1 === 'en');
-            const logoToUse = englishLogo || (detailedMovie.images?.logos.length > 0 ? detailedMovie.images.logos[0] : null);
-
-            // 3. Buat konten info baru dari nol
             const contentDiv = document.createElement('div');
             contentDiv.classList.add('content', `movie-${id}`);
-            const titleElement = logoToUse ? `<img class="movie-title" src="${IMG_PATH + logoToUse.file_path}" alt="${title} Logo">` : `<h2 class="movie-title-text">${title}</h2>`;
             contentDiv.innerHTML = `
-                ${titleElement}
+                <h2 class="movie-title-text">${title}</h2>
                 <h4>
                   <span>${release_date ? release_date.substring(0, 4) : 'N/A'}</span>
-                  <span><i>NR</i></span>
-                  <span>${runtime}</span>
-                  <span>${genres}</span>
+                  <span><i>⭐ ${vote_average.toFixed(1)}</i></span>
+                  <span>Movie</span>
                 </h4>
                 <p>${overview || 'No overview available.'}</p>
-                <div class="button"><a href="/movies/${id}"><i class="fa fa-play" aria-hidden="true"></i> View Details</a></div>
+                <div class="button">
+                  <a href="/movies/${id}"><i class="fa fa-play" aria-hidden="true"></i> View Details</a>
+                </div>
             `;
-            mainBanner.insertBefore(contentDiv, carouselBox);
+            dynamicContentContainer.appendChild(contentDiv);
 
-            // 4. Buat item carousel baru dari nol
             if (poster_path) {
                 const carouselItem = document.createElement('a');
                 carouselItem.classList.add('carousel-item');
                 carouselItem.href = `/movies/${id}`;
                 carouselItem.setAttribute('onClick', `event.preventDefault(); changeBg('${BACKDROP_PATH + backdrop_path}', 'movie-${id}');`);
-                carouselItem.innerHTML = `
-                    <img src="${IMG_PATH + poster_path}" alt="${title}">
-                    <div class="carousel-item-title">${title}</div>
-                `;
-                if (index === 0) mainCarousel.innerHTML = '';
+                // Kembali ke versi simpel tanpa judul di dalam poster
+                carouselItem.innerHTML = `<img src="${IMG_PATH + poster_path}" alt="${title}">`;
                 mainCarousel.appendChild(carouselItem);
             }
 
-            // Aktifkan film pertama sebagai default
             if (index === 0 && backdrop_path) {
                 changeBg(BACKDROP_PATH + backdrop_path, `movie-${id}`);
             }
-        }
+        });
         
-        // 5. Inisialisasi ulang carousel dari nol (SANGAT PENTING)
         $(mainCarousel).carousel();
     }
     
     searchIcon.addEventListener('click', () => performSearch(searchInput.value));
     searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') { e.preventDefault(); performSearch(searchInput.value); }
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            performSearch(searchInput.value);
+        }
     });
 });
