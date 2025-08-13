@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Browse Movies | CinemaBoxOffice</title>
     <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" />
@@ -24,31 +23,13 @@
         <i class="fa fa-search" aria-hidden="true" id="search-icon"></i>
       </div>
     </header>
-
     <main class="browse-container">
-        <!-- Kategori-kategori film di sini (tidak berubah) -->
-        <section id="search-results" class="movie-row" style="display: none;">
-            <h2>Search Results</h2>
-            <div class="movie-list"></div>
-        </section>
-        <section id="popular-movies" class="movie-row">
-            <h2>Popular</h2>
-            <div class="movie-list"></div>
-        </section>
-        <section id="indonesian-horror-movies" class="movie-row">
-            <h2>Indonesian Horror</h2>
-            <div class="movie-list"></div>
-        </section>
-        <section id="world-destruction-movies" class="movie-row">
-            <h2>World Destruction</h2>
-            <div class="movie-list"></div>
-        </section>
-        <section id="monster-movies" class="movie-row">
-            <h2>Monsters</h2>
-            <div class="movie-list"></div>
-        </section>
+        <section id="search-results" class="movie-row" style="display: none;"><h2>Search Results</h2><div class="movie-list"></div></section>
+        <section id="popular-movies" class="movie-row"><h2>Popular</h2><div class="movie-list"></div></section>
+        <section id="indonesian-horror-movies" class="movie-row"><h2>Indonesian Horror</h2><div class="movie-list"></div></section>
+        <section id="world-destruction-movies" class="movie-row"><h2>World Destruction</h2><div class="movie-list"></div></section>
+        <section id="monster-movies" class="movie-row"><h2>Monsters</h2><div class="movie-list"></div></section>
     </main>
-
     <footer>
         <ul class="sci">
             <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
@@ -56,29 +37,9 @@
             <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
         </ul>
     </footer>
-
-    <!-- === KONTEN BARU: Modal untuk Iklan & Player === -->
-    
-    <!-- 1. Modal Countdown -->
-    <div id="countdown-modal" class="ad-modal">
-        <div class="ad-modal-content">
-            <h2>Please wait...</h2>
-            <p>Your movie will be ready in</p>
-            <div id="countdown-timer">5</div>
-            <p class="small-text">Please do not close the new tab.</p>
-        </div>
-    </div>
-
-    <!-- 2. Modal Player -->
-    <div id="player-modal" class="ad-modal">
-        <div class="ad-modal-content player-content">
-            <span id="close-player-btn" class="close-btn">&times;</span>
-            <div id="player-body">
-                <!-- Iframe player akan dimuat di sini -->
-            </div>
-        </div>
-    </div>
-
+    <div id="countdown-modal" class="ad-modal"><div class="ad-modal-content"><h2>Please wait...</h2><p>Your movie will be ready in</p><div id="countdown-timer">5</div><p class="small-text">Please do not close the new tab.</p></div></div>
+    <div id="player-modal" class="ad-modal"><div class="ad-modal-content player-content"><span id="close-player-btn" class="close-btn">&times;</span><div id="player-body"></div></div></div>
+    <script src="/js/manual_movies.js"></script>
     <script src="/js/movies.js"></script>
 </body>
 </html>
