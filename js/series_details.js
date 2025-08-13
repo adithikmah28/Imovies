@@ -1,5 +1,3 @@
-// === File: js/series_details.js (Versi Lengkap & Final Sebenarnya) ===
-
 document.addEventListener('DOMContentLoaded', () => {
     // --- Konfigurasi ---
     const API_KEY = 'bda883e3019106157c9a9c5cfe3921bb';
@@ -45,9 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch(`${API_BASE_URL}/tv/${seriesId}?api_key=${API_KEY}&append_to_response=videos,images,external_ids`);
             if (!res.ok) throw new Error('Failed to fetch series details.');
             const series = await res.json();
-            
             seriesImdbId = series.external_ids.imdb_id;
-            updateMetaTags(series);
+            updateMetaTags(series); 
             displaySeriesDetails(series);
             createSeasonSelector(series.seasons);
         } catch (error) { console.error(error); mainContainer.innerHTML = '<h1>Error loading series details.</h1>'; }
@@ -58,37 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
         backdropDiv.classList.add('movie-details-backdrop');
         backdropDiv.style.backgroundImage = `url(${BACKDROP_PATH + series.backdrop_path})`;
         document.body.prepend(backdropDiv);
-        
         const englishLogo = series.images.logos.find(logo => logo.iso_639_1 === 'en');
         const logoToUse = englishLogo || (series.images.logos.length > 0 ? series.images.logos[0] : null);
         const titleElement = logoToUse ? `<img src="${IMG_PATH + logoToUse.file_path}" alt="${series.name} Logo" class="movie-title-logo-detail">` : `<h1>${series.name}</h1>`;
-        
         const officialTrailer = series.videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube');
         const trailerButtonHTML = officialTrailer ? `<button class="action-btn trailer-btn" data-key="${officialTrailer.key}">Trailer</button>` : '';
-        
-        // === KODE YANG HILANG SEBELUMNYA, SEKARANG DIKEMBALIKAN ===
-        // Tombol ini tidak lagi berfungsi, tapi kita tampilkan sebagai placeholder visual
-        const seriesButtonHTML = `<div class="action-btn movie-btn-placeholder">Watch Series</div>`;
-        
-        mainContainer.innerHTML = `
-            <div class="poster-container"><img src="${IMG_PATH + series.poster_path}" alt="${series.name}"></div>
-            <div class="info-container">
-                ${titleElement}
-                <p class="tagline">${series.tagline || ''}</p>
-                <div class="meta-info">
-                    <span>⭐ ${series.vote_average.toFixed(1)}</span>|
-                    <span>${series.first_air_date.substring(0, 4)}</span>|
-                    <span>${series.number_of_seasons} Seasons</span>
-                </div>
-                <div class="genres">${series.genres.map(genre => `<span class="badge">${genre.name}</span>`).join('')}</div>
-                <h3>Overview</h3>
-                <p class="overview">${series.overview}</p>
-                <div class="action-buttons">
-                    ${trailerButtonHTML}
-                    ${seriesButtonHTML}
-                </div>
-            </div>`;
-            
+        const seriesButtonHTML = `<div class="action-btn movie-btn-placeholder">Watch Series Below</div>`;
+        mainContainer.innerHTML = `<div class="poster-container"><img src="${IMG_PATH + series.poster_path}" alt="${series.name}"></div><div class="info-container">${titleElement}<p class="tagline">${series.tagline || ''}</p><div class="meta-info"><span>⭐ ${series.vote_average.toFixed(1)}</span>|<span>${series.first_air_date.substring(0, 4)}</span>|<span>${series.number_of_seasons} Seasons</span></div><div class="genres">${series.genres.map(genre => `<span class="genre-badge">${genre.name}</span>`).join('')}</div><h3>Overview</h3><p class="overview">${series.overview}</p><div class="action-buttons">${trailerButtonHTML}${seriesButtonHTML}</div></div>`;
         mainContainer.querySelector('.action-buttons')?.addEventListener('click', handleActionClick);
     }
     
@@ -96,19 +69,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!seasons || seasons.length === 0) return;
         const selectorContainer = document.createElement('div');
         selectorContainer.classList.add('seasons-selector-container');
-        
         let optionsHTML = '';
         seasons.forEach(season => {
             if (season.season_number === 0 && season.episode_count === 0) return;
             optionsHTML += `<option value="${season.season_number}">${season.name} (${season.episode_count} Episodes)</option>`;
         });
-
-        selectorContainer.innerHTML = `
-            <label for="season-select">Season:</label>
-            <select name="seasons" id="season-select">${optionsHTML}</select>
-        `;
+        selectorContainer.innerHTML = `<label for="season-select">Season:</label><select name="seasons" id="season-select">${optionsHTML}</select>`;
         seasonsContainer.appendChild(selectorContainer);
-
         const seasonSelect = document.getElementById('season-select');
         seasonSelect.addEventListener('change', () => fetchEpisodes(seasonSelect.value));
         fetchEpisodes(seasonSelect.value);
@@ -125,13 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayEpisodes(episodes, seasonNumber) {
         let existingList = seasonsContainer.querySelector('.episodes-list-container');
         if(existingList) existingList.remove();
-
         const listContainer = document.createElement('div');
         listContainer.classList.add('episodes-list-container');
         listContainer.innerHTML = '<h3>Episodes</h3>';
         const episodesList = document.createElement('div');
         episodesList.classList.add('episodes-list');
-
         if (!episodes || episodes.length === 0) {
             episodesList.innerHTML = `<p>No episode information available for this season.</p>`;
         } else {
@@ -141,10 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 episodeItem.addEventListener('click', () => {
                     initiateAdSequence(seriesId, seriesImdbId, seasonNumber, ep.episode_number);
                 });
-                episodeItem.innerHTML = `
-                    <h4>Ep ${ep.episode_number}: ${ep.name}</h4>
-                    <p>${ep.overview || 'No overview available.'}</p>
-                `;
+                const imageHTML = ep.still_path ? `<img src="${IMG_PATH + ep.still_path}" alt="${ep.name}">` : `<i class="fa fa-image" aria-hidden="true"></i>`;
+                episodeItem.innerHTML = `<div class="episode-image">${imageHTML}</div><div class="episode-info"><h4>Ep ${ep.episode_number}: ${ep.name}</h4><p>${ep.overview || 'No overview available.'}</p></div>`;
                 episodesList.appendChild(episodeItem);
             });
         }
@@ -154,8 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleActionClick(event) {
         const button = event.target.closest('.action-btn');
-        if (!button) return;
-        if (button.classList.contains('trailer-btn')) {
+        if (button && button.classList.contains('trailer-btn')) {
             openTrailerPlayer(button.dataset.key);
         }
     }
@@ -202,10 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
         playerModal.classList.add('active');
     }
     
-    closePlayerBtn.onclick = () => {
-        playerModal.classList.remove('active');
-        playerBody.innerHTML = '';
-    };
-
+    closePlayerBtn.onclick = () => { playerModal.classList.remove('active'); playerBody.innerHTML = ''; };
     fetchSeriesDetails();
 });
