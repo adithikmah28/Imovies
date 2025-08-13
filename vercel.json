@@ -1,12 +1,20 @@
 {
-    "rewrites": [
-      {
-        "source": "/movies/",
-        "destination": "/movies.html"
-      },
-      {
-        "source": "/movies/:id",
-        "destination": "/details.html"
-      }
-    ]
-  }
+  "rewrites": [
+    {
+      "source": "/movies/",
+      "destination": "/movies.html"
+    },
+    {
+      "source": "/movies/:id",
+      "destination": "/details.html"
+    },
+    {
+      "source": "/series/",
+      "destination": "/series.html"
+    },
+    {
+      "source": "/series/:id",
+      "destination": "/series_details.html"
+    }
+  ]
+}
