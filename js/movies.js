@@ -10,24 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
             container.innerHTML = '';
             if (data.results.length === 0) { container.innerHTML = '<p style="color: #888;">No movies found.</p>'; return; }
-
             data.results.forEach(movie => {
                 if (!movie.poster_path) return;
                 const movieLink = document.createElement('a');
                 movieLink.href = `/movies/${movie.id}`;
-                movieLink.classList.add('movie-card-link'); // Ganti class untuk styling
-                
-                movieLink.innerHTML = `
-                    <div class="movie-card">
-                        <img src="${IMG_PATH + movie.poster_path}" alt="${movie.title}">
-                    </div>
-                `;
+                movieLink.classList.add('movie-card-link');
+                movieLink.innerHTML = `<div class="movie-card"><img src="${IMG_PATH + movie.poster_path}" alt="${movie.title}"></div>`;
                 container.appendChild(movieLink);
             });
         } catch (error) { console.error(`Error fetching movies:`, error); container.innerHTML = '<p>Could not load movies.</p>'; }
     }
     
-    // ... (Fungsi search dan initializePage lainnya tidak berubah dari versi stabil)
     const searchInput = document.getElementById('search-input');
     const searchIcon = document.getElementById('search-icon');
     const searchResultsContainer = document.querySelector('#search-results .movie-list');
@@ -52,6 +45,5 @@ document.addEventListener('DOMContentLoaded', () => {
         searchIcon.addEventListener('click', () => performSearch(searchInput.value));
         searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault(); performSearch(searchInput.value); } });
     }
-
     initializePage();
 });
