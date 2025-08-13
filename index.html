@@ -20,17 +20,18 @@
     <header>
       <a href="#" class="logo">CinemaBoxOffice</a>
       <ul class="nav">
+        <!-- PERUBAHAN DI SINI: href dan id ditambahkan/diubah -->
         <li>
-          <a href="/"><i class="fa fa-home" aria-hidden="true"></i> </a>
+          <a href="#" id="nav-home"><i class="fa fa-home" aria-hidden="true"></i> </a>
         </li>
-        <li><a href="">Adults</a></li>
-        <li><a href="">Movie</a></li>
-        <li><a href="">Series</a></li>
-        <li><a href="">My List</a></li>
+        <li><a href="#" id="nav-adults">Adults</a></li>
+        <li><a href="#" id="nav-movie">Movie</a></li>
+        <li><a href="#" id="nav-series">Series</a></li>
+        <li><a href="#" id="nav-mylist">My List</a></li>
       </ul>
       <div class="search">
-        <input type="text" placeholder="Search" />
-        <i class="fa fa-search" aria-hidden="true"></i>
+        <input type="text" placeholder="Search" id="search-input"/>
+        <i class="fa fa-search" aria-hidden="true" id="search-icon"></i>
       </div>
     </header>
     <div class="banner">
@@ -49,13 +50,12 @@
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi commodo
           felis tempor augue tristique, eget dignissim sapien ornare. Nullam vel
-          hendrerit metus, a interdum risus. Etiam commodo lorem arcu, a tempus
+          hendrerapit metus, a interdum risus. Etiam commodo lorem arcu, a tempus
           risus tempus sed. Proin ornare nec massa eget rhoncus. In rutrum
           aliquet dui, et placerat est molestie id.
         </p>
         <div class="button">
           <a href="#"><i class="fa fa-play" aria-hidden="true"></i> Watch</a>
-          <!--<a href="#"><i class="fa fa-plus" aria-hidden="true"></i> My List</a>-->
         </div>
       </div>
       <div class="content bg-65">
@@ -79,7 +79,6 @@
         </p>
         <div class="button">
           <a href="#"><i class="fa fa-play" aria-hidden="true"></i> Watch</a>
-          <!--<a href="#"><i class="fa fa-plus" aria-hidden="true"></i> My List</a>-->
         </div>
       </div>
       <div class="content the-covenant">
@@ -103,7 +102,6 @@
         </p>
         <div class="button">
           <a href="#"><i class="fa fa-play" aria-hidden="true"></i> Watch</a>
-          <!--<a href="#"><i class="fa fa-plus" aria-hidden="true"></i> My List</a>-->
         </div>
       </div>
       <div class="content the-black-demon">
@@ -127,7 +125,6 @@
         </p>
         <div class="button">
           <a href="#"><i class="fa fa-play" aria-hidden="true"></i> Watch</a>
-          <!--<a href="#"><i class="fa fa-plus" aria-hidden="true"></i> My List</a>-->
         </div>
       </div>
       <div class="content the-tank">
@@ -151,36 +148,23 @@
         </p>
         <div class="button">
           <a href="#"><i class="fa fa-play" aria-hidden="true"></i> Watch</a>
-          <!--<a href="#"><i class="fa fa-plus" aria-hidden="true"></i> My List</a>-->
         </div>
       </div>
       <div class="carousel-box">
         <div class="carousel">
-          <div
-            class="carousel-item"
-            onClick="changeBg('bg-little-mermaid.jpg', 'the-little-mermaid');"
-          >
+          <div class="carousel-item" onClick="changeBg('bg-little-mermaid.jpg', 'the-little-mermaid');">
             <img src="./images/movies/the-little-mermaid.jpeg" />
           </div>
           <div class="carousel-item" onClick="changeBg('bg-65.jpeg', 'bg-65');">
             <img src="./images/movies/65.jpg" />
           </div>
-          <div
-            class="carousel-item"
-            onClick="changeBg('bg-the-covenant.jpeg', 'the-covenant');"
-          >
+          <div class="carousel-item" onClick="changeBg('bg-the-covenant.jpeg', 'the-covenant');">
             <img src="./images/movies/the-covenant.jpg" />
           </div>
-          <div
-            class="carousel-item"
-            onClick="changeBg('bg-the-black-demon.jpeg', 'the-black-demon');"
-          >
+          <div class="carousel-item" onClick="changeBg('bg-the-black-demon.jpeg', 'the-black-demon');">
             <img src="./images/movies/the-black-demon.jpg" />
           </div>
-          <div
-            class="carousel-item"
-            onClick="changeBg('bg-the-tank.jpeg', 'the-tank');"
-          >
+          <div class="carousel-item" onClick="changeBg('bg-the-tank.jpeg', 'the-tank');">
             <img src="./images/movies/the-tank.jpeg" />
           </div>
         </div>
@@ -189,30 +173,14 @@
         <i class="fa fa-play-circle-o" aria-hidden="true"></i> Watch Trailer
       </a>
       <ul class="sci">
-        <li>
-          <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-        </li>
-        <li>
-          <a href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i></a>
-        </li>
-        <li>
-          <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-        </li>
+        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        <li><a href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+        <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
       </ul>
     </div>
     <div class="trailer">
-      <video
-        src="./assets/star.mp4"
-        muted
-        controls="true"
-        autoplay="true"
-      ></video>
-      <img
-        class="close"
-        src="./images/close.png"
-        alt="close"
-        onClick="toggleVideo()"
-      />
+      <video src="./assets/star.mp4" muted controls="true" autoplay="true"></video>
+      <img class="close" src="./images/close.png" alt="close" onClick="toggleVideo()"/>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
@@ -223,5 +191,46 @@
         $('.carousel').carousel();
       });
     </script>
+
+    <!-- KODE BARU DI SINI: Script untuk mengaktifkan tombol navigasi -->
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function() {
+        // Fungsi untuk mencegah link berpindah halaman dan menampilkan alert
+        const showAlert = (message) => {
+          return function(event) {
+            event.preventDefault();
+            alert(message);
+          }
+        };
+
+        // Mengaktifkan tombol Home dan Movie
+        document.getElementById('nav-home').addEventListener('click', showAlert('Anda sudah berada di Halaman Utama.'));
+        document.getElementById('nav-movie').addEventListener('click', showAlert('Halaman Movie akan segera hadir!'));
+        
+        // Mengaktifkan tombol lain dengan pesan "coming soon"
+        document.getElementById('nav-adults').addEventListener('click', showAlert('Fitur Adults akan segera hadir!'));
+        document.getElementById('nav-series').addEventListener('click', showAlert('Halaman Series akan segera hadir!'));
+        document.getElementById('nav-mylist').addEventListener('click', showAlert('Fitur My List akan segera hadir!'));
+
+        // Mengaktifkan fitur pencarian (placeholder)
+        const searchInput = document.getElementById('search-input');
+        const searchIcon = document.getElementById('search-icon');
+        const handleSearch = () => {
+            if (searchInput.value.trim()) {
+                alert(`Mencari untuk: "${searchInput.value}"\n\n(Fitur pencarian penuh sedang dalam pengembangan)`);
+            } else {
+                alert('Silakan masukkan judul untuk dicari.');
+            }
+        };
+        searchIcon.addEventListener('click', handleSearch);
+        searchInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                handleSearch();
+            }
+        });
+      });
+    </script>
+
   </body>
 </html>
