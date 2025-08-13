@@ -1,6 +1,6 @@
-// === File: js/script.js (Versi Final Paling Stabil & Aman) ===
+// === File: js/script.js (Versi Kembali ke Semula & Stabil) ===
 
-// --- FUNGSI ASLI LO (TIDAK DIOPREK) ---
+// --- Fungsi Asli Lo ---
 function toggleVideo() {
   const trailer = document.querySelector('.trailer');
   const video = document.querySelector('video');
@@ -34,7 +34,7 @@ function changeBg(bg, contentClass) {
   });
 }
 
-// === LOGIKA PENCARIAN YANG SUDAH DIPERBAIKI TOTAL ===
+// --- LOGIKA PENCARIAN YANG SIMPEL DAN STABIL ---
 document.addEventListener('DOMContentLoaded', () => {
     // --- Konfigurasi API ---
     const API_KEY = 'bda883e3019106157c9a9c5cfe3921bb';
@@ -53,26 +53,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const originalCarouselHTML = mainCarousel.innerHTML;
 
     async function performSearch(query) {
-        // Jika input pencarian kosong, KEMBALIKAN KE SEMULA
         if (!query) {
-            // Hancurkan instance carousel yang mungkin ada
             const carouselInstance = M.Carousel.getInstance(mainCarousel);
             if (carouselInstance) carouselInstance.destroy();
 
-            // Kembalikan carousel ke keadaan semula
             mainCarousel.innerHTML = originalCarouselHTML;
 
-            // Kembalikan info di kiri ke keadaan semula
             staticContents.forEach(el => el.classList.remove('active'));
             staticContents[0].classList.add('active');
             changeBg('bg-little-mermaid.jpg', 'the-little-mermaid');
-
-            // Inisialisasi ulang carousel
             $(mainCarousel).carousel();
             return;
         }
 
-        // Jika ada input, lakukan pencarian
         try {
             const res = await fetch(`${API_BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`);
             const data = await res.json();
@@ -90,34 +83,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fungsi ini HANYA mengupdate carousel, tidak menyentuh yang lain
     function updateCarouselForSearch(movies) {
-        // Hancurkan instance carousel yang lama
         const carouselInstance = M.Carousel.getInstance(mainCarousel);
         if (carouselInstance) carouselInstance.destroy();
 
-        // Kosongkan isi carousel
         mainCarousel.innerHTML = '';
         
-        // Sembunyikan semua info statis di kiri
         staticContents.forEach(el => el.classList.remove('active'));
 
-        // Isi carousel dengan hasil pencarian
         movies.forEach(movie => {
             if (movie.poster_path) {
                 const carouselItem = document.createElement('a');
                 carouselItem.classList.add('carousel-item');
-                // Link langsung ke halaman detail
                 carouselItem.href = `/movies/${movie.id}`;
-                // TIDAK ADA onClick di sini
                 carouselItem.innerHTML = `<img src="${IMG_PATH + movie.poster_path}" alt="${movie.title}">`;
                 mainCarousel.appendChild(carouselItem);
             }
         });
         
-        // Inisialisasi ulang carousel dengan hasil baru
         $(mainCarousel).carousel();
     }
     
-    // Event listeners untuk search
     searchIcon.addEventListener('click', () => performSearch(searchInput.value));
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
