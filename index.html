@@ -37,4 +37,25 @@
       <div class="content the-tank"><img class="movie-title" src="/images/the-tank-title.png" alt="Movie Name"/><h4>...</h4><p>...</p><div class="button"><a href="/movies/1078605">...</a></div></div>
       <div class="carousel-box">
         <div class="carousel" id="main-carousel">
-          <a class="carousel-item" href="/movies/447277" onClick="changeBg('bg-little-mermaid.jpg', 'the-little-mermaid');"><img src="/im
+          <a class="carousel-item" href="/movies/447277" onClick="changeBg('bg-little-mermaid.jpg', 'the-little-mermaid');"><img src="/images/movies/the-little-mermaid.jpeg" /></a>
+          <a class="carousel-item" href="/movies/700391" onClick="changeBg('bg-65.jpeg', 'bg-65');"><img src="/images/movies/65.jpg" /></a>
+          <a class="carousel-item" href="/movies/840326" onClick="changeBg('bg-the-covenant.jpeg', 'the-covenant');"><img src="/images/movies/the-covenant.jpg" /></a>
+          <a class="carousel-item" href="/movies/890771" onClick="changeBg('bg-the-black-demon.jpeg', 'the-black-demon');"><img src="/images/movies/the-black-demon.jpg" /></a>
+          <a class="carousel-item" href="/movies/1078605" onClick="changeBg('bg-the-tank.jpeg', 'the-tank');"><img src="/images/movies/the-tank.jpeg" /></a>
+        </div>
+      </div>
+      <a href="#" class="play" onClick="toggleVideo()"><i class="fa fa-play-circle-o" aria-hidden="true"></i> Watch Trailer</a>
+      <ul class="sci">
+        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        <li><a href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+        <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+      </ul>
+    </div>
+    <div class="trailer"><video src="/assets/star.mp4" muted controls="true" autoplay="true"></video><img class="close" src="/images/close.png" alt="close" onClick="toggleVideo()"/></div>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script type="text/javascript">$(document).ready(function () { $('.carousel').carousel(); });</script>
+    <div class="search-modal" id="search-modal"><div class="search-modal-content"><span class="close-search-modal" id="close-search-modal">&times;</span><h2 id="search-results-title">Search Results</h2><div class="search-results-grid" id="search-results-grid"></div></div></div>
+  </body>
+</html>
