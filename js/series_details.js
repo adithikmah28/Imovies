@@ -1,4 +1,4 @@
-// === File: js/series_details.js (Versi Lengkap & Final) ===
+// === File: js/series_details.js (Versi Lengkap & Final Sebenarnya) ===
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- Konfigurasi ---
@@ -24,12 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!seriesId) { mainContainer.innerHTML = '<h1>Series not found.</h1>'; return; }
 
-    // --- FUNGSI YANG HILANG SEBELUMNYA, SEKARANG SUDAH ADA ---
     function updateMetaTags(series) {
         const newTitle = `${series.name} | iMovies`;
         const newDescription = series.overview ? series.overview.substring(0, 155) + '...' : `Watch ${series.name} on iMovies.`;
         const newImageUrl = series.backdrop_path ? BACKDROP_PATH + series.backdrop_path : '/images/social-preview.png';
-
         document.title = newTitle;
         document.querySelector('meta[name="description"]')?.setAttribute('content', newDescription);
         document.querySelector('meta[property="og:title"]')?.setAttribute('content', newTitle);
@@ -49,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const series = await res.json();
             
             seriesImdbId = series.external_ids.imdb_id;
-            updateMetaTags(series); // Sekarang fungsi ini ada dan bisa dipanggil
+            updateMetaTags(series);
             displaySeriesDetails(series);
             createSeasonSelector(series.seasons);
         } catch (error) { console.error(error); mainContainer.innerHTML = '<h1>Error loading series details.</h1>'; }
@@ -60,49 +58,149 @@ document.addEventListener('DOMContentLoaded', () => {
         backdropDiv.classList.add('movie-details-backdrop');
         backdropDiv.style.backgroundImage = `url(${BACKDROP_PATH + series.backdrop_path})`;
         document.body.prepend(backdropDiv);
+        
         const englishLogo = series.images.logos.find(logo => logo.iso_639_1 === 'en');
         const logoToUse = englishLogo || (series.images.logos.length > 0 ? series.images.logos[0] : null);
         const titleElement = logoToUse ? `<img src="${IMG_PATH + logoToUse.file_path}" alt="${series.name} Logo" class="movie-title-logo-detail">` : `<h1>${series.name}</h1>`;
+        
         const officialTrailer = series.videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube');
         const trailerButtonHTML = officialTrailer ? `<button class="action-btn trailer-btn" data-key="${officialTrailer.key}">Trailer</button>` : '';
-        mainContainer.innerHTML = `<div class="poster-container"><img src="${IMG_PATH + series.poster_path}" alt="${series.name}"></div><div class="info-container">${titleElement}<p class="tagline">${series.tagline || ''}</p><div class="meta-info"><span>⭐ ${series.vote_average.toFixed(1)}</span>|<span>${series.first_air_date.substring(0, 4)}</span>|<span>${series.number_of_seasons} Seasons</span></div><div class="genres">${series.genres.map(genre => `<span class="genre-badge">${genre.name}</span>`).join('')}</div><h3>Overview</h3><p class="overview">${series.overview}</p><div class="action-buttons">${trailerButtonHTML}</div></div>`;
+        
+        // === KODE YANG HILANG SEBELUMNYA, SEKARANG DIKEMBALIKAN ===
+        // Tombol ini tidak lagi berfungsi, tapi kita tampilkan sebagai placeholder visual
+        const seriesButtonHTML = `<div class="action-btn movie-btn-placeholder">Watch Series</div>`;
+        
+        mainContainer.innerHTML = `
+            <div class="poster-container"><img src="${IMG_PATH + series.poster_path}" alt="${series.name}"></div>
+            <div class="info-container">
+                ${titleElement}
+                <p class="tagline">${series.tagline || ''}</p>
+                <div class="meta-info">
+                    <span>⭐ ${series.vote_average.toFixed(1)}</span>|
+                    <span>${series.first_air_date.substring(0, 4)}</span>|
+                    <span>${series.number_of_seasons} Seasons</span>
+                </div>
+                <div class="genres">${series.genres.map(genre => `<span class="badge">${genre.name}</span>`).join('')}</div>
+                <h3>Overview</h3>
+                <p class="overview">${series.overview}</p>
+                <div class="action-buttons">
+                    ${trailerButtonHTML}
+                    ${seriesButtonHTML}
+                </div>
+            </div>`;
+            
         mainContainer.querySelector('.action-buttons')?.addEventListener('click', handleActionClick);
     }
     
     function createSeasonSelector(seasons) {
-        // ... (fungsi ini tidak berubah dari sebelumnya)
+        if (!seasons || seasons.length === 0) return;
+        const selectorContainer = document.createElement('div');
+        selectorContainer.classList.add('seasons-selector-container');
+        
+        let optionsHTML = '';
+        seasons.forEach(season => {
+            if (season.season_number === 0 && season.episode_count === 0) return;
+            optionsHTML += `<option value="${season.season_number}">${season.name} (${season.episode_count} Episodes)</option>`;
+        });
+
+        selectorContainer.innerHTML = `
+            <label for="season-select">Season:</label>
+            <select name="seasons" id="season-select">${optionsHTML}</select>
+        `;
+        seasonsContainer.appendChild(selectorContainer);
+
+        const seasonSelect = document.getElementById('season-select');
+        seasonSelect.addEventListener('change', () => fetchEpisodes(seasonSelect.value));
+        fetchEpisodes(seasonSelect.value);
     }
 
     async function fetchEpisodes(seasonNumber) {
-        // ... (fungsi ini tidak berubah dari sebelumnya)
+        try {
+            const res = await fetch(`${API_BASE_URL}/tv/${seriesId}/season/${seasonNumber}?api_key=${API_KEY}`);
+            const data = await res.json();
+            displayEpisodes(data.episodes, seasonNumber);
+        } catch(error) { console.error(`Could not fetch episodes for season ${seasonNumber}`, error); }
     }
 
     function displayEpisodes(episodes, seasonNumber) {
-        // ... (fungsi ini tidak berubah dari sebelumnya)
+        let existingList = seasonsContainer.querySelector('.episodes-list-container');
+        if(existingList) existingList.remove();
+
+        const listContainer = document.createElement('div');
+        listContainer.classList.add('episodes-list-container');
+        listContainer.innerHTML = '<h3>Episodes</h3>';
+        const episodesList = document.createElement('div');
+        episodesList.classList.add('episodes-list');
+
+        if (!episodes || episodes.length === 0) {
+            episodesList.innerHTML = `<p>No episode information available for this season.</p>`;
+        } else {
+            episodes.forEach(ep => {
+                const episodeItem = document.createElement('div');
+                episodeItem.classList.add('episode-item');
+                episodeItem.addEventListener('click', () => {
+                    initiateAdSequence(seriesId, seriesImdbId, seasonNumber, ep.episode_number);
+                });
+                episodeItem.innerHTML = `
+                    <h4>Ep ${ep.episode_number}: ${ep.name}</h4>
+                    <p>${ep.overview || 'No overview available.'}</p>
+                `;
+                episodesList.appendChild(episodeItem);
+            });
+        }
+        listContainer.appendChild(episodesList);
+        seasonsContainer.appendChild(listContainer);
     }
-    
+
     function handleActionClick(event) {
-        // ... (fungsi ini tidak berubah dari sebelumnya)
+        const button = event.target.closest('.action-btn');
+        if (!button) return;
+        if (button.classList.contains('trailer-btn')) {
+            openTrailerPlayer(button.dataset.key);
+        }
     }
 
     function initiateAdSequence(seriesId, imdbId, seasonNum, epNum) {
-        // ... (fungsi ini tidak berubah dari sebelumnya)
+        clearInterval(countdownInterval);
+        const adTab = window.open(ADSTERRA_DIRECT_LINK, '_blank');
+        if (!adTab) { alert('Please allow pop-ups for this site.'); return; }
+        startCountdown(seriesId, imdbId, seasonNum, epNum);
     }
     
     function startCountdown(seriesId, imdbId, seasonNum, epNum) {
-        // ... (fungsi ini tidak berubah dari sebelumnya)
+        let secondsLeft = 5;
+        countdownTimerEl.textContent = secondsLeft;
+        countdownModal.classList.add('active');
+        countdownInterval = setInterval(() => {
+            if (document.hasFocus()) {
+                secondsLeft--;
+                countdownTimerEl.textContent = secondsLeft;
+                if (secondsLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownModal.classList.remove('active');
+                    openSeriesPlayer(seriesId, imdbId, seasonNum, epNum);
+                }
+            }
+        }, 1000);
     }
 
-    function openSeriesPlayer(seriesId, imdbId, seasonNum, epNum) {
-        // ... (fungsi ini tidak berubah dari sebelumnya)
+    async function openSeriesPlayer(seriesId, imdbId, seasonNum, epNum) {
+        let iframeSrc = '';
+        if (typeof manualSeriesDatabase !== 'undefined' && manualSeriesDatabase[seriesId]) {
+            iframeSrc = manualSeriesDatabase[seriesId];
+        } else if (imdbId) {
+            iframeSrc = `https://vidfast.pro/tv/${imdbId}/${seasonNum}/${epNum}`;
+        }
+        if (iframeSrc) {
+            playerBody.innerHTML = `<iframe src="${iframeSrc}" allowfullscreen></iframe>`;
+            playerModal.classList.add('active');
+        } else { alert('Sorry, this episode is not available to watch.'); }
     }
 
     function openTrailerPlayer(youtubeKey) {
-        // ... (fungsi ini tidak berubah dari sebelumnya)
+        playerBody.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeKey}?autoplay=1" allowfullscreen></iframe>`;
+        playerModal.classList.add('active');
     }
-    
-    // Salin semua fungsi-fungsi yang tidak berubah dari jawaban sebelumnya ke sini
-    // untuk memastikan kelengkapan.
     
     closePlayerBtn.onclick = () => {
         playerModal.classList.remove('active');
@@ -111,6 +209,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchSeriesDetails();
 });
-
-// Pastikan semua fungsi (createSeasonSelector, fetchEpisodes, displayEpisodes, dll.)
-// dari jawaban sebelumnya ada di sini.
