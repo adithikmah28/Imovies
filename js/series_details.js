@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const newTitle = `${series.name} | iMovies`;
         const newDescription = series.overview ? series.overview.substring(0, 155) + '...' : `Watch ${series.name} on iMovies.`;
         const newImageUrl = series.backdrop_path ? BACKDROP_PATH + series.backdrop_path : '/images/social-preview.png';
-
         document.title = newTitle;
         document.querySelector('meta[name="description"]').setAttribute('content', newDescription);
         document.querySelector('meta[property="og:title"]').setAttribute('content', newTitle);
