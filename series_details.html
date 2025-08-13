@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Meta tag ini akan diisi oleh JavaScript -->
     <title>Series Details | iMovies</title>
     <meta name="description" content="Watch series details on iMovies." />
     
@@ -43,32 +42,12 @@
         <li><a href="#">My List</a></li>
       </ul>
     </header>
-
-    <!-- Info utama series akan dimuat di sini -->
     <main id="movie-details-container"></main>
     
-    <!-- Wadah untuk Seasons & Episodes -->
     <section id="seasons-and-episodes-container" class="browse-container"></section>
 
-    <!-- Modal Countdown -->
-    <div id="countdown-modal" class="ad-modal">
-        <div class="ad-modal-content">
-            <h2>Please wait...</h2>
-            <p>Your content will be ready in</p>
-            <div id="countdown-timer">5</div>
-            <p class="small-text">Please do not close the new tab.</p>
-        </div>
-    </div>
-
-    <!-- Modal Player -->
-    <div id="player-modal" class="ad-modal">
-        <div class="ad-modal-content player-content">
-            <span id="close-player-btn" class="close-btn">&times;</span>
-            <div id="player-body">
-                <!-- Iframe player akan dimuat di sini -->
-            </div>
-        </div>
-    </div>
+    <div id="countdown-modal" class="ad-modal"><div class="ad-modal-content"><h2>Please wait...</h2><p>Your content will be ready in</p><div id="countdown-timer">5</div><p class="small-text">Please do not close the new tab.</p></div></div>
+    <div id="player-modal" class="ad-modal"><div class="ad-modal-content player-content"><span id="close-player-btn" class="close-btn">&times;</span><div id="player-body"></div></div></div>
 
     <footer class="details-footer">
         <ul class="sci">
@@ -77,8 +56,7 @@
             <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
         </ul>
     </footer>
-
-    <script src="/js/manual_series.js"></script> <!-- Script manual khusus series -->
+    <script src="/js/manual_series.js"></script>
     <script src="/js/series_details.js"></script>
 </body>
 </html>
