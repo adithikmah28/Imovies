@@ -30,4 +30,63 @@ body { background-color: #000; color: #fff; }
 #player-body iframe { width: 100%; aspect-ratio: 16/9; border: none; }
 .details-footer { padding: 40px 0; }
 .details-footer .sci { position: relative; display: flex; justify-content: center; bottom: auto; right: auto; gap: 25px; }
+/* === STYLE BARU UNTUK SEASONS & EPISODES === */
+#seasons-and-episodes-container {
+    padding: 20px 5%;
+    color: #fff;
+}
+
+.seasons-selector-container, .episodes-list-container {
+    margin-bottom: 30px;
+}
+
+.seasons-selector-container label {
+    font-size: 1.5em;
+    margin-right: 15px;
+}
+
+#season-select {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1.1em;
+}
+
+.episodes-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.episode-item {
+    background-color: #181818;
+    border-radius: 5px;
+    padding: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: 1px solid #282828;
+}
+
+.episode-item:hover {
+    background-color: #282828;
+}
+
+.episode-item h4 {
+    margin: 0 0 5px 0;
+    font-size: 1.1em;
+    color: var(--primary);
+}
+
+.episode-item p {
+    margin: 0;
+    font-size: 0.9em;
+    color: #ccc;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Batasi overview jadi 2 baris */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
 @media (max-width: 768px) { #movie-details-container { flex-direction: column; align-items: center; text-align: center; } .poster-container img { width: 200px; } .info-container h1 { font-size: 2.5em; } .info-container .meta-info, .info-container .genres { justify-content: center; } .movie-title-logo-detail { max-width: 80%; } .action-buttons { justify-content: center; } .modal-content { width: 95%; padding: 10px; margin-top: 25%; } .close-btn { font-size: 30px; top: 5px; right: 15px; } }
+
