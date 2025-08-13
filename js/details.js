@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const API_BASE_URL = 'https://api.themoviedb.org/3';
     const IMG_PATH = 'https://image.tmdb.org/t/p/w500';
     const BACKDROP_PATH = 'https://image.tmdb.org/t/p/original';
-    const ADSTERRA_DIRECT_LINK = 'MASUKKAN_LINK_ADSTERRA_KAMU_DI_SINI';
+    const ADSTERRA_DIRECT_LINK = 'https://www.profitableratecpm.com/xdz7cfckrz?key=4da66776844b84dbeb38d4fbfc6fadb9';
 
     const container = document.getElementById('movie-details-container');
     const countdownModal = document.getElementById('countdown-modal');
@@ -99,3 +99,4 @@ document.addEventListener('DOMContentLoaded', () => {
     
     fetchMovieDetails();
 });
+
