@@ -21,10 +21,21 @@
     </header>
     <main id="movie-details-container"></main>
 
-    <div class="modal" id="media-modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <div id="modal-body"></div>
+    <!-- Modal Countdown -->
+    <div id="countdown-modal" class="ad-modal">
+        <div class="ad-modal-content">
+            <h2>Please wait...</h2>
+            <p>Your movie will be ready in</p>
+            <div id="countdown-timer">5</div>
+            <p class="small-text">Please do not close the new tab.</p>
+        </div>
+    </div>
+
+    <!-- Modal Player (Ganti nama dari media-modal) -->
+    <div id="player-modal" class="ad-modal">
+        <div class="ad-modal-content player-content">
+            <span id="close-player-btn" class="close-btn">&times;</span>
+            <div id="player-body"></div>
         </div>
     </div>
 
@@ -35,7 +46,6 @@
             <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
         </ul>
     </footer>
-
     <script src="/js/manual_movies.js"></script>
     <script src="/js/details.js"></script>
 </body>
