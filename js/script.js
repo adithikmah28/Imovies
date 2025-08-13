@@ -1,20 +1,14 @@
-// === File: js/script.js (KEMBALI KE VERSI ASLI) ===
-
 function toggleVideo() {
   const trailer = document.querySelector('.trailer');
   const video = document.querySelector('video');
+  video.pause();
   trailer.classList.toggle('active');
-  
-  if (!trailer.classList.contains('active')) {
-    video.pause();
-    video.currentTime = 0;
-  }
 }
-
+// change the background images and movie content text
 function changeBg(bg, title) {
   const banner = document.querySelector('.banner');
   const contents = document.querySelectorAll('.content');
-  banner.style.background = `url("/images/movies/${bg}")`; // Pastikan path absolut
+  banner.style.background = `url("../images/movies/${bg}")`;
   banner.style.backgroundSize = 'cover';
   banner.style.backgroundPosition = 'center';
 
