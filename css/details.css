@@ -1,4 +1,4 @@
-/* Styling untuk halaman details.html (dengan gambar episode) */
+/* Styling untuk halaman details.html (dengan perbaikan mode seluler) */
 
 :root { --primary: #ff3700; --green: #25d366; }
 body { background-color: #000; color: #fff; }
@@ -32,47 +32,63 @@ body { background-color: #000; color: #fff; }
 #player-body iframe { width: 100%; aspect-ratio: 16/9; border: none; }
 .details-footer { padding: 40px 0; }
 .details-footer .sci { position: relative; display: flex; justify-content: center; bottom: auto; right: auto; gap: 25px; }
-
-/* === PERUBAHAN UTAMA DI SINI === */
 #seasons-and-episodes-container { padding: 20px 5%; color: #fff; }
 .seasons-selector-container { margin-bottom: 30px; }
 .seasons-selector-container label { font-size: 1.5em; margin-right: 15px; }
 #season-select { background-color: #333; color: #fff; border: 1px solid #555; padding: 10px; border-radius: 5px; font-size: 1.1em; }
 .episodes-list { display: flex; flex-direction: column; gap: 15px; }
-
-/* Layout baru untuk setiap item episode */
-.episode-item {
-    background-color: #181818;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border: 1px solid #282828;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 10px;
-}
+.episode-item { background-color: #181818; border-radius: 8px; cursor: pointer; transition: background-color 0.3s ease; border: 1px solid #282828; display: flex; align-items: center; gap: 20px; padding: 10px; }
 .episode-item:hover { background-color: #282828; }
-
-/* Wadah untuk gambar episode */
-.episode-image {
-    flex-shrink: 0; /* Mencegah gambar gepeng */
-    width: 180px;
-    aspect-ratio: 16 / 9; /* Rasio widescreen */
-    border-radius: 5px;
-    overflow: hidden;
-    background-color: #333; /* Warna jika gambar tidak ada */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+.episode-image { flex-shrink: 0; width: 180px; aspect-ratio: 16 / 9; border-radius: 5px; overflow: hidden; background-color: #333; display: flex; align-items: center; justify-content: center; }
 .episode-image img { width: 100%; height: 100%; object-fit: cover; }
-.episode-image .fa { font-size: 40px; color: #555; } /* Ikon placeholder */
-
-/* Wadah untuk info teks episode */
+.episode-image .fa { font-size: 40px; color: #555; }
 .episode-info { flex: 1; }
 .episode-info h4 { margin: 0 0 5px 0; font-size: 1.1em; color: #fff; }
 .episode-info p { margin: 0; font-size: 0.9em; color: #ccc; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-/* Media query tidak berubah */
-@media (max-width: 768px) { /* ... */ }
+/* === KODE YANG HILANG SEBELUMNYA, SEKARANG DIKEMBALIKAN === */
+@media (max-width: 768px) {
+    #movie-details-container {
+        padding-top: 120px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .poster-container img {
+        width: 200px;
+    }
+    .info-container h1 {
+        font-size: 2.5em;
+    }
+    .movie-title-logo-detail {
+        max-width: 80%;
+    }
+    .info-container .meta-info, .info-container .genres {
+        justify-content: center;
+    }
+    .action-buttons {
+        justify-content: center;
+    }
+    .modal-content {
+        width: 95%;
+        padding: 10px;
+        margin-top: 25%;
+    }
+    .close-btn {
+        font-size: 30px;
+        top: 5px;
+        right: 15px;
+    }
+    /* Style baru untuk episode di mode seluler */
+    .episode-item {
+        flex-direction: column; /* Susun ke bawah */
+        align-items: flex-start; /* Rata kiri */
+        gap: 10px;
+    }
+    .episode-image {
+        width: 100%; /* Gambar jadi lebar penuh */
+    }
+    .episode-info h4, .episode-info p {
+        text-align: left; /* Teks rata kiri */
+    }
+}
