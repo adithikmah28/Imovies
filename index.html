@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="keywords" content="HTML, CSS, JavaScript" />
     <meta name="author" content="DStudio Technology (David)" />
-    <!-- https://fontawesome.com/v4/get-started/ -->
     <link rel="stylesheet" href="./font-awesome/css/font-awesome.min.css" />
     <link
       rel="stylesheet"
@@ -20,12 +19,10 @@
     <header>
       <a href="#" class="logo">CinemaBoxOffice</a>
       <ul class="nav">
-        <!-- PERUBAHAN DI SINI: href dan id ditambahkan/diubah -->
-        <li>
-          <a href="#" id="nav-home"><i class="fa fa-home" aria-hidden="true"></i> </a>
-        </li>
+        <li><a href="#" id="nav-home"><i class="fa fa-home" aria-hidden="true"></i> </a></li>
         <li><a href="#" id="nav-adults">Adults</a></li>
-        <li><a href="#" id="nav-movie">Movie</a></li>
+        <!-- PERUBAHAN 1 DI SINI: href sekarang mengarah ke movies.html -->
+        <li><a href="movies.html" id="nav-movie">Movie</a></li>
         <li><a href="#" id="nav-series">Series</a></li>
         <li><a href="#" id="nav-mylist">My List</a></li>
       </ul>
@@ -36,142 +33,45 @@
     </header>
     <div class="banner">
       <div class="content the-little-mermaid active">
-        <img
-          class="movie-title"
-          src="./images/the-little-mermaid.png"
-          alt="Movie Name"
-          />
-        <h4>
-          <span>2023</span>
-          <span><i>12+</i></span>
-          <span>2h 14min</span>
-          <span>Romance</span>
-        </h4>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi commodo
-          felis tempor augue tristique, eget dignissim sapien ornare. Nullam vel
-          hendrerapit metus, a interdum risus. Etiam commodo lorem arcu, a tempus
-          risus tempus sed. Proin ornare nec massa eget rhoncus. In rutrum
-          aliquet dui, et placerat est molestie id.
-        </p>
-        <div class="button">
-          <a href="#"><i class="fa fa-play" aria-hidden="true"></i> Watch</a>
-        </div>
+        <img class="movie-title" src="./images/the-little-mermaid.png" alt="Movie Name" />
+        <h4><span>2023</span><span><i>12+</i></span><span>2h 14min</span><span>Romance</span></h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi commodo felis tempor augue tristique, eget dignissim sapien ornare. Nullam vel hendrerit metus, a interdum risus. Etiam commodo lorem arcu, a tempus risus tempus sed. Proin ornare nec massa eget rhoncus. In rutrum aliquet dui, et placerat est molestie id.</p>
+        <div class="button"><a href="#"><i class="fa fa-play" aria-hidden="true"></i> Watch</a></div>
       </div>
       <div class="content bg-65">
-        <img
-          class="movie-title"
-          src="./images/the-65-title.png"
-          alt="Movie Name"
-        />
-        <h4>
-          <span>2023</span>
-          <span><i>15+</i></span>
-          <span>1h 33min</span>
-          <span>Action</span>
-        </h4>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi commodo
-          felis tempor augue tristique, eget dignissim sapien ornare. Nullam vel
-          hendrerit metus, a interdum risus. Etiam commodo lorem arcu, a tempus
-          risus tempus sed. Proin ornare nec massa eget rhoncus. In rutrum
-          aliquet dui, et placerat est molestie id.
-        </p>
-        <div class="button">
-          <a href="#"><i class="fa fa-play" aria-hidden="true"></i> Watch</a>
-        </div>
+        <img class="movie-title" src="./images/the-65-title.png" alt="Movie Name"/>
+        <h4><span>2023</span><span><i>15+</i></span><span>1h 33min</span><span>Action</span></h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi commodo felis tempor augue tristique, eget dignissim sapien ornare. Nullam vel hendrerit metus, a interdum risus. Etiam commodo lorem arcu, a tempus risus tempus sed. Proin ornare nec massa eget rhoncus. In rutrum aliquet dui, et placerat est molestie id.</p>
+        <div class="button"><a href="#"><i class="fa fa-play" aria-hidden="true"></i> Watch</a></div>
       </div>
       <div class="content the-covenant">
-        <img
-          class="movie-title"
-          src="./images/the-covenant-title.png"
-          alt="Movie Name"
-        />
-        <h4>
-          <span>2023</span>
-          <span><i>12+</i></span>
-          <span>2h 03min</span>
-          <span>War/Action</span>
-        </h4>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi commodo
-          felis tempor augue tristique, eget dignissim sapien ornare. Nullam vel
-          hendrerit metus, a interdum risus. Etiam commodo lorem arcu, a tempus
-          risus tempus sed. Proin ornare nec massa eget rhoncus. In rutrum
-          aliquet dui, et placerat est molestie id.
-        </p>
-        <div class="button">
-          <a href="#"><i class="fa fa-play" aria-hidden="true"></i> Watch</a>
-        </div>
+        <img class="movie-title" src="./images/the-covenant-title.png" alt="Movie Name"/>
+        <h4><span>2023</span><span><i>12+</i></span><span>2h 03min</span><span>War/Action</span></h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi commodo felis tempor augue tristique, eget dignissim sapien ornare. Nullam vel hendrerit metus, a interdum risus. Etiam commodo lorem arcu, a tempus risus tempus sed. Proin ornare nec massa eget rhoncus. In rutrum aliquet dui, et placerat est molestie id.</p>
+        <div class="button"><a href="#"><i class="fa fa-play" aria-hidden="true"></i> Watch</a></div>
       </div>
       <div class="content the-black-demon">
-        <img
-          class="movie-title"
-          src="./images/the-black-demon-title.png"
-          alt="Movie Name"
-        />
-        <h4>
-          <span>2023</span>
-          <span><i>16+</i></span>
-          <span>1h 40min</span>
-          <span>Thriller</span>
-        </h4>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi commodo
-          felis tempor augue tristique, eget dignissim sapien ornare. Nullam vel
-          hendrerit metus, a interdum risus. Etiam commodo lorem arcu, a tempus
-          risus tempus sed. Proin ornare nec massa eget rhoncus. In rutrum
-          aliquet dui, et placerat est molestie id.
-        </p>
-        <div class="button">
-          <a href="#"><i class="fa fa-play" aria-hidden="true"></i> Watch</a>
-        </div>
+        <img class="movie-title" src="./images/the-black-demon-title.png" alt="Movie Name"/>
+        <h4><span>2023</span><span><i>16+</i></span><span>1h 40min</span><span>Thriller</span></h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi commodo felis tempor augue tristique, eget dignissim sapien ornare. Nullam vel hendrerit metus, a interdum risus. Etiam commodo lorem arcu, a tempus risus tempus sed. Proin ornare nec massa eget rhoncus. In rutrum aliquet dui, et placerat est molestie id.</p>
+        <div class="button"><a href="#"><i class="fa fa-play" aria-hidden="true"></i> Watch</a></div>
       </div>
       <div class="content the-tank">
-        <img
-          class="movie-title"
-          src="./images/the-tank-title.png"
-          alt="Movie Name"
-        />
-        <h4>
-          <span>2023</span>
-          <span><i>15+</i></span>
-          <span>1h 40min</span>
-          <span>Horror</span>
-        </h4>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi commodo
-          felis tempor augue tristique, eget dignissim sapien ornare. Nullam vel
-          hendrerit metus, a interdum risus. Etiam commodo lorem arcu, a tempus
-          risus tempus sed. Proin ornare nec massa eget rhoncus. In rutrum
-          aliquet dui, et placerat est molestie id.
-        </p>
-        <div class="button">
-          <a href="#"><i class="fa fa-play" aria-hidden="true"></i> Watch</a>
-        </div>
+        <img class="movie-title" src="./images/the-tank-title.png" alt="Movie Name"/>
+        <h4><span>2023</span><span><i>15+</i></span><span>1h 40min</span><span>Horror</span></h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi commodo felis tempor augue tristique, eget dignissim sapien ornare. Nullam vel hendrerit metus, a interdum risus. Etiam commodo lorem arcu, a tempus risus tempus sed. Proin ornare nec massa eget rhoncus. In rutrum aliquet dui, et placerat est molestie id.</p>
+        <div class="button"><a href="#"><i class="fa fa-play" aria-hidden="true"></i> Watch</a></div>
       </div>
       <div class="carousel-box">
         <div class="carousel">
-          <div class="carousel-item" onClick="changeBg('bg-little-mermaid.jpg', 'the-little-mermaid');">
-            <img src="./images/movies/the-little-mermaid.jpeg" />
-          </div>
-          <div class="carousel-item" onClick="changeBg('bg-65.jpeg', 'bg-65');">
-            <img src="./images/movies/65.jpg" />
-          </div>
-          <div class="carousel-item" onClick="changeBg('bg-the-covenant.jpeg', 'the-covenant');">
-            <img src="./images/movies/the-covenant.jpg" />
-          </div>
-          <div class="carousel-item" onClick="changeBg('bg-the-black-demon.jpeg', 'the-black-demon');">
-            <img src="./images/movies/the-black-demon.jpg" />
-          </div>
-          <div class="carousel-item" onClick="changeBg('bg-the-tank.jpeg', 'the-tank');">
-            <img src="./images/movies/the-tank.jpeg" />
-          </div>
+          <div class="carousel-item" onClick="changeBg('bg-little-mermaid.jpg', 'the-little-mermaid');"><img src="./images/movies/the-little-mermaid.jpeg" /></div>
+          <div class="carousel-item" onClick="changeBg('bg-65.jpeg', 'bg-65');"><img src="./images/movies/65.jpg" /></div>
+          <div class="carousel-item" onClick="changeBg('bg-the-covenant.jpeg', 'the-covenant');"><img src="./images/movies/the-covenant.jpg" /></div>
+          <div class="carousel-item" onClick="changeBg('bg-the-black-demon.jpeg', 'the-black-demon');"><img src="./images/movies/the-black-demon.jpg" /></div>
+          <div class="carousel-item" onClick="changeBg('bg-the-tank.jpeg', 'the-tank');"><img src="./images/movies/the-tank.jpeg" /></div>
         </div>
       </div>
-      <a href="#" class="play" onClick="toggleVideo()">
-        <i class="fa fa-play-circle-o" aria-hidden="true"></i> Watch Trailer
-      </a>
+      <a href="#" class="play" onClick="toggleVideo()"><i class="fa fa-play-circle-o" aria-hidden="true"></i> Watch Trailer</a>
       <ul class="sci">
         <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
         <li><a href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
@@ -192,10 +92,8 @@
       });
     </script>
 
-    <!-- KODE BARU DI SINI: Script untuk mengaktifkan tombol navigasi -->
     <script type="text/javascript">
       document.addEventListener('DOMContentLoaded', function() {
-        // Fungsi untuk mencegah link berpindah halaman dan menampilkan alert
         const showAlert = (message) => {
           return function(event) {
             event.preventDefault();
@@ -203,16 +101,18 @@
           }
         };
 
-        // Mengaktifkan tombol Home dan Movie
+        // Mengaktifkan tombol Home
         document.getElementById('nav-home').addEventListener('click', showAlert('Anda sudah berada di Halaman Utama.'));
-        document.getElementById('nav-movie').addEventListener('click', showAlert('Halaman Movie akan segera hadir!'));
         
-        // Mengaktifkan tombol lain dengan pesan "coming soon"
+        // PERUBAHAN 2 DI SINI: Baris untuk tombol movie DIHAPUS
+        // document.getElementById('nav-movie').addEventListener('click', showAlert('Halaman Movie akan segera hadir!'));
+        
+        // Tombol lain tetap menampilkan alert "coming soon"
         document.getElementById('nav-adults').addEventListener('click', showAlert('Fitur Adults akan segera hadir!'));
         document.getElementById('nav-series').addEventListener('click', showAlert('Halaman Series akan segera hadir!'));
         document.getElementById('nav-mylist').addEventListener('click', showAlert('Fitur My List akan segera hadir!'));
 
-        // Mengaktifkan fitur pencarian (placeholder)
+        // Fitur pencarian tetap menjadi placeholder
         const searchInput = document.getElementById('search-input');
         const searchIcon = document.getElementById('search-icon');
         const handleSearch = () => {
