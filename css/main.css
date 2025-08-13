@@ -27,10 +27,14 @@ header {
 }
 
 .logo {
-  font-size: 40px;
-  color: #fff;
-  letter-spacing: 2px;
-  font-weight: 800;
+  /* Properti ini membuat logo gambar lebih mudah diatur posisinya */
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  /* Atur tinggi logo di sini. Lebarnya akan menyesuaikan otomatis */
+  height: 50px; /* Kamu bisa ubah angka ini sesuai seleramu (misal: 40px, 60px) */
 }
 
 .nav {
