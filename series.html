@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browse TV Series | iMovies</title>
+    
+    <!-- Meta Tag SEO & Social Media untuk Halaman Series -->
+    <meta name="description" content="Explore and stream thousands of the latest and most popular TV series, from anime to top-rated dramas, only on iMovies." />
+    <meta name="keywords" content="iMovies, watch series, stream tv shows, latest series, popular series, anime" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://URL_WEBSITEMU_NANTI.com/series/" />
+    <meta property="og:title" content="Browse TV Series | iMovies" />
+    <meta property="og:description" content="Explore and stream thousands of the latest and most popular TV series." />
+    <meta property="og:image" content="https://URL_WEBSITEMU_NANTI.com/images/social-preview.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://URL_WEBSITEMU_NANTI.com/series/" />
+    <meta property="twitter:title" content="Browse TV Series | iMovies" />
+    <meta property="twitter:description" content="Explore and stream thousands of the latest and most popular TV series." />
+    <meta property="twitter:image" content="https://URL_WEBSITEMU_NANTI.com/images/social-preview.png" />
+
+    <!-- Favicon (Gunakan path yang sama seperti halaman lain) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/movies.css" /> <!-- Kita pakai ulang CSS dari movie -->
+</head>
+<body>
+    <header>
+      <a href="/" class="logo">iMovies</a>
+      <ul class="nav">
+        <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+        <li><a href="#">Adults</a></li>
+        <li><a href="/movies/">Movie</a></li>
+        <li><a href="/series/">Series</a></li>
+        <li><a href="#">My List</a></li>
+      </ul>
+      <div class="search">
+        <input type="text" placeholder="Search Series..." id="search-input" />
+        <i class="fa fa-search" aria-hidden="true" id="search-icon"></i>
+      </div>
+    </header>
+    <main class="browse-container">
+        <section id="search-results-series" class="movie-row" style="display: none;"><h2>Search Results</h2><div class="movie-list"></div></section>
+        
+        <!-- Kategori khusus untuk TV Series -->
+        <section id="popular-series" class="movie-row"><h2>Popular Series</h2><div class="movie-list"></div></section>
+        <section id="top-rated-series" class="movie-row"><h2>Top Rated Series</h2><div class="movie-list"></div></section>
+        <section id="on-the-air-series" class="movie-row"><h2>Currently On The Air</h2><div class="movie-list"></div></section>
+        <section id="anime-series" class="movie-row"><h2>Anime</h2><div class="movie-list"></div></section>
+    </main>
+    <footer>
+        <ul class="sci">
+            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+            <li><a href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        </ul>
+    </footer>
+    <script src="/js/series.js"></script>
+</body>
+</html>
