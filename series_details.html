@@ -4,22 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <!-- Meta tag ini akan diisi oleh JavaScript -->
     <title>Series Details | iMovies</title>
     <meta name="description" content="Watch series details on iMovies." />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="video.tv_show" />
-    <meta property="og:url" content="https://imovies-eight.vercel.app/" /> <!-- TAG INI YANG LUPA GUE TAMBAHKAN -->
+    <meta property="og:url" content="" /> <!-- Akan diisi oleh JS -->
     <meta property="og:title" content="Series Details | iMovies" />
     <meta property="og:description" content="Watch series details on iMovies." />
-    <meta property="og:image" content="https://imovies-eight.vercel.app/images/social-preview.png" /> 
+    <meta property="og:image" content="/images/social-preview.png" /> 
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://imovies-eight.vercel.app/" /> <!-- TAG INI JUGA LUPA GUE TAMBAHKAN -->
+    <meta property="twitter:url" content="" /> <!-- Akan diisi oleh JS -->
     <meta property="twitter:title" content="Series Details | iMovies" />
     <meta property="twitter:description" content="Watch series details on iMovies." />
-    <meta property="twitter:image" content="https://imovies-eight.vercel.app/images/social-preview.png" />
+    <meta property="twitter:image" content="/images/social-preview.png" />
     
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
@@ -42,9 +43,33 @@
         <li><a href="#">My List</a></li>
       </ul>
     </header>
+
+    <!-- Info utama series akan dimuat di sini -->
     <main id="movie-details-container"></main>
-    <div id="countdown-modal" class="ad-modal"><div class="ad-modal-content"><h2>Please wait...</h2><p>Your content will be ready in</p><div id="countdown-timer">5</div><p class="small-text">Please do not close the new tab.</p></div></div>
-    <div id="player-modal" class="ad-modal"><div class="ad-modal-content player-content"><span id="close-player-btn" class="close-btn">&times;</span><div id="player-body"></div></div></div>
+    
+    <!-- Wadah untuk Seasons & Episodes -->
+    <section id="seasons-and-episodes-container" class="browse-container"></section>
+
+    <!-- Modal Countdown -->
+    <div id="countdown-modal" class="ad-modal">
+        <div class="ad-modal-content">
+            <h2>Please wait...</h2>
+            <p>Your content will be ready in</p>
+            <div id="countdown-timer">5</div>
+            <p class="small-text">Please do not close the new tab.</p>
+        </div>
+    </div>
+
+    <!-- Modal Player -->
+    <div id="player-modal" class="ad-modal">
+        <div class="ad-modal-content player-content">
+            <span id="close-player-btn" class="close-btn">&times;</span>
+            <div id="player-body">
+                <!-- Iframe player akan dimuat di sini -->
+            </div>
+        </div>
+    </div>
+
     <footer class="details-footer">
         <ul class="sci">
             <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
@@ -52,7 +77,8 @@
             <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
         </ul>
     </footer>
-    <script src="/js/manual_series.js"></script>
+
+    <script src="/js/manual_series.js"></script> <!-- Script manual khusus series -->
     <script src="/js/series_details.js"></script>
 </body>
 </html>
