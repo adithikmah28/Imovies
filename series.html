@@ -26,17 +26,17 @@
 </head>
 <body>
     <header>
-      <a href="/" class="logo"><img src="/images/imovies-logo.png" alt="iMovies Logo"></a>
+      <a href="/" class="logo"><img src="/images/logo.png" alt="iMovies Logo"></a>
       <ul class="nav">
         <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
-        <li><a href="#">Adults</a></li>
+        <li><a href="#" id="nav-adults">Adults</a></li>
         <li><a href="/movies/">Movie</a></li>
         <li><a href="/series/">Series</a></li>
-        <li><a href="#">My List</a></li>
+        <li><a href="#" id="nav-mylist">My List</a></li>
       </ul>
       <div class="search">
-        <input type="text" placeholder="Search Series..." id="search-input" />
-        <i class="fa fa-search" aria-hidden="true" id="search-icon"></i>
+        <input type="text" placeholder="Search..." id="header-search-input" />
+        <i class="fa fa-search" aria-hidden="true" id="header-search-icon"></i>
       </div>
     </header>
     <main class="browse-container">
@@ -53,6 +53,7 @@
             <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
         </ul>
     </footer>
+    <script src="/js/header.js"></script>
     <script src="/js/series.js"></script>
 </body>
 </html>
