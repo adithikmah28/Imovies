@@ -5,97 +5,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Adult Content | iMovies</title>
     
-    <!-- Meta tag, Favicon, dll. (Sama seperti halaman lain) -->
-    <meta name="description" content="Browse the latest adult video content on iMovies." />
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
     <link rel="manifest" href="/favicon/site.webmanifest">
     
-    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="/css/main.css" />
-    <!-- Kita akan buat CSS baru khusus untuk halaman ini -->
+    <!-- Kita tidak pakai main.css, tapi CSS khusus halaman ini -->
     <link rel="stylesheet" href="/css/adult.css" />
 </head>
 <body>
-    <header>
-      <a href="/" class="logo"><img src="/images/logo.png" alt="iMovies Logo"></a>
-      <ul class="nav">
-        <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
-        <li><a href="/adult/">Adults</a></li>
-        <li><a href="/movies/">Movie</a></li>
-        <li><a href="/series/">Series</a></li>
-        <li><a href="#">My List</a></li>
-      </ul>
-      <div class="search">
-        <input type="text" placeholder="Search..." />
-        <i class="fa fa-search" aria-hidden="true"></i>
-      </div>
+    <header class="adult-header">
+        <div class="header-container">
+            <a href="/" class="adult-logo">
+                AVTub <span>x</span> Play
+            </a>
+            
+            <div class="search-box">
+                <input type="text" placeholder="Search..." />
+                <button type="submit">&#128269;</button> <!-- Ikon search emoji -->
+            </div>
+
+            <nav class="adult-nav desktop-nav">
+                <a href="/">Home</a>
+                <a href="#">Bokep Indo</a>
+                <a href="#">Bokep Jilbab</a>
+                <a href="#">JAV Sub Indo</a>
+                <a href="#">Uncensored</a>
+                <a href="#">Contact Us</a>
+            </nav>
+            
+            <!-- Tombol Hamburger untuk Mobile -->
+            <button class="hamburger" id="hamburger-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        
+        <!-- Navigasi Mobile (tersembunyi) -->
+        <nav class="adult-nav mobile-nav" id="mobile-nav">
+            <a href="/">Home</a>
+            <a href="#">Bokep Indo</a>
+            <a href="#">Bokep Jilbab</a>
+            <a href="#">JAV Sub Indo</a>
+            <a href="#">Uncensored</a>
+            <a href="#">Contact Us</a>
+        </nav>
     </header>
 
     <main class="adult-container">
         <div class="category-header">
-            <h1>Newest Adult Videos</h1>
+            <h1>Bokep Indonesia Terbaru</h1>
             <a href="#" class="more-videos-link">
-                <i class="fa fa-plus" aria-hidden="true"></i> More videos
+                &#43; More videos
             </a>
         </div>
 
         <div class="video-grid">
-            <!-- Contoh Video Card 1 -->
+            <!-- Isi dengan 12 video card, pakai placeholder -->
             <a href="#" class="video-card">
                 <div class="thumbnail-container">
-                    <img src="https://placehold.co/600x400/111/FFF?text=Video+1" alt="Video Thumbnail">
+                    <img src="https://placehold.co/600x400/111/FFF?text=Video+1" alt="Video">
                     <span class="hd-badge">HD</span>
                     <span class="duration-badge">06:46</span>
                 </div>
-                <h4 class="video-title">Viral City Chase Scene with Stunning Visuals</h4>
+                <h4 class="video-title">VCS Nadya Anin Omek Cakep Jilat Cairan Anu Viral</h4>
             </a>
-            
-            <!-- Contoh Video Card 2 -->
             <a href="#" class="video-card">
                 <div class="thumbnail-container">
-                    <img src="https://placehold.co/600x400/222/FFF?text=Video+2" alt="Video Thumbnail">
+                    <img src="https://placehold.co/600x400/222/FFF?text=Video+2" alt="Video">
                     <span class="hd-badge">HD</span>
                     <span class="duration-badge">30:15</span>
                 </div>
-                <h4 class="video-title">Behind the Scenes: The Making of a Blockbuster</h4>
+                <h4 class="video-title">Felisya Kolab Bareng Evana Live Barbar ID 61924243 Dream</h4>
             </a>
-
-            <!-- Contoh Video Card 3 -->
             <a href="#" class="video-card">
                 <div class="thumbnail-container">
-                    <img src="https://placehold.co/600x400/333/FFF?text=Video+3" alt="Video Thumbnail">
+                    <img src="https://placehold.co/600x400/333/FFF?text=Video+3" alt="Video">
                     <span class="hd-badge">HD</span>
                     <span class="duration-badge">10:03</span>
                 </div>
-                <h4 class="video-title">Island Survival Challenge - The First Night</h4>
+                <h4 class="video-title">Drama Om Genit Bersama Sugar Baby Mahasiswi Pantat Gemes</h4>
             </a>
-            
-            <!-- Contoh Video Card 4 -->
             <a href="#" class="video-card">
                 <div class="thumbnail-container">
-                    <img src="https://placehold.co/600x400/444/FFF?text=Video+4" alt="Video Thumbnail">
+                    <img src="https://placehold.co/600x400/444/FFF?text=Video+4" alt="Video">
                     <span class="hd-badge">HD</span>
                     <span class="duration-badge">06:20</span>
                 </div>
-                <h4 class="video-title">Top 10 Action Sequences of the Year</h4>
+                <h4 class="video-title">VCS Tiktokers Cantik Susunya Mirip Siapa Yah Kira2</h4>
             </a>
-
-            <!-- Tambahkan lebih banyak video card di sini sesuai kebutuhan -->
-            <a href="#" class="video-card"><div class="thumbnail-container"><img src="https://placehold.co/600x400/555/FFF?text=Video+5" alt="..."><span class="hd-badge">HD</span><span class="duration-badge">09:40</span></div><h4 class="video-title">Cooking with a Famous Chef: Special Episode</h4></a>
-            <a href="#" class="video-card"><div class="thumbnail-container"><img src="https://placehold.co/600x400/666/FFF?text=Video+6" alt="..."><span class="hd-badge">HD</span><span class="duration-badge">11:17</span></div><h4 class="video-title">Exploring Ancient Ruins - Documentary</h4></a>
-            <a href="#" class="video-card"><div class="thumbnail-container"><img src="https://placehold.co/600x400/777/FFF?text=Video+7" alt="..."><span class="hd-badge">HD</span><span class="duration-badge">18:23</span></div><h4 class="video-title">Live Concert Performance Highlights</h4></a>
-            <a href="#" class="video-card"><div class="thumbnail-container"><img src="https://placehold.co/600x400/888/FFF?text=Video+8" alt="..."><span class="hd-badge">HD</span><span class="duration-badge">27:00</span></div><h4 class="video-title">The Ultimate Gaming Montage Compilation</h4></a>
+            <a href="#" class="video-card">
+                <div class="thumbnail-container">
+                    <img src="https://placehold.co/600x400/555/FFF?text=Video+5" alt="Video">
+                    <span class="hd-badge">HD</span>
+                    <span class="duration-badge">09:40</span>
+                </div>
+                <h4 class="video-title">Siapin Tisu Guys Ebot Yahud Monya Naura ID</h4>
+            </a>
+            <a href="#" class="video-card">
+                <div class="thumbnail-container">
+                    <img src="https://placehold.co/600x400/666/FFF?text=Video+6" alt="Video">
+                    <span class="hd-badge">HD</span>
+                    <span class="duration-badge">11:17</span>
+                </div>
+                <h4 class="video-title">Yasmine Live Barbar Sambil Dike*yolin Pacarnya</h4>
+            </a>
+            <a href="#" class="video-card">
+                <div class="thumbnail-container">
+                    <img src="https://placehold.co/600x400/777/FFF?text=Video+7" alt="Video">
+                    <span class="hd-badge">HD</span>
+                    <span class="duration-badge">18:23</span>
+                </div>
+                <h4 class="video-title">VCS Raffa Makin Binal Abis Mainin Boba Padetnya Tiktok</h4>
+            </a>
+            <a href="#" class="video-card">
+                <div class="thumbnail-container">
+                    <img src="https://placehold.co/600x400/888/FFF?text=Video+8" alt="Video">
+                    <span class="hd-badge">HD</span>
+                    <span class="duration-badge">27:00</span>
+                </div>
+                <h4 class="video-title">Mella Goyang Striptis Gokil Tanpa Daleman ID</h4>
+            </a>
         </div>
     </main>
-
-    <footer>
-        <ul class="sci">
-            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-            <li><a href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
-            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-        </ul>
-    </footer>
+    
+    <!-- Script untuk handle hamburger menu -->
+    <script>
+        document.getElementById('hamburger-btn').addEventListener('click', function() {
+            document.getElementById('mobile-nav').classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
