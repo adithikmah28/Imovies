@@ -1,22 +1,109 @@
-/* Styling khusus untuk halaman adult.html, dengan perbaikan header mobile */
+/* Styling khusus untuk halaman adult.html, dengan perbaikan header 2 baris */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: #141414; font-family: 'Roboto', sans-serif; color: #fff; }
 a { text-decoration: none; color: inherit; }
-.adult-header { background: #000; padding: 15px 4%; border-bottom: 2px solid #333; }
-.header-container { display: flex; justify-content: space-between; align-items: center; }
+
+.adult-header {
+    background: #000;
+    padding: 15px 4%;
+    border-bottom: 2px solid #333;
+}
+
+/* Aturan untuk baris utama header */
+.header-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .adult-logo { font-size: 28px; font-weight: 700; color: #fff; }
 .adult-logo span { color: #ff9900; margin: 0 5px; }
-.search-box { flex-grow: 1; max-width: 400px; margin: 0 20px; display: flex; background: #fff; border-radius: 5px; overflow: hidden; }
+
+.search-box {
+    flex-grow: 1;
+    max-width: 400px;
+    margin: 0 20px;
+    display: flex;
+    background: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+}
 .search-box input { width: 100%; border: none; padding: 10px 15px; font-size: 16px; outline: none; }
 .search-box button { background: #ddd; border: none; padding: 0 15px; cursor: pointer; font-size: 18px; }
+
 .adult-nav a { color: #ccc; margin: 0 15px; font-weight: 500; transition: color 0.3s ease; }
 .adult-nav a:hover { color: #ff9900; }
-.hamburger { display: none; background: none; border: none; cursor: pointer; padding: 5px; }
+
+.hamburger { background: none; border: none; cursor: pointer; padding: 5px; }
 .hamburger span { display: block; width: 25px; height: 3px; background: #fff; margin: 5px 0; }
 .mobile-nav { display: none; flex-direction: column; align-items: center; padding-top: 20px; }
 .mobile-nav.active { display: flex; }
+
+/* Sembunyikan elemen mobile di desktop */
+.header-top-mobile, .mobile-home-btn {
+    display: none;
+}
+
+/* === TAMPILAN MOBILE (DI BAWAH 991px) === */
+@media (max-width: 991px) {
+    .adult-header {
+        padding: 10px 4%; /* Padding lebih kecil */
+    }
+    
+    /* Tampilkan baris atas mobile */
+    .header-top-mobile {
+        display: block;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    .adult-logo-mobile {
+        font-size: 24px;
+        font-weight: 700;
+        color: #fff;
+    }
+    .adult-logo-mobile span {
+        color: #ff9900;
+    }
+    
+    /* Sembunyikan elemen desktop */
+    .desktop-nav, .desktop-logo {
+        display: none;
+    }
+    
+    /* Atur baris bawah mobile */
+    .header-main {
+        justify-content: space-between;
+        width: 100%;
+    }
+    .mobile-home-btn {
+        display: block;
+        color: #fff;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    .search-box {
+        flex-grow: 1;
+        margin: 0 15px; /* Jarak antara ikon home dan hamburger */
+        max-width: none;
+    }
+    .video-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* TAMPILAN MOBILE KECIL (DI BAWAH 600px) */
+@media (max-width: 600px) {
+    .video-grid {
+        grid-template-columns: 1fr;
+    }
+    .category-header h1 {
+        font-size: 20px;
+    }
+}
+
+/* Sisa CSS untuk konten utama (tidak berubah) */
 .adult-container { padding: 30px 4%; }
 .category-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 .category-header h1 { font-size: 22px; }
@@ -29,67 +116,3 @@ a { text-decoration: none; color: inherit; }
 .hd-badge { top: 8px; right: 8px; }
 .duration-badge { bottom: 8px; right: 8px; }
 .video-title { margin-top: 10px; font-size: 15px; line-height: 1.4; }
-
-/* === PERUBAHAN UTAMA UNTUK MOBILE HEADER === */
-.mobile-home-btn, .mobile-title {
-    display: none; /* Sembunyikan di desktop */
-}
-
-@media (max-width: 991px) {
-    .desktop-nav, .desktop-logo, .search-box {
-        display: none;
-    }
-    .header-container {
-        justify-content: space-between;
-        width: 100%;
-    }
-    .mobile-home-btn {
-        display: block;
-        color: #fff;
-        font-size: 28px;
-        font-weight: bold;
-    }
-    .mobile-title {
-        display: block;
-        font-size: 22px;
-        font-weight: 700;
-        color: #fff;
-        /* Posisikan di tengah absolut */
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    .mobile-title span {
-        color: #ff9900;
-        margin: 0 5px;
-    }
-    .hamburger {
-        display: block;
-    }
-    .video-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-@media (max-width: 600px) {
-    .header-container {
-        flex-wrap: nowrap; /* Mencegah search bar turun */
-    }
-    .search-box {
-        display: flex;
-        order: 3; /* Posisikan setelah elemen lain */
-        width: 100%;
-        margin: 15px 0 0 0; /* Jarak dari atas */
-    }
-    .adult-header {
-        position: relative;
-    }
-    .header-container {
-        position: relative;
-    }
-    .video-grid {
-        grid-template-columns: 1fr;
-    }
-    .category-header h1 {
-        font-size: 20px;
-    }
-}
