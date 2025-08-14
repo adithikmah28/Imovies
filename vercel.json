@@ -15,6 +15,10 @@
     {
       "source": "/series/:id",
       "destination": "/series_details.html"
+    },
+    {
+      "source": "/adult/",
+      "destination": "/adult.html"
     }
   ]
 }
