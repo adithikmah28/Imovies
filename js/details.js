@@ -1,4 +1,4 @@
-// === File: js/details.js (Lengkap dengan Info Negara) ===
+// === File: js/details.js (Lengkap dengan Cast Slider) ===
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- Konfigurasi ---
@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Elemen DOM ---
     const container = document.getElementById('movie-details-container');
+    const castContainer = document.getElementById('cast-container');
     const countdownModal = document.getElementById('countdown-modal');
     const countdownTimerEl = document.getElementById('countdown-timer');
     const playerModal = document.getElementById('player-modal');
@@ -18,17 +19,19 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const pathParts = window.location.pathname.split('/');
     const movieId = pathParts[pathParts.length - 1] || pathParts[pathParts.length - 2];
-
     let countdownInterval;
 
     if (!movieId) { container.innerHTML = '<h1>Movie not found.</h1>'; return; }
 
     async function fetchMovieDetails() {
         try {
-            const res = await fetch(`${API_BASE_URL}/movie/${movieId}?api_key=${API_KEY}&append_to_response=videos,images`);
+            // Tambahkan ",credits" untuk mengambil data cast
+            const res = await fetch(`${API_BASE_URL}/movie/${movieId}?api_key=${API_KEY}&append_to_response=videos,images,credits`);
             if (!res.ok) throw new Error('Failed to fetch movie details.');
             const movie = await res.json();
+            
             displayMovieDetails(movie);
+            displayCast(movie.credits.cast); // Panggil fungsi baru untuk cast
         } catch (error) { console.error(error); container.innerHTML = '<h1>Error loading movie details.</h1>'; }
     }
 
@@ -37,58 +40,43 @@ document.addEventListener('DOMContentLoaded', () => {
         backdropDiv.classList.add('movie-details-backdrop');
         backdropDiv.style.backgroundImage = `url(${BACKDROP_PATH + movie.backdrop_path})`;
         document.body.prepend(backdropDiv);
-        
         const englishLogo = movie.images.logos.find(logo => logo.iso_639_1 === 'en');
         const logoToUse = englishLogo || (movie.images.logos.length > 0 ? movie.images.logos[0] : null);
         const titleElement = logoToUse ? `<img src="${IMG_PATH + logoToUse.file_path}" alt="${movie.title} Logo" class="movie-title-logo-detail">` : `<h1>${movie.title}</h1>`;
-        
-        // Ambil nama negara dari data API
-        const country = movie.production_countries && movie.production_countries.length > 0
-            ? movie.production_countries[0].name
-            : '';
+        const country = movie.production_countries && movie.production_countries.length > 0 ? movie.production_countries[0].name : '';
         const countryHTML = country ? `<span>|</span><span>${country}</span>` : '';
-
         const officialTrailer = movie.videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube');
         const trailerButtonHTML = officialTrailer ? `<button class="action-btn trailer-btn" data-key="${officialTrailer.key}">Trailer</button>` : '';
         const movieButtonHTML = `<button class="action-btn movie-btn" data-movie-id="${movie.id}" data-imdb-id="${movie.imdb_id || ''}">Movie</button>`;
-        
-        container.innerHTML = `
-            <div class="poster-container"><img src="${IMG_PATH + movie.poster_path}" alt="${movie.title}"></div>
-            <div class="info-container">
-                ${titleElement}
-                <p class="tagline">${movie.tagline || ''}</p>
-                <div class="meta-info">
-                    <span>⭐ ${movie.vote_average.toFixed(1)}</span>|
-                    <span>${movie.release_date.substring(0, 4)}</span>|
-                    <span>${movie.runtime} min</span>
-                    ${countryHTML}
-                </div>
-                <div class="genres">${movie.genres.map(genre => `<span class="genre-badge">${genre.name}</span>`).join('')}</div>
-                <h3>Overview</h3>
-                <p class="overview">${movie.overview}</p>
-                <div class="action-buttons">${trailerButtonHTML}${movieButtonHTML}</div>
-            </div>`;
-        
+        container.innerHTML = `<div class="poster-container"><img src="${IMG_PATH + movie.poster_path}" alt="${movie.title}"></div><div class="info-container">${titleElement}<p class="tagline">${movie.tagline || ''}</p><div class="meta-info"><span>⭐ ${movie.vote_average.toFixed(1)}</span>|<span>${movie.release_date.substring(0, 4)}</span>|<span>${movie.runtime} min</span>${countryHTML}</div><div class="genres">${movie.genres.map(genre => `<span class="genre-badge">${genre.name}</span>`).join('')}</div><h3>Overview</h3><p class="overview">${movie.overview}</p><div class="action-buttons">${trailerButtonHTML}${movieButtonHTML}</div></div>`;
         container.querySelector('.action-buttons')?.addEventListener('click', handleActionClick);
     }
 
+    // === FUNGSI BARU UNTUK MENAMPILKAN CAST ===
+    function displayCast(cast) {
+        if (!cast || cast.length === 0) return;
+        const castToShow = cast.slice(0, 10);
+        let castHTML = '';
+        castToShow.forEach(member => {
+            const imageHTML = member.profile_path ? `<img src="${IMG_PATH + member.profile_path}" alt="${member.name}">` : `<i class="fa fa-user" aria-hidden="true"></i>`;
+            castHTML += `<div class="cast-card"><div class="cast-image">${imageHTML}</div><p>${member.name}</p></div>`;
+        });
+        castContainer.innerHTML = `<h2>Cast</h2><div class="cast-list">${castHTML}</div>`;
+    }
+
+    // --- Sisa fungsi lain tidak berubah ---
     function handleActionClick(event) {
         const button = event.target.closest('.action-btn');
         if (!button) return;
-        if (button.classList.contains('trailer-btn')) {
-            openTrailerPlayer(button.dataset.key);
-        } else if (button.classList.contains('movie-btn')) {
-            initiateAdSequence(button.dataset.movieId, button.dataset.imdbId);
-        }
+        if (button.classList.contains('trailer-btn')) { openTrailerPlayer(button.dataset.key); } 
+        else if (button.classList.contains('movie-btn')) { initiateAdSequence(button.dataset.movieId, button.dataset.imdbId); }
     }
-
     function initiateAdSequence(tmdbId, imdbId) {
         clearInterval(countdownInterval);
         const adTab = window.open(ADSTERRA_DIRECT_LINK, '_blank');
         if (!adTab) { alert('Please allow pop-ups for this site.'); return; }
         startCountdown(tmdbId, imdbId);
     }
-    
     function startCountdown(tmdbId, imdbId) {
         let secondsLeft = 5;
         countdownTimerEl.textContent = secondsLeft;
@@ -105,29 +93,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 1000);
     }
-
     async function openMoviePlayer(tmdbId, imdbId) {
         let iframeSrc = '';
-        if (typeof manualMovieDatabase !== 'undefined' && manualMovieDatabase[tmdbId]) {
-            iframeSrc = manualMovieDatabase[tmdbId];
-        } else if (imdbId) {
-            iframeSrc = `https://vidfast.pro/movie/${imdbId}`;
-        }
+        if (typeof manualMovieDatabase !== 'undefined' && manualMovieDatabase[tmdbId]) { iframeSrc = manualMovieDatabase[tmdbId]; } 
+        else if (imdbId) { iframeSrc = `https://vidfast.pro/movie/${imdbId}`; }
         if (iframeSrc) {
             playerBody.innerHTML = `<iframe src="${iframeSrc}" allowfullscreen></iframe>`;
             playerModal.classList.add('active');
         } else { alert('Sorry, this movie is not available to watch.'); }
     }
-
     function openTrailerPlayer(youtubeKey) {
         playerBody.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeKey}?autoplay=1" allowfullscreen></iframe>`;
         playerModal.classList.add('active');
     }
-
-    closePlayerBtn.onclick = () => {
-        playerModal.classList.remove('active');
-        playerBody.innerHTML = '';
-    };
+    closePlayerBtn.onclick = () => { playerModal.classList.remove('active'); playerBody.innerHTML = ''; };
     
     fetchMovieDetails();
 });
