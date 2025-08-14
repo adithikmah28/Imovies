@@ -1,3 +1,5 @@
+// === File: js/series_details.js (Lengkap dengan Info Negara) ===
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- Konfigurasi ---
     const API_KEY = 'bda883e3019106157c9a9c5cfe3921bb';
@@ -43,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch(`${API_BASE_URL}/tv/${seriesId}?api_key=${API_KEY}&append_to_response=videos,images,external_ids`);
             if (!res.ok) throw new Error('Failed to fetch series details.');
             const series = await res.json();
+            
             seriesImdbId = series.external_ids.imdb_id;
             updateMetaTags(series); 
             displaySeriesDetails(series);
@@ -55,13 +58,38 @@ document.addEventListener('DOMContentLoaded', () => {
         backdropDiv.classList.add('movie-details-backdrop');
         backdropDiv.style.backgroundImage = `url(${BACKDROP_PATH + series.backdrop_path})`;
         document.body.prepend(backdropDiv);
+        
         const englishLogo = series.images.logos.find(logo => logo.iso_639_1 === 'en');
         const logoToUse = englishLogo || (series.images.logos.length > 0 ? series.images.logos[0] : null);
         const titleElement = logoToUse ? `<img src="${IMG_PATH + logoToUse.file_path}" alt="${series.name} Logo" class="movie-title-logo-detail">` : `<h1>${series.name}</h1>`;
+        
+        // Ambil kode negara dari data API
+        const country = series.origin_country && series.origin_country.length > 0
+            ? series.origin_country[0]
+            : '';
+        const countryHTML = country ? `<span>|</span><span>${country}</span>` : '';
+
         const officialTrailer = series.videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube');
         const trailerButtonHTML = officialTrailer ? `<button class="action-btn trailer-btn" data-key="${officialTrailer.key}">Trailer</button>` : '';
         const seriesButtonHTML = `<div class="action-btn movie-btn-placeholder">Watch Series Below</div>`;
-        mainContainer.innerHTML = `<div class="poster-container"><img src="${IMG_PATH + series.poster_path}" alt="${series.name}"></div><div class="info-container">${titleElement}<p class="tagline">${series.tagline || ''}</p><div class="meta-info"><span>⭐ ${series.vote_average.toFixed(1)}</span>|<span>${series.first_air_date.substring(0, 4)}</span>|<span>${series.number_of_seasons} Seasons</span></div><div class="genres">${series.genres.map(genre => `<span class="genre-badge">${genre.name}</span>`).join('')}</div><h3>Overview</h3><p class="overview">${series.overview}</p><div class="action-buttons">${trailerButtonHTML}${seriesButtonHTML}</div></div>`;
+        
+        mainContainer.innerHTML = `
+            <div class="poster-container"><img src="${IMG_PATH + series.poster_path}" alt="${series.name}"></div>
+            <div class="info-container">
+                ${titleElement}
+                <p class="tagline">${series.tagline || ''}</p>
+                <div class="meta-info">
+                    <span>⭐ ${series.vote_average.toFixed(1)}</span>|
+                    <span>${series.first_air_date.substring(0, 4)}</span>|
+                    <span>${series.number_of_seasons} Seasons</span>
+                    ${countryHTML}
+                </div>
+                <div class="genres">${series.genres.map(genre => `<span class="genre-badge">${genre.name}</span>`).join('')}</div>
+                <h3>Overview</h3>
+                <p class="overview">${series.overview}</p>
+                <div class="action-buttons">${trailerButtonHTML}${seriesButtonHTML}</div>
+            </div>`;
+            
         mainContainer.querySelector('.action-buttons')?.addEventListener('click', handleActionClick);
     }
     
@@ -164,6 +192,10 @@ document.addEventListener('DOMContentLoaded', () => {
         playerModal.classList.add('active');
     }
     
-    closePlayerBtn.onclick = () => { playerModal.classList.remove('active'); playerBody.innerHTML = ''; };
+    closePlayerBtn.onclick = () => {
+        playerModal.classList.remove('active');
+        playerBody.innerHTML = '';
+    };
+
     fetchSeriesDetails();
 });
