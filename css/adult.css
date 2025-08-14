@@ -18,7 +18,7 @@ a {
     color: inherit;
 }
 
-/* === HEADER DESKTOP (DEFAULT) === */
+/* === HEADER (DEFAULT/DESKTOP) === */
 .adult-header {
     background: #000;
     padding: 15px 4%;
@@ -92,7 +92,7 @@ a {
 }
 
 
-/* === KONTEN UTAMA (DEFAULT) === */
+/* === KONTEN UTAMA (DEFAULT/DESKTOP) === */
 .adult-container {
     padding: 30px 4%;
 }
