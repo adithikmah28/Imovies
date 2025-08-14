@@ -1,25 +1,45 @@
-/* Styling khusus untuk halaman adult.html, dengan perbaikan header 2 baris */
+/* Styling khusus untuk halaman adult.html, versi final anti-error */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #141414; font-family: 'Roboto', sans-serif; color: #fff; }
-a { text-decoration: none; color: inherit; }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+body {
+    background: #141414;
+    font-family: 'Roboto', sans-serif;
+    color: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* === HEADER DESKTOP (DEFAULT) === */
 .adult-header {
     background: #000;
     padding: 15px 4%;
     border-bottom: 2px solid #333;
 }
 
-/* Aturan untuk baris utama header */
 .header-main {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.adult-logo { font-size: 28px; font-weight: 700; color: #fff; }
-.adult-logo span { color: #ff9900; margin: 0 5px; }
+.adult-logo {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.adult-logo span {
+    color: #ff9900;
+    margin: 0 5px;
+}
 
 .search-box {
     flex-grow: 1;
@@ -30,28 +50,117 @@ a { text-decoration: none; color: inherit; }
     border-radius: 5px;
     overflow: hidden;
 }
-.search-box input { width: 100%; border: none; padding: 10px 15px; font-size: 16px; outline: none; }
-.search-box button { background: #ddd; border: none; padding: 0 15px; cursor: pointer; font-size: 18px; }
 
-.adult-nav a { color: #ccc; margin: 0 15px; font-weight: 500; transition: color 0.3s ease; }
-.adult-nav a:hover { color: #ff9900; }
+.search-box input {
+    width: 100%;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    outline: none;
+    color: #333;
+}
 
-.hamburger { background: none; border: none; cursor: pointer; padding: 5px; }
-.hamburger span { display: block; width: 25px; height: 3px; background: #fff; margin: 5px 0; }
-.mobile-nav { display: none; flex-direction: column; align-items: center; padding-top: 20px; }
-.mobile-nav.active { display: flex; }
+.search-box button {
+    background: #ddd;
+    border: none;
+    padding: 0 15px;
+    cursor: pointer;
+    font-size: 18px;
+}
 
-/* Sembunyikan elemen mobile di desktop */
-.header-top-mobile, .mobile-home-btn {
+.adult-nav a {
+    color: #ccc;
+    margin: 0 15px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.adult-nav a:hover {
+    color: #ff9900;
+}
+
+/* Sembunyikan semua elemen khusus mobile di desktop */
+.header-top-mobile,
+.mobile-home-btn,
+.hamburger,
+.mobile-nav {
     display: none;
 }
+
+.mobile-nav.active {
+    display: flex; /* Ini untuk JS toggle */
+}
+
+
+/* === KONTEN UTAMA (DEFAULT) === */
+.adult-container {
+    padding: 30px 4%;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.category-header h1 {
+    font-size: 22px;
+}
+
+.more-videos-link {
+    font-weight: 500;
+    color: #ccc;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.video-card .thumbnail-container {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.video-card:hover .thumbnail-container {
+    border-color: #ff9900;
+}
+
+.video-card img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    display: block;
+}
+
+.hd-badge, .duration-badge {
+    position: absolute;
+    background: rgba(0,0,0,0.7);
+    padding: 3px 6px;
+    font-size: 12px;
+    border-radius: 3px;
+}
+.hd-badge { top: 8px; right: 8px; }
+.duration-badge { bottom: 8px; right: 8px; }
+
+.video-title {
+    margin-top: 10px;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
 
 /* === TAMPILAN MOBILE (DI BAWAH 991px) === */
 @media (max-width: 991px) {
     .adult-header {
-        padding: 10px 4%; /* Padding lebih kecil */
+        padding: 10px 4%;
     }
-    
+
     /* Tampilkan baris atas mobile */
     .header-top-mobile {
         display: block;
@@ -61,7 +170,6 @@ a { text-decoration: none; color: inherit; }
     .adult-logo-mobile {
         font-size: 24px;
         font-weight: 700;
-        color: #fff;
     }
     .adult-logo-mobile span {
         color: #ff9900;
@@ -72,47 +180,34 @@ a { text-decoration: none; color: inherit; }
         display: none;
     }
     
-    /* Atur baris bawah mobile */
-    .header-main {
-        justify-content: space-between;
-        width: 100%;
+    /* Tampilkan elemen baris bawah mobile */
+    .mobile-home-btn, .hamburger {
+        display: block;
     }
     .mobile-home-btn {
-        display: block;
-        color: #fff;
         font-size: 28px;
         font-weight: bold;
     }
+    
+    /* Atur layout baris bawah */
     .search-box {
-        flex-grow: 1;
-        margin: 0 15px; /* Jarak antara ikon home dan hamburger */
+        margin: 0 15px;
         max-width: none;
     }
+
     .video-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
 
 /* TAMPILAN MOBILE KECIL (DI BAWAH 600px) */
 @media (max-width: 600px) {
     .video-grid {
         grid-template-columns: 1fr;
     }
+
     .category-header h1 {
         font-size: 20px;
     }
 }
-
-/* Sisa CSS untuk konten utama (tidak berubah) */
-.adult-container { padding: 30px 4%; }
-.category-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.category-header h1 { font-size: 22px; }
-.more-videos-link { font-weight: 500; color: #ccc; }
-.video-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-.video-card .thumbnail-container { position: relative; border-radius: 8px; overflow: hidden; border: 2px solid transparent; transition: border-color 0.3s ease; }
-.video-card:hover .thumbnail-container { border-color: #ff9900; }
-.video-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
-.hd-badge, .duration-badge { position: absolute; background: rgba(0,0,0,0.7); padding: 3px 6px; font-size: 12px; border-radius: 3px; }
-.hd-badge { top: 8px; right: 8px; }
-.duration-badge { bottom: 8px; right: 8px; }
-.video-title { margin-top: 10px; font-size: 15px; line-height: 1.4; }
