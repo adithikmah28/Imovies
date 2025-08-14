@@ -1,10 +1,14 @@
+// === File: js/details.js (Lengkap dengan Info Negara) ===
+
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Konfigurasi ---
     const API_KEY = 'bda883e3019106157c9a9c5cfe3921bb';
     const API_BASE_URL = 'https://api.themoviedb.org/3';
     const IMG_PATH = 'https://image.tmdb.org/t/p/w500';
     const BACKDROP_PATH = 'https://image.tmdb.org/t/p/original';
-    const ADSTERRA_DIRECT_LINK = 'https://www.profitableratecpm.com/xdz7cfckrz?key=4da66776844b84dbeb38d4fbfc6fadb9';
+    const ADSTERRA_DIRECT_LINK = 'MASUKKAN_LINK_ADSTERRA_KAMU_DI_SINI';
 
+    // --- Elemen DOM ---
     const container = document.getElementById('movie-details-container');
     const countdownModal = document.getElementById('countdown-modal');
     const countdownTimerEl = document.getElementById('countdown-timer');
@@ -33,13 +37,38 @@ document.addEventListener('DOMContentLoaded', () => {
         backdropDiv.classList.add('movie-details-backdrop');
         backdropDiv.style.backgroundImage = `url(${BACKDROP_PATH + movie.backdrop_path})`;
         document.body.prepend(backdropDiv);
+        
         const englishLogo = movie.images.logos.find(logo => logo.iso_639_1 === 'en');
         const logoToUse = englishLogo || (movie.images.logos.length > 0 ? movie.images.logos[0] : null);
         const titleElement = logoToUse ? `<img src="${IMG_PATH + logoToUse.file_path}" alt="${movie.title} Logo" class="movie-title-logo-detail">` : `<h1>${movie.title}</h1>`;
+        
+        // Ambil nama negara dari data API
+        const country = movie.production_countries && movie.production_countries.length > 0
+            ? movie.production_countries[0].name
+            : '';
+        const countryHTML = country ? `<span>|</span><span>${country}</span>` : '';
+
         const officialTrailer = movie.videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube');
         const trailerButtonHTML = officialTrailer ? `<button class="action-btn trailer-btn" data-key="${officialTrailer.key}">Trailer</button>` : '';
         const movieButtonHTML = `<button class="action-btn movie-btn" data-movie-id="${movie.id}" data-imdb-id="${movie.imdb_id || ''}">Movie</button>`;
-        container.innerHTML = `<div class="poster-container"><img src="${IMG_PATH + movie.poster_path}" alt="${movie.title}"></div><div class="info-container">${titleElement}<p class="tagline">${movie.tagline || ''}</p><div class="meta-info"><span>⭐ ${movie.vote_average.toFixed(1)}</span>|<span>${movie.release_date.substring(0, 4)}</span>|<span>${movie.runtime} min</span></div><div class="genres">${movie.genres.map(genre => `<span class="genre-badge">${genre.name}</span>`).join('')}</div><h3>Overview</h3><p class="overview">${movie.overview}</p><div class="action-buttons">${trailerButtonHTML}${movieButtonHTML}</div></div>`;
+        
+        container.innerHTML = `
+            <div class="poster-container"><img src="${IMG_PATH + movie.poster_path}" alt="${movie.title}"></div>
+            <div class="info-container">
+                ${titleElement}
+                <p class="tagline">${movie.tagline || ''}</p>
+                <div class="meta-info">
+                    <span>⭐ ${movie.vote_average.toFixed(1)}</span>|
+                    <span>${movie.release_date.substring(0, 4)}</span>|
+                    <span>${movie.runtime} min</span>
+                    ${countryHTML}
+                </div>
+                <div class="genres">${movie.genres.map(genre => `<span class="genre-badge">${genre.name}</span>`).join('')}</div>
+                <h3>Overview</h3>
+                <p class="overview">${movie.overview}</p>
+                <div class="action-buttons">${trailerButtonHTML}${movieButtonHTML}</div>
+            </div>`;
+        
         container.querySelector('.action-buttons')?.addEventListener('click', handleActionClick);
     }
 
@@ -95,8 +124,10 @@ document.addEventListener('DOMContentLoaded', () => {
         playerModal.classList.add('active');
     }
 
-    closePlayerBtn.onclick = () => { playerModal.classList.remove('active'); playerBody.innerHTML = ''; };
+    closePlayerBtn.onclick = () => {
+        playerModal.classList.remove('active');
+        playerBody.innerHTML = '';
+    };
     
     fetchMovieDetails();
 });
-
