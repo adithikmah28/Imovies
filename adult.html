@@ -8,73 +8,38 @@
     <link rel="stylesheet" href="/css/adult.css" />
 </head>
 <body>
-
     <header class="adult-header">
         <div class="header-top">
             <a href="/" class="logo"><img src="/images/imovies-logo.png" alt="iMovies Logo"></a>
-            <button class="hamburger-menu" id="hamburger-menu">
-                <i class="fa fa-bars"></i>
-            </button>
+            <button class="hamburger-menu" id="hamburger-menu"><i class="fa fa-bars"></i></button>
         </div>
-
         <form class="search-form-adult">
-            <input type="search" placeholder="Search for videos...">
-            <button type="submit"><i class="fa fa-search"></i></button>
+            <input type="search" placeholder="Search for videos..."><button type="submit"><i class="fa fa-search"></i></button>
         </form>
-
-        <!-- ================== NAVIGASI DESKTOP BARU ================== -->
         <nav class="adult-nav">
-            <a href="#" class="active" data-category="all">All</a>
-            <a href="#" data-category="Censored">Censored</a>
-            <a href="#" data-category="Uncensored">Uncensored</a>
-            <a href="#" data-category="Uncensored Leaked">Uncensored Leaked</a>
-            <a href="#" data-category="Amateur">Amateur</a>
-            <a href="#" data-category="Chinese AV">Chinese AV</a>
-            <a href="#" data-category="English Subtitle">English subtitle</a>
-            <a href="#" data-category="Indonesia Subtitle">Indonesia Subtitle</a>
+            <a href="#" class="active" data-category="all">All</a><a href="#" data-category="Censored">Censored</a><a href="#" data-category="Uncensored">Uncensored</a><a href="#" data-category="Uncensored Leaked">Uncensored Leaked</a><a href="#" data-category="Amateur">Amateur</a><a href="#" data-category="Chinese AV">Chinese AV</a><a href="#" data-category="English Subtitle">English subtitle</a><a href="#" data-category="Indonesia Subtitle">Indonesia Subtitle</a>
         </nav>
-        
-        <!-- =================== NAVIGASI MOBILE BARU =================== -->
         <nav class="nav-mobile" id="nav-mobile">
             <ul>
-                <li><a href="#" data-category="all">All</a></li>
-                <li><a href="#" data-category="Censored">Censored</a></li>
-                <li><a href="#" data-category="Uncensored">Uncensored</a></li>
-                <li><a href="#" data-category="Uncensored Leaked">Uncensored Leaked</a></li>
-                <li><a href="#" data-category="Amateur">Amateur</a></li>
-                <li><a href="#" data-category="Chinese AV">Chinese AV</a></li>
-                <li><a href="#" data-category="English Subtitle">English subtitle</a></li>
-                <li><a href="#" data-category="Indonesia Subtitle">Indonesia Subtitle</a></li>
-                <hr>
-                <li><a href="/"><i class="fa fa-arrow-left"></i> Back to Main Site</a></li>
+                <li><a href="#" data-category="all">All</a></li><li><a href="#" data-category="Censored">Censored</a></li><li><a href="#" data-category="Uncensored">Uncensored</a></li><li><a href="#" data-category="Uncensored Leaked">Uncensored Leaked</a></li><li><a href="#" data-category="Amateur">Amateur</a></li><li><a href="#" data-category="Chinese AV">Chinese AV</a></li><li><a href="#" data-category="English Subtitle">English subtitle</a></li><li><a href="#" data-category="Indonesia Subtitle">Indonesia Subtitle</a></li><hr><li><a href="/"><i class="fa fa-arrow-left"></i> Back to Main Site</a></li>
             </ul>
         </nav>
     </header>
-
     <main class="adult-main-content">
         <section class="movie-section">
             <div class="section-header">
                 <h2>New Releases</h2>
-                <a href="#" class="more-link">
-                    <i class="fa fa-plus"></i> More videos
-                </a>
+                <a href="#" class="more-link"><i class="fa fa-plus"></i> More videos</a>
             </div>
-            
-            <div class="movie-grid" id="movie-grid-container">
-                <!-- Movie cards akan di-generate oleh JavaScript di sini -->
-            </div>
-            
+            <div class="movie-grid" id="movie-grid-container"></div>
+            <div class="pagination-container" id="pagination-container"></div>
         </section>
     </main>
-    
     <footer>
         <ul class="sci">
-            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-            <li><a href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
-            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li><li><a href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li><li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
         </ul>
     </footer>
-
     <script src="/js/data_adult.js"></script>
     <script src="/js/adult.js"></script>
 </body>
