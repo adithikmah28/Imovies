@@ -41,11 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function createSeasonSelector(seasons) {
         if (!seasons || seasons.length === 0) {
-            seasonsContainer.innerHTML = ""; // Kosongkan saja jika tidak ada season
+            seasonsContainer.innerHTML = "";
             return;
         }
 
-        seasonsContainer.innerHTML = ''; // Selalu kosongkan kontainer
+        seasonsContainer.innerHTML = '';
 
         const seasonsWithEpisodes = seasons.filter(s => s.episode_count > 0);
         
@@ -57,28 +57,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectorContainer = document.createElement('div');
         selectorContainer.classList.add('seasons-selector-container');
         
+        // ==========================================================
+        // INI BAGIAN YANG DIPERBAIKI: season.episode_count
+        // ==========================================================
         let optionsHTML = seasonsWithEpisodes.map(season => 
-            `<option value="${season.season_number}">${season.name} (${season.season_count} Episodes)</option>`
+            `<option value="${season.season_number}">${season.name} (${season.episode_count} Episodes)</option>`
         ).join('');
             
-        selectorContainer.innerHTML = `<select name="seasons" id="season-select">${optionsHTML}</select>`;
+        selectorContainer.innerHTML = `
+            <label for="season-select" style="font-size: 1.5em; margin-right: 15px;">Season:</label>
+            <select name="seasons" id="season-select">${optionsHTML}</select>
+        `;
         seasonsContainer.appendChild(selectorContainer);
         
-        // ==========================================================
-        // INI KUNCINYA: KITA PAKSA DROPDOWN UNTUK MUNCUL VIA JAVASCRIPT
-        // ==========================================================
         const style = document.createElement('style');
         style.innerHTML = `
             #season-select {
-                display: block !important;
+                display: inline-block !important;
                 background: #333 !important;
                 color: #fff !important;
                 border: 1px solid #555 !important;
                 padding: 12px;
                 margin-bottom: 20px;
                 font-size: 16px;
-                width: 100%;
-                max-width: 350px;
+                min-width: 250px;
+                border-radius: 5px;
             }
         `;
         document.head.appendChild(style);
