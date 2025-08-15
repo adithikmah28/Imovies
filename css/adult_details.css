@@ -145,4 +145,22 @@
     .info-section {
         width: 100%;
     }
+
+    /* === TAMBAHAN BARU UNTUK MOBILE === */
+
+    /* 1. Atur header-top agar logo berada di tengah */
+    .adult-header .header-top {
+        justify-content: center; /* Mengganti space-between menjadi center */
+    }
+
+    /* 2. Atur info-section agar isinya (termasuk tombol) di tengah */
+    .info-section {
+        text-align: center; /* Ini akan menengahkan tombol dan elemen inline lainnya */
+    }
+
+    /* 3. Atur metadata agar rata kiri kembali (karena parent-nya sudah center) */
+    .metadata,
+    .back-button {
+        text-align: left;
+    }
 }
