@@ -4,30 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adult Section | iMovies</title>
-    
     <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" />
-    <!-- CSS main.css TIDAK DIPAKAI di sini agar tidak konflik dengan header baru -->
     <link rel="stylesheet" href="/css/adult.css" />
 </head>
 <body>
 
-    <!-- ================= HEADER BARU ================= -->
     <header class="adult-header">
         <div class="header-top">
             <a href="/" class="logo"><img src="/images/imovies-logo.png" alt="iMovies Logo"></a>
-            <!-- Tombol hamburger ("titik 3") di pinggir kanan -->
             <button class="hamburger-menu" id="hamburger-menu">
                 <i class="fa fa-bars"></i>
             </button>
         </div>
 
-        <!-- Kolom pencarian di bawah logo -->
         <form class="search-form-adult">
             <input type="search" placeholder="Search for videos...">
             <button type="submit"><i class="fa fa-search"></i></button>
         </form>
 
-        <!-- Navigasi gaya tombol untuk desktop -->
         <nav class="adult-nav">
             <a href="#" class="active">Home</a>
             <a href="#">Indonesian Movies</a>
@@ -36,7 +30,6 @@
             <a href="#">Unrated</a>
         </nav>
         
-        <!-- Navigasi untuk mobile (muncul saat hamburger diklik) -->
         <nav class="nav-mobile" id="nav-mobile">
             <ul>
                 <li><a href="#">Home</a></li>
@@ -49,7 +42,6 @@
             </ul>
         </nav>
     </header>
-    <!-- =============== AKHIR HEADER BARU =============== -->
 
     <main class="adult-main-content">
         <section class="movie-section">
@@ -59,49 +51,11 @@
                     <i class="fa fa-plus"></i> More videos
                 </a>
             </div>
-
-            <div class="movie-grid">
-                <!-- Movie Card 1 -->
-                <div class="movie-card">
-                    <div class="thumbnail">
-                        <img src="https://image.tmdb.org/t/p/w500/A4jG0t0F3n4kQd3gldAlOa0d8os.jpg" alt="Movie Title 1">
-                        <span class="badge hd">HD</span>
-                        <span class="badge duration">02:15:30</span>
-                    </div>
-                    <h3 class="title">Galactic Odyssey: The Final Frontier</h3>
-                </div>
-
-                <!-- Movie Card 2 -->
-                <div class="movie-card">
-                    <div class="thumbnail">
-                        <img src="https://image.tmdb.org/t/p/w500/1E5baAaEse26fej7uHcjOgEE2t2.jpg" alt="Movie Title 2">
-                        <span class="badge hd">HD</span>
-                        <span class="badge duration">01:55:12</span>
-                    </div>
-                    <h3 class="title">Cyber City Chronicles: Neon Shadow</h3>
-                </div>
-                
-                <!-- ... Sisa movie card lainnya tetap sama ... -->
-                <!-- Movie Card 3 -->
-                <div class="movie-card">
-                    <div class="thumbnail">
-                        <img src="https://image.tmdb.org/t/p/w500/9O7gL8sri36c035n62OXLv5p2v2.jpg" alt="Movie Title 3">
-                        <span class="badge hd">HD</span>
-                        <span class="badge duration">02:05:45</span>
-                    </div>
-                    <h3 class="title">The Last Sorcerer's Heir</h3>
-                </div>
-
-                <!-- Movie Card 4 -->
-                <div class="movie-card">
-                    <div class="thumbnail">
-                        <img src="https://image.tmdb.org/t/p/w500/s3TBr3jTJB4IuEJVD2G2s2i7T3D.jpg" alt="Movie Title 4">
-                        <span class="badge hd">HD</span>
-                        <span class="badge duration">01:48:22</span>
-                    </div>
-                    <h3 class="title">Echoes of the Deep</h3>
-                </div>
+            
+            <div class="movie-grid" id="movie-grid-container">
+                <!-- Movie cards akan di-generate oleh JavaScript di sini -->
             </div>
+            
         </section>
     </main>
     
@@ -113,6 +67,8 @@
         </ul>
     </footer>
 
+    <!-- Muat file data SEBELUM file logika utama -->
+    <script src="/js/data_adult.js"></script>
     <script src="/js/adult.js"></script>
 </body>
 </html>
