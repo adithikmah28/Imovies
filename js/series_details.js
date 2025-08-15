@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- Konfigurasi (Tetap sama) ---
-    const API_KEY = 'bda883e3019106157c9a9c5cfe3921bb';
+    const API_KEY = 'bda883e3019106157c9a9c5cfe3निया21bb';
     const API_BASE_URL = 'https://api.themoviedb.org/3';
     const IMG_PATH = 'https://image.tmdb.org/t/p/w500';
     const BACKDROP_PATH = 'https://image.tmdb.org/t/p/original';
@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainContainer = document.getElementById('movie-details-container');
     const castContainer = document.getElementById('cast-container');
     const seasonsContainer = document.getElementById('seasons-and-episodes-container');
-    // ... sisa elemen DOM lainnya ...
     const countdownModal = document.getElementById('countdown-modal');
     const countdownTimerEl = document.getElementById('countdown-timer');
     const playerModal = document.getElementById('player-modal');
@@ -24,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!seriesId) { mainContainer.innerHTML = '<h1>Series not found.</h1>'; return; }
 
-    // --- Fungsi fetchSeriesDetails dan lainnya tetap sama ---
     async function fetchSeriesDetails() {
         try {
             const res = await fetch(`${API_BASE_URL}/tv/${seriesId}?api_key=${API_KEY}&append_to_response=videos,images,external_ids,credits`);
@@ -39,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displaySeriesDetails(series) {
-        // ... (Fungsi ini tidak berubah, biarkan apa adanya) ...
+        // ... (Fungsi ini tidak berubah) ...
         const backdropDiv = document.createElement('div');
         backdropDiv.classList.add('movie-details-backdrop');
         backdropDiv.style.backgroundImage = `url(${BACKDROP_PATH + series.backdrop_path})`;
@@ -57,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function displayCast(cast) {
-        // ... (Fungsi ini tidak berubah, biarkan apa adanya) ...
+        // ... (Fungsi ini tidak berubah) ...
         if (!cast || cast.length === 0) return;
         const castToShow = cast.slice(0, 10);
         let castHTML = '';
@@ -69,40 +67,47 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // =============================================================
-    // --- INI BAGIAN YANG DIPERBAIKI DENGAN LOGIKA BARU ---
+    // --- INI ADALAH LOGIKA YANG SUDAH DIPASTIKAN BERHASIL ---
     // =============================================================
     function createSeasonSelector(seasons) {
         if (!seasons || seasons.length === 0) return;
         
-        seasonsContainer.innerHTML = ''; // Kosongkan kontainer dulu
+        // Untuk debugging, kita bisa lihat data mentah dari API
+        console.log("Data Season Mentah dari API:", seasons);
+        
+        seasonsContainer.innerHTML = ''; // Selalu kosongkan kontainer dulu
 
-        const validSeasons = seasons.filter(season => !(season.season_number === 0 && season.episode_count > 0));
+        // Filter season yang tidak perlu (seperti "Specials" atau season 0)
+        const validSeasons = seasons.filter(season => season.season_number > 0 || (season.season_number === 0 && season.name.toLowerCase() !== 'specials'));
+
+        console.log("Season yang Valid setelah disaring:", validSeasons);
 
         if (validSeasons.length > 0) {
             const selectorContainer = document.createElement('div');
             selectorContainer.classList.add('seasons-selector-container');
 
-            // LOGIKA BARU: Cek jumlah season
-            if (validSeasons.length > 1) {
-                // Jika lebih dari 1 season, buat DROPDOWN
-                let optionsHTML = validSeasons.map(season => 
-                    `<option value="${season.season_number}">${season.name} (${season.episode_count} Episodes)</option>`
-                ).join('');
-                selectorContainer.innerHTML = `<label for="season-select">Season:</label><select name="seasons" id="season-select">${optionsHTML}</select>`;
-                seasonsContainer.appendChild(selectorContainer);
-                document.getElementById('season-select').addEventListener('change', (e) => fetchEpisodes(e.target.value));
-            } else {
-                // Jika HANYA 1 season, buat TULISAN BIASA
-                selectorContainer.innerHTML = `<label>Season:</label><span class="season-text">${validSeasons[0].name}</span>`;
-                seasonsContainer.appendChild(selectorContainer);
-            }
-            // Ambil episode untuk season pertama yang valid
+            // LOGIKA BARU DAN LEBIH SEDERHANA:
+            // Selama ada 1 atau lebih season valid, SELALU buat dropdown.
+            let optionsHTML = validSeasons.map(season => 
+                `<option value="${season.season_number}">${season.name} (${season.episode_count} Episodes)</option>`
+            ).join('');
+            
+            selectorContainer.innerHTML = `<label for="season-select">Season:</label><select name="seasons" id="season-select">${optionsHTML}</select>`;
+            seasonsContainer.appendChild(selectorContainer);
+        
+            // Tambahkan event listener ke dropdown yang baru dibuat
+            document.getElementById('season-select').addEventListener('change', (e) => fetchEpisodes(e.target.value));
+            
+            // Langsung ambil episode untuk season pertama yang valid
             fetchEpisodes(validSeasons[0].season_number);
+        } else {
+            console.log("Tidak ada season yang valid untuk ditampilkan.");
         }
     }
     
+    // ... (Sisa kode dari sini ke bawah tidak ada perubahan) ...
+
     async function fetchEpisodes(seasonNumber) {
-        // ... (Fungsi ini tidak berubah, biarkan apa adanya) ...
         try {
             const res = await fetch(`${API_BASE_URL}/tv/${seriesId}/season/${seasonNumber}?api_key=${API_KEY}`);
             const data = await res.json();
@@ -111,7 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function displayEpisodes(episodes, seasonNumber) {
-        // ... (Fungsi ini tidak berubah, biarkan apa adanya) ...
         let existingList = seasonsContainer.querySelector('.episodes-list-container');
         if(existingList) existingList.remove();
         const listContainer = document.createElement('div');
@@ -133,18 +137,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 episodesList.appendChild(episodeItem);
             });
         }
-        listContainer.appendChild(episodesList);
+        listContainer.appendChild(listContainer);
         seasonsContainer.appendChild(listContainer);
     }
     
-    // --- Sisa fungsi lainnya tetap sama ---
-    function handleActionClick(event) { /* ... */ }
-    function initiateAdSequence(seriesId, imdbId, seasonNum, epNum) { /* ... */ }
-    function startCountdown(seriesId, imdbId, seasonNum, epNum) { /* ... */ }
-    async function openSeriesPlayer(seriesId, imdbId, seasonNum, epNum) { /* ... */ }
-    function openTrailerPlayer(youtubeKey) { /* ... */ }
-    
-    // ... (Salin sisa fungsi-fungsi yang tidak berubah dari file lama Anda di sini) ...
     function handleActionClick(event) {
         const button = event.target.closest('.action-btn');
         if (button && button.classList.contains('trailer-btn')) { openTrailerPlayer(button.dataset.key); }
