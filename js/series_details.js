@@ -1,5 +1,3 @@
-// === File: js/series_details.js (Lengkap dengan Cast Slider) ===
-
 document.addEventListener('DOMContentLoaded', () => {
     // --- Konfigurasi ---
     const API_KEY = 'bda883e3019106157c9a9c5cfe3921bb';
@@ -27,16 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchSeriesDetails() {
         try {
-            // Tambahkan ",credits" untuk mengambil data cast
             const res = await fetch(`${API_BASE_URL}/tv/${seriesId}?api_key=${API_KEY}&append_to_response=videos,images,external_ids,credits`);
             if (!res.ok) throw new Error('Failed to fetch series details.');
             const series = await res.json();
             
             seriesImdbId = series.external_ids.imdb_id;
-            updateMetaTags(series); 
             displaySeriesDetails(series);
-            displayCast(series.credits.cast); // Panggil fungsi baru untuk cast
-            createSeasonSelector(series.seasons);
+            displayCast(series.credits.cast);
+            createSeasonSelector(series.seasons); // Panggil fungsi untuk buat season
         } catch (error) { console.error(error); mainContainer.innerHTML = '<h1>Error loading series details.</h1>'; }
     }
 
@@ -57,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
         mainContainer.querySelector('.action-buttons')?.addEventListener('click', handleActionClick);
     }
     
-    // === FUNGSI BARU UNTUK MENAMPILKAN CAST ===
     function displayCast(cast) {
         if (!cast || cast.length === 0) return;
         const castToShow = cast.slice(0, 10);
@@ -69,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         castContainer.innerHTML = `<h2>Cast</h2><div class="cast-list">${castHTML}</div>`;
     }
 
-    // --- Sisa fungsi lain tidak berubah ---
+    // --- FUNGSI-FUNGSI PENTING UNTUK SEASON & EPISODE ---
     function createSeasonSelector(seasons) {
         if (!seasons || seasons.length === 0) return;
         const selectorContainer = document.createElement('div');
@@ -83,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         seasonsContainer.appendChild(selectorContainer);
         const seasonSelect = document.getElementById('season-select');
         seasonSelect.addEventListener('change', () => fetchEpisodes(seasonSelect.value));
-        fetchEpisodes(seasonSelect.value);
+        fetchEpisodes(seasonSelect.value); // Ambil episode untuk season pertama secara default
     }
     async function fetchEpisodes(seasonNumber) {
         try {
@@ -156,9 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playerBody.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeKey}?autoplay=1" allowfullscreen></iframe>`;
         playerModal.classList.add('active');
     }
-    function updateMetaTags(series) {
-        // ... (fungsi ini tidak berubah)
-    }
+    
     closePlayerBtn.onclick = () => { playerModal.classList.remove('active'); playerBody.innerHTML = ''; };
     fetchSeriesDetails();
 });
