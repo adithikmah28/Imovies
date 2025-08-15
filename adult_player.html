@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Video... | iMovies</title>
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/css/adult.css" />
+    <link rel="stylesheet" href="/css/adult_player.css" />
+</head>
+<body>
+    <header class="adult-header">
+        <div class="header-top">
+            <a href="/" class="logo"><img src="/images/imovies-logo.png" alt="iMovies Logo"></a>
+            <button class="hamburger-menu" id="hamburger-menu">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+        <form class="search-form-adult">
+            <input type="search" placeholder="Search for videos...">
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
+        <nav class="adult-nav">
+            <a href="/adult/">Home</a>
+            <a href="#">Indonesian Movies</a>
+            <a href="#">Asian Movies</a>
+            <a href="#">Western Movies</a>
+            <a href="#">Unrated</a>
+        </nav>
+        <nav class="nav-mobile" id="nav-mobile">
+             <ul>
+                <li><a href="/adult/">Home</a></li>
+                <li><a href="#">Indonesian Movies</a></li>
+                <li><a href="#">Asian Movies</a></li>
+                <li><a href="#">Western Movies</a></li>
+                <li><a href="#">Unrated</a></li>
+                <hr>
+                <li><a href="/"><i class="fa fa-arrow-left"></i> Back to Main Site</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="player-main-content">
+        <h1 id="video-title">Loading...</h1>
+        <div class="video-container">
+            <iframe 
+                id="video-player"
+                src="" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        </div>
+        <a href="/adult/" class="back-button"><i class="fa fa-arrow-left"></i> Back to List</a>
+    </main>
+    
+    <!-- JavaScript untuk halaman player -->
+    <script src="/js/data_adult.js"></script>
+    <script src="/js/adult_player.js"></script>
+</body>
+</html>
