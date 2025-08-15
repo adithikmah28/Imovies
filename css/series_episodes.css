@@ -1,81 +1,173 @@
 /* Styling modern HANYA untuk dropdown season dan daftar episode */
 
 #seasons-and-episodes-container { 
-    padding: 20px 5% 50px 5%; 
+    padding: 40px 5% 50px 5%; 
     color: #fff; 
 }
 
-.seasons-selector-container { 
-    margin-bottom: 30px; 
-}
-
-/* Sembunyikan label "Season:" yang lama */
-.seasons-selector-container label {
-    display: none;
+/* === Baris Kontrol Atas === */
+.episode-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #222;
+    padding-bottom: 30px;
 }
 
 #season-select {
-    /* Menghilangkan tampilan default browser */
     -webkit-appearance: none;
     appearance: none;
-
-    /* Tampilan baru */
-    background-color: #2D2D2D;
+    background-color: #1a1a1a;
     color: #E0E0E0;
     border: 1px solid #444;
     border-radius: 8px;
-    padding: 14px 18px;
+    padding: 12px 16px;
     font-size: 1em;
     font-family: 'Poppins', sans-serif;
-    width: 100%;
-    max-width: 350px; /* Batasi lebar agar tidak terlalu besar di desktop */
+    min-width: 200px;
     cursor: pointer;
-
-    /* Panah custom menggunakan SVG */
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 1rem center;
-    background-size: 1.2em;
-    padding-right: 3rem; /* Memberi ruang agar teks tidak tertimpa panah */
+    background-size: 1em;
+    padding-right: 3rem;
 }
 
-.episodes-list-container h3 { 
-    font-size: 2.5em; 
-    font-weight: 700; 
-    margin-bottom: 25px; 
-    margin-top: 20px;
+.episode-search {
+    position: relative;
+    flex-grow: 1; /* Biarkan search box mengisi ruang kosong */
 }
-.episodes-list { 
+
+.episode-search i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+.episode-search input {
+    width: 100%;
+    background-color: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 8px;
+    color: #fff;
+    padding: 12px 15px 12px 45px; /* Padding kiri untuk ikon */
+    font-size: 1em;
+}
+.episode-search input::placeholder {
+    color: #888;
+}
+
+.episode-filter-btn {
+    background: #1a1a1a;
+    border: 1px solid #444;
+    color: #fff;
+    padding: 12px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+/* === Daftar Episode Baru === */
+.episodes-list-v2 { 
     display: flex; 
     flex-direction: column; 
-    gap: 15px; 
+    gap: 1px; /* Beri jarak tipis untuk garis separator */
+    background-color: #222; /* Warna garis separator */
 }
-.episode-item { 
-    background-color: rgba(30, 30, 30, 0.7); 
-    backdrop-filter: blur(5px); 
-    border-radius: 12px; 
+
+.episode-item-v2 { 
+    background-color: #121212;
     cursor: pointer; 
     transition: background-color 0.3s ease; 
-    border: 1px solid rgba(255, 255, 255, 0.1); 
     display: flex; 
     align-items: center; 
     gap: 20px; 
     padding: 15px; 
-    overflow: hidden; 
 }
-.episode-item:hover { 
-    background-color: rgba(50, 50, 50, 0.8); 
+.episode-item-v2:hover { 
+    background-color: #1a1a1a; 
 }
-.episode-image { flex-shrink: 0; width: 180px; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background-color: #333; display: flex; align-items: center; justify-content: center; }
-.episode-image img { width: 100%; height: 100%; object-fit: cover; }
-.episode-image .fa { font-size: 40px; color: #555; }
-.episode-info { flex: 1; }
-.episode-info h4 { margin: 0 0 8px 0; font-size: 1.2em; font-weight: 600; color: #fff; }
-.episode-info p { margin: 0; font-size: 0.9em; color: #ccc; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
+.ep-thumbnail {
+    position: relative;
+    flex-shrink: 0; 
+    width: 160px; 
+    aspect-ratio: 16 / 9; 
+    border-radius: 8px; 
+    overflow: hidden; 
+    background-color: #333; 
+}
+.ep-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+
+.ep-play-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 1.5em;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.episode-item-v2:hover .ep-play-overlay {
+    opacity: 1;
+}
+
+.ep-number-badge {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.ep-info { flex: 1; }
+.ep-title { margin: 0 0 8px 0; font-size: 1.1em; font-weight: 600; color: #E50914; /* Warna merah seperti Netflix */ }
+.ep-overview { margin: 0; font-size: 0.9em; color: #aaa; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.ep-download-btn {
+    background: none;
+    border: 1px solid #444;
+    color: #aaa;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: auto; /* Mendorong ikon ke paling kanan */
+    flex-shrink: 0;
+}
+.ep-download-btn:hover {
+    background: #222;
+    color: #fff;
+}
+
+/* === Responsive === */
 @media (max-width: 768px) {
-    .seasons-selector-container { width: 100%; }
-    #season-select { max-width: 100%; }
-    .episode-item { gap: 15px; padding: 10px; flex-direction: column; align-items: flex-start; }
-    .episode-image { width: 100%; }
+    .episode-controls {
+        flex-wrap: wrap;
+    }
+    #season-select, .episode-search {
+        width: 100%;
+        flex-grow: 0;
+        min-width: 0;
+    }
+    .episode-filter-btn {
+        margin-left: auto;
+    }
+    .episode-item-v2 {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .ep-thumbnail {
+        width: 100%;
+    }
 }
