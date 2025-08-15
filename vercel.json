@@ -17,12 +17,12 @@
       "destination": "/series_details.html"
     },
     {
-      "source": "/adult/",
-      "destination": "/adult.html"
+      "source": "/adult/:idCode",
+      "destination": "/adult_player.html"
     },
     {
-      "source": "/adult/watch/:id",
-      "destination": "/adult_player.html"
+      "source": "/adult/",
+      "destination": "/adult.html"
     }
   ]
 }
