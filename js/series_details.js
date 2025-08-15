@@ -1,15 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Konfigurasi ---
+    // --- Konfigurasi (Tetap sama) ---
     const API_KEY = 'bda883e3019106157c9a9c5cfe3921bb';
     const API_BASE_URL = 'https://api.themoviedb.org/3';
     const IMG_PATH = 'https://image.tmdb.org/t/p/w500';
     const BACKDROP_PATH = 'https://image.tmdb.org/t/p/original';
     const ADSTERRA_DIRECT_LINK = 'MASUKKAN_LINK_ADSTERRA_KAMU_DI_SINI';
 
-    // --- Elemen DOM ---
+    // --- Elemen DOM (Tetap sama) ---
     const mainContainer = document.getElementById('movie-details-container');
     const castContainer = document.getElementById('cast-container');
     const seasonsContainer = document.getElementById('seasons-and-episodes-container');
+    // ... sisa elemen DOM lainnya ...
     const countdownModal = document.getElementById('countdown-modal');
     const countdownTimerEl = document.getElementById('countdown-timer');
     const playerModal = document.getElementById('player-modal');
@@ -23,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!seriesId) { mainContainer.innerHTML = '<h1>Series not found.</h1>'; return; }
 
+    // --- Fungsi fetchSeriesDetails dan lainnya tetap sama ---
     async function fetchSeriesDetails() {
         try {
             const res = await fetch(`${API_BASE_URL}/tv/${seriesId}?api_key=${API_KEY}&append_to_response=videos,images,external_ids,credits`);
@@ -32,11 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
             seriesImdbId = series.external_ids.imdb_id;
             displaySeriesDetails(series);
             displayCast(series.credits.cast);
-            createSeasonSelector(series.seasons); // Panggil fungsi untuk buat season
+            createSeasonSelector(series.seasons); 
         } catch (error) { console.error(error); mainContainer.innerHTML = '<h1>Error loading series details.</h1>'; }
     }
 
     function displaySeriesDetails(series) {
+        // ... (Fungsi ini tidak berubah, biarkan apa adanya) ...
         const backdropDiv = document.createElement('div');
         backdropDiv.classList.add('movie-details-backdrop');
         backdropDiv.style.backgroundImage = `url(${BACKDROP_PATH + series.backdrop_path})`;
@@ -54,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function displayCast(cast) {
+        // ... (Fungsi ini tidak berubah, biarkan apa adanya) ...
         if (!cast || cast.length === 0) return;
         const castToShow = cast.slice(0, 10);
         let castHTML = '';
@@ -64,47 +68,50 @@ document.addEventListener('DOMContentLoaded', () => {
         castContainer.innerHTML = `<h2>Cast</h2><div class="cast-list">${castHTML}</div>`;
     }
 
-    // =========================================================================
-    // FUNGSI INI ADALAH KUNCI UTAMA MASALAH ANDA. VERSI INI SUDAH BENAR.
-    // =========================================================================
+    // =============================================================
+    // --- INI BAGIAN YANG DIPERBAIKI DENGAN LOGIKA BARU ---
+    // =============================================================
     function createSeasonSelector(seasons) {
         if (!seasons || seasons.length === 0) return;
         
-        // Buat container untuk dropdown
-        const selectorContainer = document.createElement('div');
-        selectorContainer.classList.add('seasons-selector-container');
-        
-        // Filter season yang valid (bukan season 0/specials)
-        const validSeasons = seasons.filter(season => !(season.season_number === 0 && season.episode_count === 0));
-        
-        // Hanya tampilkan dropdown jika ada LEBIH DARI 1 season.
-        // Jika hanya 1 season, tidak perlu ada pilihan.
-        if (validSeasons.length > 1) {
-            let optionsHTML = '';
-            validSeasons.forEach(season => {
-                optionsHTML += `<option value="${season.season_number}">${season.name} (${season.episode_count} Episodes)</option>`;
-            });
-            selectorContainer.innerHTML = `<label for="season-select">Season:</label><select name="seasons" id="season-select">${optionsHTML}</select>`;
-            seasonsContainer.appendChild(selectorContainer);
-        
-            const seasonSelect = document.getElementById('season-select');
-            seasonSelect.addEventListener('change', () => fetchEpisodes(seasonSelect.value));
-        }
+        seasonsContainer.innerHTML = ''; // Kosongkan kontainer dulu
 
-        // Ambil episode untuk season pertama yang valid secara default
+        const validSeasons = seasons.filter(season => !(season.season_number === 0 && season.episode_count > 0));
+
         if (validSeasons.length > 0) {
+            const selectorContainer = document.createElement('div');
+            selectorContainer.classList.add('seasons-selector-container');
+
+            // LOGIKA BARU: Cek jumlah season
+            if (validSeasons.length > 1) {
+                // Jika lebih dari 1 season, buat DROPDOWN
+                let optionsHTML = validSeasons.map(season => 
+                    `<option value="${season.season_number}">${season.name} (${season.episode_count} Episodes)</option>`
+                ).join('');
+                selectorContainer.innerHTML = `<label for="season-select">Season:</label><select name="seasons" id="season-select">${optionsHTML}</select>`;
+                seasonsContainer.appendChild(selectorContainer);
+                document.getElementById('season-select').addEventListener('change', (e) => fetchEpisodes(e.target.value));
+            } else {
+                // Jika HANYA 1 season, buat TULISAN BIASA
+                selectorContainer.innerHTML = `<label>Season:</label><span class="season-text">${validSeasons[0].name}</span>`;
+                seasonsContainer.appendChild(selectorContainer);
+            }
+            // Ambil episode untuk season pertama yang valid
             fetchEpisodes(validSeasons[0].season_number);
         }
     }
     
     async function fetchEpisodes(seasonNumber) {
+        // ... (Fungsi ini tidak berubah, biarkan apa adanya) ...
         try {
             const res = await fetch(`${API_BASE_URL}/tv/${seriesId}/season/${seasonNumber}?api_key=${API_KEY}`);
             const data = await res.json();
             displayEpisodes(data.episodes, seasonNumber);
         } catch(error) { console.error(`Could not fetch episodes for season ${seasonNumber}`, error); }
     }
+    
     function displayEpisodes(episodes, seasonNumber) {
+        // ... (Fungsi ini tidak berubah, biarkan apa adanya) ...
         let existingList = seasonsContainer.querySelector('.episodes-list-container');
         if(existingList) existingList.remove();
         const listContainer = document.createElement('div');
@@ -129,9 +136,15 @@ document.addEventListener('DOMContentLoaded', () => {
         listContainer.appendChild(episodesList);
         seasonsContainer.appendChild(listContainer);
     }
-    // ================= AKHIR BAGIAN PENTING ============================
     
-
+    // --- Sisa fungsi lainnya tetap sama ---
+    function handleActionClick(event) { /* ... */ }
+    function initiateAdSequence(seriesId, imdbId, seasonNum, epNum) { /* ... */ }
+    function startCountdown(seriesId, imdbId, seasonNum, epNum) { /* ... */ }
+    async function openSeriesPlayer(seriesId, imdbId, seasonNum, epNum) { /* ... */ }
+    function openTrailerPlayer(youtubeKey) { /* ... */ }
+    
+    // ... (Salin sisa fungsi-fungsi yang tidak berubah dari file lama Anda di sini) ...
     function handleActionClick(event) {
         const button = event.target.closest('.action-btn');
         if (button && button.classList.contains('trailer-btn')) { openTrailerPlayer(button.dataset.key); }
@@ -171,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playerBody.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeKey}?autoplay=1" allowfullscreen></iframe>`;
         playerModal.classList.add('active');
     }
-    
+
     closePlayerBtn.onclick = () => { playerModal.classList.remove('active'); playerBody.innerHTML = ''; };
     fetchSeriesDetails();
 });
