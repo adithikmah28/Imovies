@@ -64,22 +64,39 @@ document.addEventListener('DOMContentLoaded', () => {
         castContainer.innerHTML = `<h2>Cast</h2><div class="cast-list">${castHTML}</div>`;
     }
 
-    // --- FUNGSI-FUNGSI PENTING UNTUK SEASON & EPISODE ---
+    // =========================================================================
+    // FUNGSI INI ADALAH KUNCI UTAMA MASALAH ANDA. VERSI INI SUDAH BENAR.
+    // =========================================================================
     function createSeasonSelector(seasons) {
         if (!seasons || seasons.length === 0) return;
+        
+        // Buat container untuk dropdown
         const selectorContainer = document.createElement('div');
         selectorContainer.classList.add('seasons-selector-container');
-        let optionsHTML = '';
-        seasons.forEach(season => {
-            if (season.season_number === 0 && season.episode_count === 0) return;
-            optionsHTML += `<option value="${season.season_number}">${season.name} (${season.episode_count} Episodes)</option>`;
-        });
-        selectorContainer.innerHTML = `<label for="season-select">Season:</label><select name="seasons" id="season-select">${optionsHTML}</select>`;
-        seasonsContainer.appendChild(selectorContainer);
-        const seasonSelect = document.getElementById('season-select');
-        seasonSelect.addEventListener('change', () => fetchEpisodes(seasonSelect.value));
-        fetchEpisodes(seasonSelect.value); // Ambil episode untuk season pertama secara default
+        
+        // Filter season yang valid (bukan season 0/specials)
+        const validSeasons = seasons.filter(season => !(season.season_number === 0 && season.episode_count === 0));
+        
+        // Hanya tampilkan dropdown jika ada LEBIH DARI 1 season.
+        // Jika hanya 1 season, tidak perlu ada pilihan.
+        if (validSeasons.length > 1) {
+            let optionsHTML = '';
+            validSeasons.forEach(season => {
+                optionsHTML += `<option value="${season.season_number}">${season.name} (${season.episode_count} Episodes)</option>`;
+            });
+            selectorContainer.innerHTML = `<label for="season-select">Season:</label><select name="seasons" id="season-select">${optionsHTML}</select>`;
+            seasonsContainer.appendChild(selectorContainer);
+        
+            const seasonSelect = document.getElementById('season-select');
+            seasonSelect.addEventListener('change', () => fetchEpisodes(seasonSelect.value));
+        }
+
+        // Ambil episode untuk season pertama yang valid secara default
+        if (validSeasons.length > 0) {
+            fetchEpisodes(validSeasons[0].season_number);
+        }
     }
+    
     async function fetchEpisodes(seasonNumber) {
         try {
             const res = await fetch(`${API_BASE_URL}/tv/${seriesId}/season/${seasonNumber}?api_key=${API_KEY}`);
@@ -112,6 +129,9 @@ document.addEventListener('DOMContentLoaded', () => {
         listContainer.appendChild(episodesList);
         seasonsContainer.appendChild(listContainer);
     }
+    // ================= AKHIR BAGIAN PENTING ============================
+    
+
     function handleActionClick(event) {
         const button = event.target.closest('.action-btn');
         if (button && button.classList.contains('trailer-btn')) { openTrailerPlayer(button.dataset.key); }
