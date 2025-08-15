@@ -33,6 +33,8 @@ body { background-color: #000; color: #fff; }
 #player-body iframe { width: 100%; aspect-ratio: 16/9; border: none; }
 .details-footer { padding: 40px 0; }
 .details-footer .sci { position: relative; display: flex; justify-content: center; bottom: auto; right: auto; gap: 25px; }
+
+/* === STYLING UNTUK SEASON & EPISODE (PENTING!) === */
 #seasons-and-episodes-container { padding: 20px 5%; color: #fff; }
 .seasons-selector-container { margin-bottom: 30px; }
 .seasons-selector-container label { font-size: 1.5em; margin-right: 15px; }
@@ -47,7 +49,7 @@ body { background-color: #000; color: #fff; }
 .episode-info h4 { margin: 0 0 5px 0; font-size: 1.1em; color: #fff; }
 .episode-info p { margin: 0; font-size: 0.9em; color: #ccc; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-/* === STYLE BARU UNTUK CAST SLIDER === */
+/* === STYLE UNTUK CAST SLIDER === */
 .cast-section { padding: 0 5% 30px 5%; color: #fff; }
 .cast-section h2 { font-size: 1.8em; margin-bottom: 20px; font-weight: 600; }
 .cast-list { display: flex; overflow-y: hidden; overflow-x: auto; padding-bottom: 20px; gap: 20px; -ms-overflow-style: none; scrollbar-width: none; }
@@ -58,7 +60,6 @@ body { background-color: #000; color: #fff; }
 .cast-card .cast-image .fa-user { font-size: 40px; color: #666; }
 .cast-card p { margin: 0; font-size: 0.9em; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-
 @media (max-width: 768px) {
     #movie-details-container { padding-top: 120px; flex-direction: column; align-items: center; text-align: center; }
     .poster-container img { width: 200px; }
@@ -66,8 +67,6 @@ body { background-color: #000; color: #fff; }
     .movie-title-logo-detail { max-width: 80%; }
     .info-container .meta-info, .info-container .genres { justify-content: center; }
     .action-buttons { justify-content: center; }
-    .modal-content { width: 95%; padding: 10px; margin-top: 25%; }
-    .close-btn { font-size: 30px; top: 5px; right: 15px; }
     .seasons-selector-container { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
     .episodes-list { display: grid; grid-template-columns: 1fr; gap: 10px; }
     .episode-item { gap: 15px; padding: 8px; }
