@@ -5,14 +5,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const categoryNavs = document.querySelectorAll('.adult-nav, .nav-mobile ul');
     const hamburgerMenu = document.getElementById('hamburger-menu');
     const navMobile = document.getElementById('nav-mobile');
-    const searchForm = document.getElementById('adult-search-form'); // BARU
-    const searchInput = document.getElementById('adult-search-input'); // BARU
+    const searchForm = document.getElementById('adult-search-form');
+    const searchInput = document.getElementById('adult-search-input');
 
-    // --- Konfigurasi & State (Penyimpanan Status) ---
+    // --- Konfigurasi & State ---
     const MOVIES_PER_PAGE = 16;
     let currentPage = 1;
     let currentCategory = 'all';
-    let currentSearchQuery = ''; // BARU
+    let currentSearchQuery = '';
     let filteredMovies = adultMoviesData;
 
     // --- Logika Hamburger Menu ---
@@ -24,16 +24,21 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateFilteredMovies() {
         let movies = adultMoviesData;
 
-        // 1. Filter berdasarkan KATEGORI terlebih dahulu
+        // 1. Filter berdasarkan KATEGORI
         if (currentCategory !== 'all') {
             movies = movies.filter(movie => movie.tags.includes(currentCategory));
         }
 
-        // 2. Filter berdasarkan PENCARIAN dari hasil di atas
+        // 2. Filter berdasarkan PENCARIAN
         if (currentSearchQuery) {
             const query = currentSearchQuery.toLowerCase().trim();
             movies = movies.filter(movie => 
-                movie.title.toLowerCase().includes(query)
+                // ==========================================================
+                // INI BAGIAN YANG DIPERBAIKI:
+                // Cari di judul ATAU (||) di idCode
+                // ==========================================================
+                movie.title.toLowerCase().includes(query) || 
+                movie.idCode.toLowerCase().includes(query)
             );
         }
 
@@ -91,7 +96,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.target.tagName === 'A' && event.target.dataset.category) {
             event.preventDefault();
             
-            // Saat ganti kategori, reset pencarian
             searchInput.value = '';
             currentSearchQuery = '';
             
@@ -114,10 +118,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Event Listener untuk PENCARIAN ---
     searchForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Mencegah halaman reload
+        event.preventDefault();
         
         currentSearchQuery = searchInput.value;
-        currentPage = 1; // Selalu reset ke halaman 1 saat melakukan pencarian baru
+        currentPage = 1;
+        
+        // Saat mencari, kita akan reset filter kategori ke "All"
+        // agar pencarian dilakukan di seluruh database
+        currentCategory = 'all'; 
+        categoryNavs.forEach(nav => {
+            nav.querySelectorAll('a[data-category]').forEach(link => link.classList.remove('active'));
+            nav.querySelectorAll(`a[data-category="all"]`).forEach(link => link.classList.add('active'));
+        });
 
         updateFilteredMovies();
         displayPage();
@@ -125,8 +137,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Inisialisasi Halaman ---
     if (gridContainer && typeof adultMoviesData !== 'undefined') {
-        updateFilteredMovies(); // Siapkan data awal
-        displayPage(); // Tampilkan halaman 1
+        updateFilteredMovies();
+        displayPage();
         categoryNavs.forEach(nav => nav.addEventListener('click', handleCategoryClick));
     }
 });
