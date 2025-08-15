@@ -5,20 +5,20 @@
 const adultMoviesData = [
     {
         id: 1,
-        title: "[SUB-INDO] Galactic Odyssey: The Final Frontier",
-        posterUrl: "https://image.tmdb.org/t/p/w500/A4jG0t0F3n4kQd3gldAlOa0d8os.jpg", // Mengganti thumbnailUrl menjadi posterUrl
-        iframeSrc: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Link video embed
+        title: "MFC-343 Shion",
+        posterUrl: "https://avdb.stream27.com/v/MFC-343/thumb.jpg", // Mengganti thumbnailUrl menjadi posterUrl
+        iframeSrc: "https://upload18.com/play/index/mfc-343", // Link video embed
         
         // --- INFORMASI DETAIL BARU ---
-        idCode: "GAL-001-sub-indo",
-        categories: ["Sci-Fi", "Action", "Adventure", "Space Opera"],
-        actors: ["Chris Pratt", "Zoe Saldaña", "Dave Bautista"],
-        year: "2023",
-        country: "USA",
+        idCode: "MFC-343 Shion",
+        categories: ["Big Ass", "Creampie", "Oral Sex", "Massage Oil", "Selfie", "Super Breasts", "Hd", "Big Breasts", "Sister", "Black Hair", "4K"],
+        actors: ["Unknown"],
+        year: "2025",
+        country: "Japan",
         director: "James Gunn",
-        writer: "James Gunn",
-        duration: "02:15:30",
-        releaseDate: "2023-05-05"
+        writer: "MOON FORCE",
+        duration: "1:19:42",
+        releaseDate: "2025-08-13"
     },
     {
         id: 2,
