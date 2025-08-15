@@ -63,3 +63,32 @@ a.movie-card-link {
     text-decoration: none;
     color: inherit;
 }
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 40px;
+    padding: 10px;
+}
+
+.pagination-btn {
+    background-color: #2a2a2a;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 5px;
+    padding: 8px 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pagination-btn:hover {
+    background-color: #444;
+}
+
+.pagination-btn.active {
+    background-color: #fff;
+    color: #000;
+    border-color: #fff;
+}
