@@ -1,0 +1,148 @@
+:root {
+    --primary-green: #1DB954; /* Warna hijau seperti Spotify */
+    --tag-bg: #4a4188; /* Warna ungu untuk tag */
+    --text-secondary: #b3b3b3;
+}
+
+.details-container {
+    display: flex;
+    gap: 40px;
+    padding: 2rem 4%;
+    max-width: 1400px;
+    margin: 20px auto;
+}
+
+/* Kolom Kiri (Poster) */
+.poster-section {
+    flex: 0 0 300px; /* Lebar tetap 300px */
+}
+
+#details-poster {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.copy-link {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-top: 10px;
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+/* Kolom Kanan (Info) */
+.info-section {
+    flex: 1;
+}
+
+#details-title {
+    font-size: 2.5em;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.watch-online-btn {
+    background-color: var(--primary-green);
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 1em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s;
+    display: inline-block;
+    margin-bottom: 30px;
+}
+
+.watch-online-btn:hover {
+    transform: scale(1.05);
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    background-color: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.metadata {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.meta-label {
+    font-weight: 700;
+    color: #fff;
+    flex: 0 0 100px; /* Lebar label tetap */
+}
+
+.meta-value {
+    color: var(--text-secondary);
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag-pill {
+    background-color: var(--tag-bg);
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.back-button {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+}
+.back-button:hover {
+    background-color: #444;
+    color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .details-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .poster-section {
+        flex-basis: auto;
+        width: 100%;
+        max-width: 300px;
+    }
+    #details-title {
+        font-size: 2em;
+        text-align: center;
+    }
+    .info-section {
+        width: 100%;
+    }
+}
